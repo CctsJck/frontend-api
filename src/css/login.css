@@ -7,10 +7,22 @@
   height: 90%;
 }
 
+.vision{
+  display: none;
+  
+}
+
+
+.card:hover > .vision{
+  display: block;
+}
+
 .card:hover{
   transform: scale(1.05);
 
 }
+
+
 
 .card-img-top {
   width: 100%;
