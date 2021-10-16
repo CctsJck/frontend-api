@@ -7,7 +7,7 @@ import CrearCampeonatoForms from './CrearCampeonatoForms';
 
 
 function Home(){
-    
+    const params = useParams();
     
     
     return(
@@ -21,7 +21,7 @@ function Home(){
 
         </div>
         <div className="row columnaContenido">
-          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : <p>hola</p>}
+          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("")}
 
         </div>
 
