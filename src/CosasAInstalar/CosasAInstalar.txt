@@ -6,3 +6,13 @@ npm i mdb-ui-kit
 npm install react-datepicker --save
 npm install --save prop-types
 npm install axios
+
+-----------------------------------------
+Stash
+
+1- Tres puntitos 
+2- Stash (Included untracked)
+3- Poner un nombre al stash
+4- Hacer Pull
+5- Tres puntitos, Opcion "Stash", Pop Latest Stash
+6- Hacer el commit y push
