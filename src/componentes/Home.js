@@ -21,7 +21,7 @@ function Home(){
 
         </div>
         <div className="row columnaContenido">
-          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("")}
+          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No ")}
 
         </div>
 

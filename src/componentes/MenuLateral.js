@@ -6,11 +6,11 @@ function MenuLateral(){
     const parametros = useParams();
 
     return(
-        <div>
-            <div class="nav flex-column  mt-5">
+            <div class="nav flex-column ">
                 { parametros.id == 1 ? 
                     <div>
                         <a class="nav-link active text-dark mt-5 " aria-current="page"><h4>Administrador</h4></a>
+                        <hr/>
                         <nav class="nav flex-column ms-3 link-menu">
                             <a class="nav-link active text-dark" aria-current="page" href={"/home/"+parametros.id+"/crearCampeonato"}>Crear Campeonato</a>
                             <a class="nav-link text-dark" href="#">Crear Partido</a>
@@ -22,6 +22,8 @@ function MenuLateral(){
                 {parametros.id == 0 || parametros.id == 1 ?
                     <div>
                      <a class="nav-link text-dark mt-5"><h4>Jugadores</h4></a>
+                     <hr/>
+
                     <nav class="nav flex-column ms-3 link-menu">
                         <a class="nav-link active text-dark" aria-current="page" href="#">Gestionar datos personales</a>
                         <a class="nav-link active text-dark" aria-current="page" href="#">Consultar estadistica equipo</a>
@@ -31,6 +33,8 @@ function MenuLateral(){
                 {parametros.id == 1 || parametros.id == 2 ? 
                 <div>
                     <a class="nav-link text-dark mt-5"><h4>Representante</h4></a>
+                    <hr/>
+
                     <nav class="nav flex-column ms-3 link-menu">
                         <a class="nav-link active text-dark" aria-current="page" href="#">Gestionar datos personales</a>
                         <a class="nav-link active text-dark" aria-current="page" href="#">Gestionar datos del club</a>
@@ -41,8 +45,10 @@ function MenuLateral(){
                 </div> : <div></div>}
                 
             </div>
-
-        </div>
+           
+                
+            
+           
     );
 
 }
