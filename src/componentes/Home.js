@@ -1,6 +1,6 @@
 import React from 'react';
 import '../css/home.css';
-import MenuLateral from './componentes/MenuLateral';
+import MenuLateral from './MenuLateral';
 
 
 function Home(){
@@ -15,7 +15,7 @@ function Home(){
 
         </div>
         <div className="row columnaContenido">
-          <Home/>
+          
 
         </div>
 
