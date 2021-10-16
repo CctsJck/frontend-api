@@ -1,0 +1,8 @@
+Cosas a instalar
+
+npm install
+npm install react-router-dom
+npm i mdb-ui-kit
+npm install react-datepicker --save
+npm install --save prop-types
+npm install axios
