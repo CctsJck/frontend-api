@@ -1,10 +1,10 @@
 body {
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Nunito', sans-serif;
 }
 
 .columna {
   min-height: 100vh;
-  background-color: rgb(202, 134, 8);
+  background-color: #0face6  ;
   border-radius: 0px;
   
   
