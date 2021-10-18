@@ -13,7 +13,7 @@ function MenuLateral(){
                         <hr/>
                         <nav class="nav flex-column ms-3 link-menu">
                             <a class="nav-link active text-dark" aria-current="page" href={"/home/"+parametros.id+"/crearCampeonato"}>Crear Campeonato</a>
-                            <a class="nav-link text-dark" href="#">Crear Partido</a>
+                            <a class="nav-link text-dark" aria-current="page" href={"/home/"+parametros.id+"/crearPartido"}>Crear Partido</a>
                             <a class="nav-link text-dark" href="#">Cargar resultado partido</a>
                             <a class="nav-link text-dark" href="#">Consultar estadistica jugador</a>
                         </nav>

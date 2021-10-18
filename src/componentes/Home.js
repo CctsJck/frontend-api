@@ -3,6 +3,7 @@ import '../css/home.css';
 import MenuLateral from './MenuLateral';
 import {useParams} from 'react-router-dom';
 import CrearCampeonatoForms from './CrearCampeonatoForms';
+import CrearPartidoForms from './CrearPartidoForms';
 
 
 
@@ -21,7 +22,8 @@ function Home(){
 
         </div>
         <div className="row columnaContenido">
-          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No ")}
+          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No")}
+          {params.opcion == "crearPartido" ? <CrearPartidoForms/> : console.log("No") }
 
         </div>
 
