@@ -1,8 +1,8 @@
 import React from 'react';
-import '../css/menuLateral.css';
+import '../css/menuBar.css';
 import {useParams} from 'react-router-dom';
 
-function MenuLateral(){
+function MenuBar(){
     const parametros = useParams();
 
     return(
@@ -89,4 +89,4 @@ function MenuLateral(){
 
 }
 
-export default MenuLateral;
+export default MenuBar;

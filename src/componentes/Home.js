@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import '../css/home.css';
-import MenuLateral from './MenuLateral';
+import MenuBar from './MenuBar';
+import MenuVertical from './MenuVertical';
 import {useParams} from 'react-router-dom';
 import CrearCampeonatoForms from './CrearCampeonatoForms';
 import CrearPartidoForms from './CrearPartidoForms';
@@ -9,67 +10,57 @@ import CrearPartidoForms from './CrearPartidoForms';
 
 function Home(){
     const params = useParams();
-    var [activeLink,setActiveLink] = useState(null);
 
-    
-    
-    
-    
     
     return(
-    <div className="">
-      <div className="col-12">
-        <MenuLateral/>
-      </div>
-      <div className="container ">
-        <div className="row">
-          <div className="col-3 mt-5 ">
-            <div class="list-group" id="list">
-              {params.id == 1 ? 
-              <div>
-              <h2>Administrador</h2>
-              <a type="button" href={"/home/"+params.id+"/crearCampeonato"}  class={params.opcion == 'crearCampeonato' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear Campeonato</a>
-              <a type="button" href={"/home/"+params.id+"/crearPartido"}  class={params.opcion == 'crearPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear partido</a>
-              <a type="button" href="" class="list-group-item list-group-item-action" >Cargar resultado partido</a>
-              <a type="button" href="" class="list-group-item list-group-item-action"   >Consulta estadistica jugador</a>
-              <a type="button" href="" class="list-group-item list-group-item-action" >Agregar club a un Campeonato</a>
-              <hr/>
-              </div>:null}
-              
-              {params.id == 0 || params.id == 1 ?
-              <div>
-                  <h2>Jugadores</h2>
-
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos personales</a>
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consultar estadistica jugador</a>
-                  
-              </div>:null}
-
-              {params.id == 1 || params.id == 2 ? 
-              <div>
-                  {params.id == 1 ? <hr/> : null}
-                  <h2>Representante</h2>
-
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos personales</a>
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos del club</a>
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos de sus jugadores</a>
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Definir lista jugadores de un partido</a>
-                  <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Validar resultado de un partido</a>
-
-              </div> : null}
-
+      <div className="">
+        <div className="col-12">
+          <MenuBar/>
+        </div>
+        <div className="container ">
+          <div className="row">
+            <div className="col-3 mt-5 ">
+              <MenuVertical/>
             </div>
-          </div>
-          <div className="col-9">
-            <div className="row columnaContenido mt-5 shadow-lg p-3 mb-5 bg-body rounded">
-              {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No")}
-              {params.opcion == "crearPartido" ? <CrearPartidoForms/> : console.log("No") }
+            <div className="col-9">
+              <div className="row columnaContenido mt-5 shadow-lg p-3 mb-5 bg-body rounded">
+                {params.opcion == undefined && params.id == 0 ? 
+                  <div>
+                    <h2 className="text-center mb-3">Bienvenido Jugador!</h2>
+                    <div className="d-flex justify-content-center">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Football_iu_1996.jpg/1200px-Football_iu_1996.jpg" className="img-thumbnail "/>
+
+                    </div>
+                  </div>
+                  : null}
+                {params.opcion == undefined && params.id == 1 ? 
+                  <div>
+                    <h2 className="text-center mb-3">Bienvenido Administrador!</h2>
+                    <div className="d-flex justify-content-center">
+                      <img src="https://www.unir.net/wp-content/uploads/2021/06/beautiful-male-computer-engineer-and-scientists-create-neural-network-picture-id1182697690.jpg" className="img-thumbnail "/>
+
+                    </div>
+                  </div>
+                : null}
+                {params.opcion == undefined && params.id == 2 ? 
+                
+                  <div>
+                    <h2 className="text-center mb-3">Bienvenido Representante!</h2>
+                    <div className="d-flex justify-content-center">
+                      <img src="https://img.freepik.com/foto-gratis/concepto-hombres-negocios-apreton-manos_53876-31214.jpg?size=626&ext=jpg" className="img-thumbnail "/>
+
+                    </div>
+                  </div> 
+                : null}
+
+                {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : null}
+                {params.opcion == "crearPartido" ? <CrearPartidoForms/> : null }
+              </div>
             </div>
+          
           </div>
-        
         </div>
       </div>
-    </div>
     );
 }
 
