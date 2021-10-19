@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { useEffect,useState} from 'react';
 import '../css/login.css';
 
+
+
 function Login(){
+    
+    
     return (
         <div className="fondo">
             
@@ -36,8 +40,10 @@ function Login(){
                         </div>
                     </div>
                 </div>
+                
             
             </div>
+            
         </div>
         
     );

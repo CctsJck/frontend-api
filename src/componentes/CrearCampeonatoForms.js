@@ -3,17 +3,21 @@ import '../css/crearCampeonatoForms.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
 function CrearCampeonatoForms(){
     /* Variables */
-    const today = new Date();
     const [descripcion,setDescripcion] = useState("");
     const [fechaInicio,setFechaInicio] = useState(new Date());
     const [fechaFin,setFechaFin] = useState(new Date());
     const [tipoTorneo, setTipoTorneo] = useState("puntos");
     const [categoria, setCategoria] = useState("");
+    const [visible,setVisible] = useState(false);
+    const notify = () => toast("Wow so easy!");
+
 
 
     /* Funciones */
@@ -36,14 +40,18 @@ function CrearCampeonatoForms(){
             console.log(res);
             console.log(res.data);
         });
-        document.getElementById("formulario").reset()
-
+        document.getElementById("formulario").reset();
+        return toast.success("Campeonato creado con exito")
     }
+
+    
    
     /* HTML */
 
     return(
+
         <div>
+            <ToastContainer />
             <h2 className="text-center mt-3">Crear campeonato</h2>
             <div className="container">
                 <form onSubmit={handleSubmit} id="formulario" autoComplete="off">

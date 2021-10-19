@@ -18,13 +18,18 @@ function Home(){
       </div>
       <div className="col-10  ">
         <div className="row pb-5 columnaMenu">
-
+          
 
         </div>
         <div className="row columnaContenido">
+<<<<<<< Updated upstream
           {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No")}
           {params.opcion == "crearPartido" ? <CrearPartidoForms/> : console.log("No") }
 
+=======
+          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No ")}
+          
+>>>>>>> Stashed changes
         </div>
 
       </div>
