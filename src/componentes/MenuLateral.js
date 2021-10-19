@@ -6,7 +6,8 @@ function MenuLateral(){
     const parametros = useParams();
 
     return(
-            <div class="nav flex-column ">
+        <div className="text-center main bg-dark text-white">
+            {/*<div class="nav flex-column ">
                 { parametros.id == 1 ? 
                     <div>
                         <a class="nav-link active text-dark mt-5 " aria-current="page"><h4>Administrador</h4></a>
@@ -44,7 +45,23 @@ function MenuLateral(){
                     </nav>
                 </div> : <div></div>}
                 
-            </div>
+                </div>*/}
+
+                <ul class="nav justify-content-center p-4">
+                <li class="nav-item">
+                    <a class="nav-link text-white" aria-current="page" href="#admin">Administrador</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Jugadores</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#">Representante   </a>
+                </li>
+                
+                </ul>
+
+
+        </div>
            
                 
             
