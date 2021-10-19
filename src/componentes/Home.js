@@ -22,8 +22,8 @@ function Home(){
             <div className="col-3 mt-5 ">
               <MenuVertical/>
             </div>
-            <div className="col-9">
-              <div className="row columnaContenido mt-5 shadow-lg p-3 mb-5 bg-body rounded">
+            <div className="col-9 mt-5">
+              <div className="row mt-5 shadow-lg p-3 mb-5 bg-body rounded">
                 {params.opcion == undefined && params.id == 0 ? 
                   <div>
                     <h2 className="text-center mb-3">Bienvenido Jugador!</h2>
