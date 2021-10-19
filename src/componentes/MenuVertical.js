@@ -14,7 +14,10 @@ function MenuVertical(){
             <a type="button" href={"/home/"+params.id+"/crearPartido"}  class={params.opcion == 'crearPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear partido</a>
             <a type="button" href="" class="list-group-item list-group-item-action" >Cargar resultado partido</a>
             <a type="button" href="" class="list-group-item list-group-item-action"   >Consulta estadistica jugador</a>
-            <a type="button" href="" class="list-group-item list-group-item-action" >Agregar club a un Campeonato</a>
+            <a type="button" href={"/home/"+params.id+"/agregarClubCamp"} class={params.opcion == 'agregarClubCamp' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} >Agregar club a un Campeonato</a>
+            <a type="button" href="" class="list-group-item list-group-item-action">Administrar campeonatos</a>
+            <a type="button" href="" class="list-group-item list-group-item-action">Administrar representantes</a>
+            <a type="button" href="" class="list-group-item list-group-item-action">Administrar partidos</a>
             <hr/>
             </div>:null}
             
@@ -37,7 +40,8 @@ function MenuVertical(){
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos de sus jugadores</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Definir lista jugadores de un partido</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Validar resultado de un partido</a>
-
+                <a type="button" href="" class="list-group-item list-group-item-action">Consultar partidos</a>
+                <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consultar estadisticas de un jugador</a>
             </div> : null}
 
         </div>

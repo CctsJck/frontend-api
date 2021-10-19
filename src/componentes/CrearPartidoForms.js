@@ -26,8 +26,6 @@ function CrearPartidoForms () {
     
     useEffect(() => {
         const fetchData = async () => {
-
-
           const clubes = await axios('http://localhost:8080/getClubesCampeonato',);//cambiar el nombre del metodo
           setClubesAPI(clubes.data);
 

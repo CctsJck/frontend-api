@@ -5,6 +5,7 @@ import MenuVertical from './MenuVertical';
 import {useParams} from 'react-router-dom';
 import CrearCampeonatoForms from './CrearCampeonatoForms';
 import CrearPartidoForms from './CrearPartidoForms';
+import AgregarClubCamp from './AgregarClubCamp';
 
 
 
@@ -55,6 +56,7 @@ function Home(){
 
                 {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : null}
                 {params.opcion == "crearPartido" ? <CrearPartidoForms/> : null }
+                {params.opcion == "agregarClubCamp" ? <AgregarClubCamp/> : null}
               </div>
             </div>
           
