@@ -22,14 +22,9 @@ function Home(){
 
         </div>
         <div className="row columnaContenido">
-<<<<<<< Updated upstream
           {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No")}
           {params.opcion == "crearPartido" ? <CrearPartidoForms/> : console.log("No") }
 
-=======
-          {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : console.log("No ")}
-          
->>>>>>> Stashed changes
         </div>
 
       </div>

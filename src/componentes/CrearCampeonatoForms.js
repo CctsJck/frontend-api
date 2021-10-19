@@ -41,7 +41,7 @@ function CrearCampeonatoForms(){
             console.log(res.data);
         });
         document.getElementById("formulario").reset();
-        return toast.success("Campeonato creado con exito")
+        return toast.success("Campeonato creado con exito");
     }
 
     

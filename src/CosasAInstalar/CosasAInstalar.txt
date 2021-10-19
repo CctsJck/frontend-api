@@ -6,11 +6,8 @@ npm i mdb-ui-kit
 npm install react-datepicker --save
 npm install --save prop-types
 npm install axios
-<<<<<<< Updated upstream
 npm install react-bootstrap@next bootstrap@5.1.1
-=======
 npm install --save react-toastify
->>>>>>> Stashed changes
 
 
 -----------------------------------------
