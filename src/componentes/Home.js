@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/home.css';
 import MenuLateral from './MenuLateral';
 import {useParams} from 'react-router-dom';
@@ -9,6 +9,11 @@ import CrearPartidoForms from './CrearPartidoForms';
 
 function Home(){
     const params = useParams();
+    var [activeLink,setActiveLink] = useState(null);
+
+    
+    
+    
     
     
     return(
@@ -19,20 +24,22 @@ function Home(){
       <div className="container ">
         <div className="row">
           <div className="col-3 mt-5 ">
-            <div class="list-group">
+            <div class="list-group" id="list">
               {params.id == 1 ? 
               <div>
-
-              <a type="button" href={"/home/"+params.id+"/crearCampeonato"} class="list-group-item list-group-item-action" aria-current="true">Crear Campeonato</a>
-              <a type="button" href={"/home/"+params.id+"/crearPartido"} class="list-group-item list-group-item-action" aria-current="true">Crear partido</a>
-              <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Cargar resultado partido</a>
-              <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consulta estadistica jugador</a>
-              <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Agregar club a un Campeonato</a>
+              <h2>Administrador</h2>
+              <a type="button" href={"/home/"+params.id+"/crearCampeonato"}  class={params.opcion == 'crearCampeonato' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear Campeonato</a>
+              <a type="button" href={"/home/"+params.id+"/crearPartido"}  class={params.opcion == 'crearPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear partido</a>
+              <a type="button" href="" class="list-group-item list-group-item-action" >Cargar resultado partido</a>
+              <a type="button" href="" class="list-group-item list-group-item-action"   >Consulta estadistica jugador</a>
+              <a type="button" href="" class="list-group-item list-group-item-action" >Agregar club a un Campeonato</a>
               <hr/>
               </div>:null}
               
               {params.id == 0 || params.id == 1 ?
               <div>
+                  <h2>Jugadores</h2>
+
                   <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos personales</a>
                   <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consultar estadistica jugador</a>
                   
@@ -41,6 +48,8 @@ function Home(){
               {params.id == 1 || params.id == 2 ? 
               <div>
                   {params.id == 1 ? <hr/> : null}
+                  <h2>Representante</h2>
+
                   <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos personales</a>
                   <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos del club</a>
                   <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos de sus jugadores</a>
