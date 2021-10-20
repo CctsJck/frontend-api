@@ -1,5 +1,5 @@
 import React, { useState , useEffect} from 'react';
-import '../css/crearPartidoForms.css';
+import '../../css/crearPartidoForms.css';
 import axios from 'axios';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";

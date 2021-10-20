@@ -3,9 +3,11 @@ import '../css/home.css';
 import MenuBar from './MenuBar';
 import MenuVertical from './MenuVertical';
 import {useParams} from 'react-router-dom';
-import CrearCampeonatoForms from './CrearCampeonatoForms';
-import CrearPartidoForms from './CrearPartidoForms';
-import AgregarClubCamp from './AgregarClubCamp';
+import CrearCampeonatoForms from './admin/CrearCampeonatoForms';
+import CrearPartidoForms from './admin/CrearPartidoForms';
+import AgregarClubCamp from './admin/AgregarClubCamp';
+import AdminCampeonatos from './admin/AdminCampeonatos';
+
 
 
 
@@ -57,6 +59,7 @@ function Home(){
                 {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : null}
                 {params.opcion == "crearPartido" ? <CrearPartidoForms/> : null }
                 {params.opcion == "agregarClubCamp" ? <AgregarClubCamp/> : null}
+                {params.opcion == "adminCampeonatos" ? <AdminCampeonatos/> : null}
               </div>
             </div>
           
