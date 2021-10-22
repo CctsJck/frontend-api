@@ -21,13 +21,13 @@ function App() {
         <Route exact path="/">
           <Redirect to="/login"/>
         </Route>
-        <Route exact path="/home/:id">
+        <Route exact path="/home/:idRol/:idPersona">
           <Home/>
         </Route>
         <Route exact path="/login">
           <Login/>
         </Route>
-        <Route exact path="/home/:id/:opcion">
+        <Route exact path="/home/:idRol/:idPersona/:opcion">
           <Home/>
         </Route>
         
