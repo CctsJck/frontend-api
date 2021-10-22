@@ -10,6 +10,7 @@ import {
   Link,
   Redirect
 } from "react-router-dom";
+import TablaPosiciones from './componentes/TablaPosiciones';
 
 
 function App() {
@@ -29,6 +30,9 @@ function App() {
         </Route>
         <Route exact path="/home/:idRol/:idPersona/:opcion">
           <Home/>
+        </Route>
+        <Route exact path="/tablaPosiciones">
+          <TablaPosiciones/>
         </Route>
         
       </Switch>

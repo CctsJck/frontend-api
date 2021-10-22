@@ -10,6 +10,7 @@ import CrearPartidoForms from './admin/CrearPartidoForms';
 import AgregarClubCamp from './admin/AgregarClubCamp';
 import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
+import TablaPosiciones from './TablaPosiciones';
 
 
 
@@ -88,6 +89,7 @@ function Home(){
                 {params.opcion == "agregarClubCamp" ? <AgregarClubCamp/> : null}
                 {params.opcion == "adminCampeonatos" ? <AdminCampeonatos/> : null}
                 {params.opcion == "gestionarDatosClub" ? <GestionarClub/> : null}
+                
 
 
               </div>

@@ -71,6 +71,9 @@ function MenuBar(){
                         <a class="nav-link text-white" aria-current="page" href={"/home/"+parametros.idRol+"/"+parametros.idPersona}>HOME</a>
                       </li>
                       <li class="nav-item">
+                        <a class="nav-link text-white" href="/tablaPosiciones">TABLA POSICIONES</a>
+                      </li>
+                      <li class="nav-item">
                         <a class="nav-link text-white" href="/login">LOGOUT</a>
                       </li>
                       
