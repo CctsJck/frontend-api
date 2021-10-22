@@ -15,6 +15,7 @@ function AgregarClubCamp(){
         const fetchData = async () => {
             const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
             setCampeonatos(campeonatosAPI.data);
+            console.log(campeonatosAPI.data)
         };
         fetchData();
     },[])
@@ -24,7 +25,6 @@ function AgregarClubCamp(){
         setCampeonato(e.target.value);
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesDisponiblesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
-                                // Obtenemos los datos
                                 setClubes(response.data);
         });
         
@@ -62,7 +62,6 @@ function AgregarClubCamp(){
                                         );
                                     })
                                     }
-                                    
                                 </select>
                         </div>
                         <div class="mb-3">
