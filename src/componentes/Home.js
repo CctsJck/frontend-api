@@ -26,9 +26,6 @@ function Home(){
         .then(response => {
             setJugador(response.data);
         })
-        .catch(error => {
-            history.push("/login");
-        })
       } else if(params.idRol == 1){
         if(params.idPersona != 2000){
           history.push("/login");
@@ -38,9 +35,7 @@ function Home(){
         .then(response => {
             setRepresentante(response.data);
         })
-        .catch(error => {
-            history.push("/login");
-        })
+        
       } else {
         history.push("/login");
       }
