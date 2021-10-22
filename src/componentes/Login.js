@@ -78,7 +78,7 @@ function Login(){
                             <img src={require("../img/jugador.png").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
                                 <h2 class="card-title text-center ">JUGADORES</h2>
-                                <form onSubmit={handleIdJugadorSubmit} id="jugadorForm">
+                                <form onSubmit={handleIdJugadorSubmit} id="jugadorForm" className="container">
                                     <div class="mb-3">
                                         <label for="idJugador" class="form-label">Ingrese ID</label>
                                         <input onChange={handleIdJugadorChange} type="text" class="form-control" id="idJugador" aria-describedby="idJugador" placeholder="Ejemplo: 1"/>
@@ -95,7 +95,7 @@ function Login(){
                             <img src={require("../img/admin.jpg").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
                                 <h2 class="card-title text-center">ADMIN</h2>
-                                <form onSubmit={handleIdAdminSubmit} id="adminForm">
+                                <form onSubmit={handleIdAdminSubmit} id="adminForm" className="container">
                                     <div class="mb-3">
                                         <label for="idAdmin" class="form-label">Ingrese ID</label>
                                         <input onChange={handleIdAdminChange} type="text" class="form-control" id="idAdmin" aria-describedby="idAdmin" placeholder="Ejemplo: 1"/>
@@ -110,7 +110,7 @@ function Login(){
                             <img src={require("../img/RepresentanteFutbol.png").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
                                 <h2 class="card-title text-center">REPRESENTANTE</h2>
-                                <form onSubmit={handleIdRepresentanteSubmit} id="representanteForm">
+                                <form onSubmit={handleIdRepresentanteSubmit} id="representanteForm" className="container">
                                     <div class="mb-3">
                                         <label for="idRepresentante" class="form-label">Ingrese ID</label>
                                         <input onChange={handleIdRepresentanteChange} type="text" class="form-control" id="IdRepresentante" aria-describedby="IdRepresentante" placeholder="Ejemplo: 1"/>
