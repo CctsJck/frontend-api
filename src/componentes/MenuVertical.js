@@ -42,7 +42,7 @@ function MenuVertical(){
                 {params.idRol == 1 ? <hr/> : null}
                 <h2>Representante</h2>
 
-                <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos personales</a>
+                <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/gestionarDatosPesonales"} class={params.opcion == 'gestionarDatosPersonalesRepresentante' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Gestionar datos personales</a>
                 <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/gestionarDatosClub"} class={params.opcion == 'gestionarDatosClub' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Gestionar datos del club</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Gestionar datos de sus jugadores</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Definir lista jugadores de un partido</a>
