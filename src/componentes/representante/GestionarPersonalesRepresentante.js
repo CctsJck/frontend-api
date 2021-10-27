@@ -3,7 +3,11 @@ import React, { useEffect, useState } from 'react';
 import {useParams} from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+/////////////////////////////////////////////////////
 
+// NO SE COMO HACER PARA ENVIAR EL FORMULARIO, NO SE ENVIA
+
+////////////////////////////////////////////////////
 
 function GestionarPersonalesRepresentante(){
 
