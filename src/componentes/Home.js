@@ -12,6 +12,7 @@ import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
 import TablaPosiciones from './TablaPosiciones';
 import GestionarPersonalesRepresentante from './representante/GestionarPersonalesRepresentante';
+import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador';
 
 
 
@@ -91,6 +92,7 @@ function Home(){
                 {params.opcion == "adminCampeonatos" ? <AdminCampeonatos/> : null}
                 {params.opcion == "gestionarDatosClub" ? <GestionarClub/> : null}
                 {params.opcion == "gestionarDatosPesonalesRepresentante" ? <GestionarPersonalesRepresentante/> : null}
+                {params.opcion == "gestionarDatosPersonalesJugador" ? <GestionarPersonalesJugador/> : null}
                 
 
 

@@ -5,19 +5,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-////////////////////////////////////////////////////////////
-/*
 
 
-/////////////////////////////////////////////////////////////
-
-                    NO ESTA COMPLETO
-
-/////////////////////////////////////////////////////////////
-
-
-*/
-////////////////////////////////////////////////////////////
 
 function GestionarPersonalesJugador(){
 
@@ -28,8 +17,23 @@ function GestionarPersonalesJugador(){
     const [documento, setDocumento] = useState("");
     const [club, setClub]=useState("");
     const [fechaNac, setFechaNac] = useState(new Date());
-    
+
     const [jugador, setJugador] = useState({});
+
+
+
+    useEffect(() => {
+        axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
+        .then( response => {
+            setClub(response.data);
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    },[])
+
+
 
     useEffect(() => {
         axios.get("http://localhost:8080/getJugadorPorId?idJugador="+params.idPersona)
@@ -47,8 +51,7 @@ function GestionarPersonalesJugador(){
         setApellido(jugador.apellido)
         setTipoDocumento(jugador.tipoDocumento);
         setDocumento(jugador.documento);
-        setFechaNac(jugador.fechaNac);
-        setClub(jugador.idClub);
+        setFechaNac(jugador.fechaNac)
 
     },[jugador])
 
