@@ -1,5 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 function AdminCampeonatos(){
@@ -19,7 +21,17 @@ function AdminCampeonatos(){
 
 
     function activarCampeonato(id){
-        console.log(id);
+        axios.put("http://localhost:8080/activarCampeonato?idCampeonato="+id)
+            .then(response => {
+                console.log("Activado");
+                
+                return toast.success("Campeonato activado con exito");
+            })
+            .catch(error => {
+                console.log("Desactivado");
+
+                return toast.error("Hubo un error al activar el campeonato");
+            })
     }
 
     function desactivarCampeonato(id){
@@ -29,6 +41,7 @@ function AdminCampeonatos(){
 
     return (
         <div className="container">
+            <ToastContainer/>
             <div className="row">
                 <h2 className="text-center">Campeonatos</h2>
                 <table class="table mt-5">
@@ -57,21 +70,20 @@ function AdminCampeonatos(){
                                     <td>{campeonato.fechaFin}</td>
                                     <td>{campeonato.tipo}</td>
                                     <td>{campeonato.categoria}</td>
-                                    <td>{campeonato.estado == "activo" ? <span class="badge bg-success">Activo</span> : <span class="badge bg-danger">Inactivo</span>}</td>
-                                    <td>{campeonato.estado == "inactivo" ? 
-
-                                    <button onClick={() => activarCampeonato(campeonato.idCampeonato)} className="btn btn-success me-2">
+                                    <td>{campeonato.estado === "activo" ? <span class="badge bg-success">Activo</span> : <span class="badge bg-danger">Inactivo</span>}</td>
+                                    <td>{campeonato.estado === "activo" ? 
+                                        <button onClick={() => desactivarCampeonato(campeonato.idCampeonato)} className="btn btn-danger disabled">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
+                                                <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
+                                            </svg>
+                                        </button> : 
+                                        <button onClick={() => activarCampeonato(campeonato.idCampeonato)} className="btn btn-success me-2">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-lg" viewBox="0 0 16 16">
                                             <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
                                         </svg>
-                                    </button> : 
-                                    
-                                    <button onClick={() => desactivarCampeonato(campeonato.idCampeonato)} className="btn btn-danger disabled">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd" d="M13.854 2.146a.5.5 0 0 1 0 .708l-11 11a.5.5 0 0 1-.708-.708l11-11a.5.5 0 0 1 .708 0Z"/>
-                                            <path fill-rule="evenodd" d="M2.146 2.146a.5.5 0 0 0 0 .708l11 11a.5.5 0 0 0 .708-.708l-11-11a.5.5 0 0 0-.708 0Z"/>
-                                        </svg>
-                                    </button>}</td>
+                                        </button>}
+                                    </td>
                                 </tr>
                             )
                         }) : null}

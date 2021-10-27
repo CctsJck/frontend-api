@@ -18,9 +18,9 @@ function CargarResultadoPartido(){
     const[campeonato,setCampeonato] = useState('-1');
     const[visitante,setVisitante] = useState({});
     const[local,setLocal] = useState({})
-    var nombreL;
-    var nombreV;
-    let nuevo;
+
+    const [partidoConEquipos,setPartidosConEquipos] = useState([]);
+    
 
     useEffect(() => {
         axios.get('http://localhost:8080/obtenerCampeonatos')
@@ -35,47 +35,34 @@ function CargarResultadoPartido(){
         .then(response => {
             //Obtengo los partidos de un campeonato :D
             setPartidos(response.data);
-            console.log(response.data);
+            
         })
     },[campeonato])
 
     useEffect(() => { 
-
+        console.log(partidos);
         partidos.map( async part => {
+            //AXIOS HTTP GET ANIDADOS
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
-            .then(response => {
-                nombreL = response.data.nombre;
-                console.log(response.data);
-                //setLocal(response.data);
+            .then(localResponse => {
+                axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
+                    .then(visitanteResponse => {
+                        let nuevo = {
+                            partido : part,
+                            clubL: localResponse.data,
+                            clubV:visitanteResponse.data
+                        }
+                        setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
+                    })
             })
-            axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
-            .then(response => {
-                 nombreV = response.data.nombre;
-                console.log(response.data);
-                //setVisitante(response.data);
-                nuevo = {
-                    partido: part,
-                    clubL: nombreL,
-                    clubV: nombreV
-                    
-                }
-                console.log(nuevo);
-                console.log(part.visitante);
-                console.log(part.local);
-            })
+            
             
         })
     },[partidos])
 
-    useEffect(() => {
-        
-
-    },[local,visitante])
-
-
- 
     
 
+    
     function  handleCampChange(e){
         setCampeonato(e.target.value);
         
@@ -101,6 +88,7 @@ return(
                 <div class= "mb-3">
                     <label for="camp label" class="form-label"> Seleccione el Campeonato</label>
                     <select onChange={handleCampChange} class="form-select"  aria-label="campeonatos">
+                        <option value="-1">Seleccione un campeonato</option>
                         {campeonatos.map(camp => {
                             return(
                                 <option value={camp.idCampeonato}>{camp.descripcion}</option>
@@ -111,9 +99,9 @@ return(
                 <div class="mb-3">
                         <label for="par label" class="form-label">Seleccione el Partido</label>
                         <select class="form-select" id="partidos" onChange={handleCampChange}aria-label= "partidos" >
-                            {partidos.map(part => {
+                            {partidoConEquipos.map(part => {
                                 return(
-                                    <option value={part.id}>{part.id}</option>
+                                    <option value={part.partido.id}>{part.clubL.nombre} VS {part.clubV.nombre}</option>
                                 )
                             }
                             )}
