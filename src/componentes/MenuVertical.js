@@ -19,8 +19,8 @@ function MenuVertical(){
 
             <a type="button"  href={"/home/"+params.idRol+"/"+params.idPersona+"/crearCampeonato"}  class={params.opcion == 'crearCampeonato' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear Campeonato</a>
             <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/crearPartido"}  class={params.opcion == 'crearPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Crear partido</a>
-            <a type="button" href="" class="list-group-item list-group-item-action" >Cargar resultado partido</a>
-            <a type="button" href="" class="list-group-item list-group-item-action"   >Consulta estadistica jugador</a>
+            <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/CargarResultadoPartido"} class={params.opcion == 'CargarResultadoPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Cargar resultado partido</a>
+            <a type="button" href="" class="list-group-item list-group-item-action" >Consulta estadistica jugador</a>
             <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/agregarClubCamp"} class={params.opcion == 'agregarClubCamp' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} >Agregar club a un Campeonato</a>
             <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/adminCampeonatos"} class={params.opcion == 'adminCampeonatos' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'}>Administrar campeonatos</a>
             <a type="button" href="" class="list-group-item list-group-item-action">Administrar representantes</a>

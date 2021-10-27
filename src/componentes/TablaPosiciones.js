@@ -8,12 +8,17 @@ function TablaPosiciones(){
     const [campeonatoSelect, setCampeonatoSelect] = useState({});
     const [tablasEquipos,setTablasEquipos] = useState([]);
     const [nombreCamp,setNombreCamp] = useState("");
-    const [tablasConEquipos,setTablasConEquipos] = useState([[]]);
+    const [tablasConEquipos,setTablasConEquipos] = useState([]);
+    let promesas = [];
 
 
 
 
     useEffect(() => {
+        /*axios.get("http://localhost:8080/getJugadoresClub?idClub=1")
+        .then(response => {console.log(response.data)})
+        .catch(error => console.log(error));*/
+
         axios.get("http://localhost:8080/obtenerCampeonatos")
         .then( response => {
             setCampeonatos(response.data);
@@ -34,22 +39,48 @@ function TablaPosiciones(){
     },[campeonatoSelect])
 
     useEffect(() => {
-        tablasEquipos.map(tabla => {
+
+        
+        tablasEquipos.map( async tabla => {
+            axios.get("http://localhost:8080/getClubPorId?idClub="+tabla.idClub)
+            .then(response =>{
+                let nuevo = {
+                    tablasEquipo: tabla,
+                    club : response.data
+                }
+
+                setTablasConEquipos(tablasConEquipos => [...tablasConEquipos, nuevo]);
+
+            });
             
-        })
+        })  
+
+        
+        
+
+        
     },[tablasEquipos])
+
+    useEffect(() => {
+        console.log(tablasConEquipos);
+    },[tablasConEquipos])
+
+    
 
     
 
     function handleCampeonatoChange(e){
         setCampeonatoSelect(e.target.value);
-    }
-
-    function showCampName(){
-        return(<h2>{nombreCamp}</h2>)
+        setTablasConEquipos([]);
     }
 
 
+    function tableBody(){
+        
+    }
+
+
+    //console.log(tablasConEquipos);
     return (
         <div>
             <div className="col-12">
@@ -91,27 +122,27 @@ function TablaPosiciones(){
                             </tr>
                         </thead>
                         <tbody>
-                            {tablasEquipos.map(tabla => {
+                            {tablasConEquipos != [] ? tablasConEquipos.map((tabla,index) => {
                                 return (
-                                    <tr key={tabla.idTabla}>
-                                        <th>1</th>
-                                        <td>{tabla.idClub}</td>
-                                        <td>{tabla.cantidadJugados}</td>
-                                        <td>{tabla.cantidadganados}</td>
-                                        <td>{tabla.cantidadempatados}</td>
-                                        <td>{tabla.cantidadperdidos}</td>
-                                        <td>{tabla.golesFavor}</td>
-                                        <td>{tabla.golesContra}</td>
-                                        <td>{tabla.diferenciaGoles}</td>
-                                        <td>{tabla.puntos}</td>
-                                        <td>{tabla.promedio}</td>
+                                    <tr key={tabla.tablasEquipo.idTabla}>
+                                        <th>{index+1}</th>
+                                        <td>{tabla.club.nombre}</td>
+                                        <td>{tabla.tablasEquipo.cantidadJugados}</td>
+                                        <td>{tabla.tablasEquipo.cantidadganados}</td>
+                                        <td>{tabla.tablasEquipo.cantidadempatados}</td>
+                                        <td>{tabla.tablasEquipo.cantidadperdidos}</td>
+                                        <td>{tabla.tablasEquipo.golesFavor}</td>
+                                        <td>{tabla.tablasEquipo.golesContra}</td>
+                                        <td>{tabla.tablasEquipo.diferenciaGoles}</td>
+                                        <td>{tabla.tablasEquipo.puntos}</td>
+                                        <td>{tabla.tablasEquipo.promedio}</td>
 
 
 
                                     </tr>
                                     
                                 )
-                            })}
+                            }) : null}
                         </tbody>
                         
                         </table>

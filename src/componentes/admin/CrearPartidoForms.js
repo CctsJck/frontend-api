@@ -38,12 +38,10 @@ function CrearPartidoForms () {
     },[])
 
     useEffect(()=>{
-        console.log(campeonatosSelect);
-        console.log(campeonatosSelect);
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatosSelect)
         .then(response => {
-        setClubLocal(response.data);
-        setClubVisitante(response.data);
+            setClubLocal(response.data);
+            setClubVisitante(response.data);
         });
         
     },[campeonatosSelect])
