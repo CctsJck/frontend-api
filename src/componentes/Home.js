@@ -10,7 +10,7 @@ import CrearPartidoForms from './admin/CrearPartidoForms';
 import AgregarClubCamp from './admin/AgregarClubCamp';
 import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
-import TablaPosiciones from './TablaPosiciones';
+import CargarResultadoPartido from './admin/CargarResultadoPartido';
 
 
 
@@ -86,6 +86,7 @@ function Home(){
   
                 {params.opcion == "crearCampeonato" ? <CrearCampeonatoForms/> : null}
                 {params.opcion == "crearPartido" ? <CrearPartidoForms/> : null }
+                {params.opcion == 'CargarResultadoPartido' ? <CargarResultadoPartido/> : null}
                 {params.opcion == "agregarClubCamp" ? <AgregarClubCamp/> : null}
                 {params.opcion == "adminCampeonatos" ? <AdminCampeonatos/> : null}
                 {params.opcion == "gestionarDatosClub" ? <GestionarClub/> : null}
