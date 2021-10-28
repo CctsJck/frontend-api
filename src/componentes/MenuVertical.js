@@ -32,7 +32,7 @@ function MenuVertical(){
             <div>
                 <h2>Jugadores</h2>
 
-                <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/gestionarDatosPesonalesJugador"} class={params.opcion == 'gestionarDatosPersonalesJugador' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Gestionar datos personales</a>
+                <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/gestionarDatosPersonalesJugador"} class={params.opcion == 'gestionarDatosPersonalesJugador' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Gestionar datos personales</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consultar estadistica jugador</a>
                 
             </div>:null}

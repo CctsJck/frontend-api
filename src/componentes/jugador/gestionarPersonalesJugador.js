@@ -46,8 +46,8 @@ function GestionarPersonalesJugador(){
         setNombre(jugador.nombre);
         setApellido(jugador.apellido)
         setTipoDocumento(jugador.tipoDocumento);
-        setDocumento(jugador.documento);
-        setFechaNac(jugador.fechaNac);
+        setDocumento(jugador.numeroDocumento);
+        //setFechaNac(jugador.fechaNacimiento);
         setClub(jugador.idClub);
 
     },[jugador])
@@ -57,6 +57,7 @@ function GestionarPersonalesJugador(){
 
     function handleNombreChange(e){
         setNombre(e.target.value);
+        console.log(nombre);
     }
 
     function handleApellidoChange(e){
@@ -65,6 +66,7 @@ function GestionarPersonalesJugador(){
 
     function handleTipoDocumentoChange(e){
         setTipoDocumento(e.target.value);
+        console.log(tipoDocumento);
     }
 
     function handleDocumentoChange(e){
@@ -77,7 +79,7 @@ function GestionarPersonalesJugador(){
 
     function handleSubmit(e){
         e.preventDefault();
-        axios.put("http://localhost:8080/modificarJugador?idJugador="+params.idPersona+"&tipoDocumento="+tipoDocumento+"&numeroDocumento="+documento+"&nombre="+nombre+"&apellido="+apellido+"&idClub="+club+"&fechaNac="+fechaNac)
+        axios.put("http://localhost:8080/modificarJugador?idJugador="+params.idPersona+"&tipoDocumento="+tipoDocumento+"&numeroDocumento="+documento+"&nombre="+nombre+"&apellido="+apellido+"&idClub="+jugador.idClub+"&fechaNac="+fechaNac)
         .then(response => {
             return toast.success("Datos del jugador modificados con exito");
         })
@@ -97,12 +99,12 @@ function GestionarPersonalesJugador(){
 
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Ingrese su nombre </label>
-                        <input type="text" onChange={handleNombreChange}  class="form-control" id="nombre" aria-describedby="nombre" placeholder="Juan Pablo"/>
+                        <input type="text" onChange={handleNombreChange} value = {nombre} class="form-control" id="nombre" aria-describedby="nombre" placeholder="Juan Pablo"/>
                     </div>
 
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Ingrese su Apellido</label>
-                        <input type="text" onChange={handleApellidoChange}  class="form-control" id="apellido" aria-describedby="apellido" placeholder="Perez"/>
+                        <input type="text" onChange={handleApellidoChange} value = {apellido}  class="form-control" id="apellido" aria-describedby="apellido" placeholder="Perez"/>
                     </div>
 
                     <div class="mb-3">
@@ -113,16 +115,16 @@ function GestionarPersonalesJugador(){
                     <div class="mb-3">
                         <p>Seleccione el tipo de documento</p> 
                             <select class="form-select" id="tipoDocumenento" onChange={handleTipoDocumentoChange} aria-label="tipoDocumento">
-                                            <option selected >DNI</option>
-                                            <option >Pasaporte</option>
-                                            <option >Cedula de identidad</option>
-                                            <option >Otro</option>
+                                            <option value = "DNI">DNI</option>
+                                            <option value = "Pasaporte">Pasaporte</option>
+                                            <option value = "Cedula de Identidad">Cedula de identidad</option>
+                                            <option value = "Otro">Otro</option>
                             </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="DNI" class="form-label">Ingrese su numero de Documento</label>
-                        <input type="text" onChange={handleDocumentoChange}  class="form-control" id="documento" aria-describedby="documento" placeholder="25365874"/>
+                        <input type="text" onChange={handleDocumentoChange} value = {documento}  class="form-control" id="documento" aria-describedby="documento" placeholder="25365874"/>
                     </div>
 
                     <button type="submit" class="btn btn-success">Actualizar</button>

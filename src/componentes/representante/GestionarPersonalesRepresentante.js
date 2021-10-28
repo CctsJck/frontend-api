@@ -5,7 +5,11 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 /////////////////////////////////////////////////////
 
-// NO SE COMO HACER PARA ENVIAR EL FORMULARIO, NO SE ENVIA
+// NO SE COMO HACER PARA ENVIAR EL FORMULARIO, NO SE ENVIA//
+
+
+// TAL VEZ HAY UN ERROR EN EL REST, ME DICE QUE NO ES VALIDO EL REQUEST
+
 
 ////////////////////////////////////////////////////
 
