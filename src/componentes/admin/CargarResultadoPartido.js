@@ -10,14 +10,10 @@ function CargarResultadoPartido(){
     const[partido,setPartido] = useState('-1');
     const[partidos,setPartidos] = useState([]);
     const [goles,setGoles] = useState([]);
-    const [idJugador,setJugador] = useState('-1');
-    const[minuto,setMinuto] = useState('0');
-    const[tipo,setTipo] = useState("a favor");
     const[campeonatos,setCampeonatos] = useState([]);
-    const[clubes,setClubes] = useState([]);
     const[campeonato,setCampeonato] = useState('-1');
-    const[visitante,setVisitante] = useState({});
-    const[local,setLocal] = useState({})
+    const[jugador,setJugador] = useState('-1');
+    const[jugadores,setJugadores] = useState([]);
 
     const [partidoConEquipos,setPartidosConEquipos] = useState([]);
     
@@ -60,21 +56,44 @@ function CargarResultadoPartido(){
         })
     },[partidos])
 
+    useEffect(() => {
+        jugadores.map( async jug => {
+    
+            axios.get("http://localhost:8080/obtenerJugadoresPartido?idPartido="+partido)
+            .then(response => {
+                setJugadores(response.data);
+            })
+        }
+            )
+    })
     
 
     
     function  handleCampChange(e){
         setCampeonato(e.target.value);
-        
     }
 
 
 
-    function handleSubmit(e){
-        e.preventDefault();
+    function handlePartidoChange(e){
+        setPartido(e.target.value);
+        console.log(e.target.value);
+    }
 
-        axios.post('http://localhost:8080/agregarGolJugador?idJugador='+idJugador+'&idPartido='+partido);
-        return toast.success("Gol agregado al Partido");
+    function handleJugadorChange(e){
+        setJugador(e.target.value);
+        console.log(e.target.value);
+    }
+
+    function handleMinutoChange(e){
+
+    }
+
+    function handleTipoChange(e){
+
+    }
+    function handleSubmit(e){
+
     }
 
 
@@ -98,8 +117,9 @@ return(
                 </div>
                 <div class="mb-3">
                         <label for="par label" class="form-label">Seleccione el Partido</label>
-                        <select class="form-select" id="partidos" onChange={handleCampChange}aria-label= "partidos" >
+                        <select class="form-select" id="partidos" onChange={handlePartidoChange}aria-label= "partidos" >
                             {partidoConEquipos.map(part => {
+                                
                                 return(
                                     <option value={part.partido.id}>{part.clubL.nombre} VS {part.clubV.nombre}</option>
                                 )
@@ -113,17 +133,49 @@ return(
                             Agregar Gol
                         </label>
                 </div>
-                <div class="form-check">
+                <div class="mb-3">
                     <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked/>
                         <label class="form-check-label" for="flexRadioDefault2">
-                            Agregar Falta
+                              Agregar Falta
                         </label>
                 </div>
 
-                <div className="mb-5">
-                <button type="submit" className="btn btn-success">Agregar</button>
-                </div>
             </form>
+            <div class="mb-3">
+                <label for="nombreJugador" class="form-label">Nombre del Jugador</label>
+                <select class="form-select" id="jugadores" onChange={handleJugadorChange}aria-label= "partidos" >
+                    <option value="-1">Jugadores</option>
+                    {jugadores.map(jug => {
+                        return(
+                            <option value={jug.idJugador}> </option>
+                        )
+                    }
+                        )}
+                </select>
+                            
+            </div>
+
+            <div class="mb-3">
+                <label for="minuto" class="form-label">Minuto de Juego</label>
+                <input type="text" class="form-control" onChange={handleMinutoChange} id="minuto" placeholder="Tiempo de Juego" aria-describedby="minuto"/>
+            </div>
+
+            <div class="mb-3">
+                <label for="tipo" class="form-label">Tipo de Gol</label>
+                <select class="form-select"  aria-label= "tipoGoles" >
+                <option value="-1">Seleccione el tipo</option>
+                    <option>A favor</option>
+                    <option>Encontra</option>
+                </select>
+
+            </div>
+
+            <div className="mb-5">
+                <button type="submit" className="btn btn-success">Agregar</button>
+            </div>
+
+
+
         </div>
 
     </div>
