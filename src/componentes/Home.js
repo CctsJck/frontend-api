@@ -14,6 +14,7 @@ import TablaPosiciones from './TablaPosiciones';
 import GestionarPersonalesRepresentante from './representante/GestionarPersonalesRepresentante';
 import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador';
 import CargarResultadoPartido from './admin/CargarResultadoPartido';
+import AdminRepresentantes from './admin/AdminRepresentantes';
 
 
 
@@ -92,9 +93,11 @@ function Home(){
                 {params.opcion == 'CargarResultadoPartido' ? <CargarResultadoPartido/> : null}
                 {params.opcion == "agregarClubCamp" ? <AgregarClubCamp/> : null}
                 {params.opcion == "adminCampeonatos" ? <AdminCampeonatos/> : null}
+                {params.opcion === "adminRepresentantes" ? <AdminRepresentantes/> : null}
                 {params.opcion == "gestionarDatosClub" ? <GestionarClub/> : null}
                 {params.opcion == "gestionarDatosPesonalesRepresentante" ? <GestionarPersonalesRepresentante/> : null}
                 {params.opcion == "gestionarDatosPersonalesJugador" ? <GestionarPersonalesJugador/> : null}
+
                 
 
 

@@ -42,9 +42,9 @@ function AdminCampeonatos(){
     return (
         <div className="container">
             <ToastContainer/>
-            <div className="row">
+            <div className="row table-responsive">
                 <h2 className="text-center">Campeonatos</h2>
-                <table class="table mt-5">
+                <table class="table  mt-5">
                     <thead>
                         <tr>
                         <th scope="col">ID</th>
