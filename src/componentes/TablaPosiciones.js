@@ -9,7 +9,7 @@ function TablaPosiciones(){
     const [tablasEquipos,setTablasEquipos] = useState([]);
     const [nombreCamp,setNombreCamp] = useState("");
     const [tablasConEquipos,setTablasConEquipos] = useState([]);
-    let promesas = [];
+    var promesas = [];
 
 
 
@@ -42,7 +42,7 @@ function TablaPosiciones(){
 
         
         tablasEquipos.map( async tabla => {
-            axios.get("http://localhost:8080/getClubPorId?idClub="+tabla.idClub)
+            promesas.push(axios.get("http://localhost:8080/getClubPorId?idClub="+tabla.idClub)
             .then(response =>{
                 let nuevo = {
                     tablasEquipo: tabla,
@@ -51,7 +51,7 @@ function TablaPosiciones(){
 
                 setTablasConEquipos(tablasConEquipos => [...tablasConEquipos, nuevo]);
 
-            });
+            }));
             
         })  
 

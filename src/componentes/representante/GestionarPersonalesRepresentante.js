@@ -13,24 +13,44 @@ import 'react-toastify/dist/ReactToastify.css';
 
 ////////////////////////////////////////////////////
 
-function GestionarPersonalesRepresentante(){
+function GestionarPersonalesRepresentante(props){
 
     const params = useParams();
+    const [idRepre,setIdRepre] = useState(-1);
     const [nombre, setNombre] = useState("");
     const [tipodocumento, setTipoDocumento] = useState("");
     const [documento, setDocumento] = useState("");
 
     const [representante, setRepresentante] = useState({});
+    
+    
+
 
     useEffect(() => {
-        axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+params.idPersona)
-        .then( response => {
-            setRepresentante(response.data);
-            console.log(response.data);
+        if (props.id === undefined) {
+            setIdRepre(params.idPersona);
+            axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+params.idPersona)
+            .then( response => {
+                setRepresentante(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        } else {
+            setIdRepre(props.id);
+            axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+props.id)
+            .then( response => {
+                setRepresentante(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
         })
-        .catch(error => {
-            console.log(error);
-        })
+        }
+
+
+        
 
     },[])
 
@@ -60,16 +80,18 @@ function GestionarPersonalesRepresentante(){
 
 
     function handleSubmit(e){
-        console.log(tipodocumento);
         e.preventDefault();
-        console.log("hola");
-        axios.put("http://localhost:8080/modificarRepresentante?idRepresentante="+params.idPersona+"&nombre="+nombre+"&DNI="+documento+"&tipoDocumento="+tipodocumento+"&idClub="+representante.idClub)
+        axios.put("http://localhost:8080/modificarRepresentante?idRepresentante="+idRepre+"&nombre="+nombre+"&DNI="+documento+"&tipoDocumento="+tipodocumento+"&idClub="+representante.idClub)
         .then(response => {
             return toast.success("Representante modificado con exito");
         })
         .catch(error => {
             return toast.error("Error al modificar los datos del representante");
         })
+
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
     }
 
 

@@ -1,12 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import ReactDom from 'react-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import CrearRepresentante from './CrearRepresentante';
+import GestionarDatosRepresentante from '../representante/GestionarPersonalesRepresentante';
+import {Button, Modal} from 'react-bootstrap';
+
+
+
 
 function AdminRepresentantes(){
     const [representantes, setRepresentantes] = useState([]);
     const [representantesConClub, setRepresentanteConClub] = useState([]);
+
+    const [showEditRepresentanteModal, setEditRepresentanteModal] = useState(false);
+
+    const handleClose = () => setEditRepresentanteModal(false);
+    const handleShow = () => setEditRepresentanteModal(true);
+
+    const [idRepre, setIdRepre] = useState(-1);
+    
+    
 
     useEffect(() => {
         axios.get("http://localhost:8080/obtenerRepresentantes")
@@ -23,18 +38,69 @@ function AdminRepresentantes(){
         representantes.map(representante => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+representante.idClub)
                 .then(response => {
-                    console.log(response.data);
+                    let nuevo = {
+                        representante: representante,
+                        club: response.data
+                    }
+
+                    setRepresentanteConClub(representantesConClub => ([...representantesConClub,nuevo]));
                 })
         })
     },[representantes])
 
-    function crearRepresentante(){
+    useEffect(() => {
+        console.log(representantesConClub);
+    },[representantesConClub])
 
+    
+
+    function modalModificarRepresentante(idRepresentante){
+       handleShow();
+       setIdRepre(idRepresentante);
     }
+
+    function renderEditarRepresentanteModal(){
+        return(
+            <Modal
+                show={showEditRepresentanteModal}
+                onHide={handleClose}
+                backdrop="static"
+                keyboard={false}
+            >
+            <Modal.Header closeButton>
+              <Modal.Title>Editar representante</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                <GestionarDatosRepresentante id={idRepre}/>
+            </Modal.Body>
+            
+          </Modal>
+            )
+    }
+
+    function eliminarRepresentante(idRepresentante){
+        if (window.confirm("¿Seguro desea eliminar al representante?")){
+            axios.put("http://localhost:8080/eliminarRepresentante?idRepresentante="+idRepresentante)
+                .then(response => {
+                    return toast.success("Representante eliminado con exito");
+                })
+                .catch(error => {
+                    return toast.error(error);
+                })
+        }
+        setTimeout(() => {
+            window.location.reload(true);
+
+        },4000)
+    }
+
 
     return (
         <>
+        
             <div className="container">
+            
+                {renderEditarRepresentanteModal()}
                 <ToastContainer/>
                 <div className="row table-responsive">
                     <h2 className="text-center">Representantes</h2>
@@ -57,6 +123,12 @@ function AdminRepresentantes(){
                         </div>
                     </div>
 
+                    
+
+                   
+
+                   
+
                     <table class="table mt-5">
                         <thead>
                             <tr>
@@ -64,27 +136,37 @@ function AdminRepresentantes(){
                             <th scope="col">Nombre</th>
                             <th scope="col">Tipo Documento</th>
                             <th scope="col">DNI</th>
+                            <th scope="col">Club</th>
+                            <th scope="col">Estado</th>
                             <th scope="col">Acciones</th>
 
                             </tr>
                         </thead>
                         <tbody>
-                            {representantes != [] ? representantes.map(representante => {
+                            {representantesConClub != [] ? representantesConClub.map(representante => {
                                 
                                 return(
-                                    <tr key={representante.legajo}>
-                                        <td>{representante.legajo}</td>
-                                        <td >{representante.nombre}</td>
-                                        <td >{representante.tipodocumento}</td>
-                                        <td >{representante.dni}</td>
+                                    <>
+                                    <tr key={representante.representante.legajo}>
+                                        <td>{representante.representante.legajo}</td>
+                                        <td >{representante.representante.nombre}</td>
+                                        <td >{representante.representante.tipodocumento}</td>
+                                        <td >{representante.representante.dni}</td>
+                                        <td >{representante.club.nombre}</td>
+                                        <td >{representante.representante.eliminado === "noEliminado" ? <span className="badge bg-success">Activo</span> : <span className="badge bg-danger">Inactivo</span>}</td>
+
+
                                         <td>
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-primary">Left</button>
-                                                <button type="button" class="btn btn-primary">Middle</button>
+                                                <button type="button" class="btn btn-warning" onClick={() => modalModificarRepresentante(representante.representante.legajo)}>Modificar</button>
+                                                <button type="button" class="btn btn-danger" onClick={() => eliminarRepresentante(representante.representante.legajo)}>Eliminar</button>
                                             </div>
                                         </td>
 
-                                    </tr>)
+                                    </tr>
+                                    
+                                    
+                                    </>)
                             })
                         
                             : null}
