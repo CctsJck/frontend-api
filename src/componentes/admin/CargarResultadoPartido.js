@@ -142,6 +142,10 @@ function CargarResultadoPartido(){
 
         }
 
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000 )
+
     }
 
 

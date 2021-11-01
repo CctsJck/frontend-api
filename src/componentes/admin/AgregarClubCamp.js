@@ -39,10 +39,15 @@ function AgregarClubCamp(){
     function handleSubmit(e){
         e.preventDefault();
 
-        axios.post('http://localhost:8080/agregarClubCampeonato?idClub='+club+'&idCampeonato='+campeonato);
-        return toast.success("Club agregado al campeonato");
+        axios.post('http://localhost:8080/agregarClubCampeonato?idClub='+club+'&idCampeonato='+campeonato)
+            .then(response => {
+                return toast.success("Club agregado al campeonato");
 
-        
+            })
+
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000 )
     }
 
     return(
