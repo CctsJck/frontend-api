@@ -16,6 +16,7 @@ import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador';
 import CargarResultadoPartido from './admin/CargarResultadoPartido';
 import GestionarDatosSusJugadores from './representante/GestionarDatosSusJugadores';
 import AdminRepresentantes from './admin/AdminRepresentantes';
+import ConsultarEstadisticasJugador from './admin/ConsultarEstadisticasJugador';
 
 
 
@@ -99,6 +100,7 @@ function Home(){
                 {params.opcion == "gestionarDatosPesonalesRepresentante" ? <GestionarPersonalesRepresentante/> : null}
                 {params.opcion == "gestionarDatosPersonalesJugador" ? <GestionarPersonalesJugador/> : null}
                 {params.opcion == "gestionarDatosSusJugadores" ? <GestionarDatosSusJugadores/> : null}
+                {params.opcion == "ConsultarEstadisticasJugadores" ? <ConsultarEstadisticasJugador/> : null}
 
                 
 
