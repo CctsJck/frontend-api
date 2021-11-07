@@ -74,6 +74,9 @@ function MenuBar(){
                         <a class="nav-link text-white" href="/tablaPosiciones">TABLA POSICIONES</a>
                       </li>
                       <li class="nav-item">
+                        <a class="nav-link text-white" href="/">PARTIDOS</a>
+                      </li>
+                      <li class="nav-item">
                         <a class="nav-link text-white" href="/login">LOGOUT</a>
                       </li>
                       

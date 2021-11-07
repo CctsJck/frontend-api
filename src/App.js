@@ -11,6 +11,7 @@ import {
   Redirect
 } from "react-router-dom";
 import TablaPosiciones from './componentes/TablaPosiciones';
+import Partidos from './componentes/Partidos';
 
 
 function App() {
@@ -33,6 +34,9 @@ function App() {
         </Route>
         <Route exact path="/tablaPosiciones">
           <TablaPosiciones/>
+        </Route>
+        <Route exact path="/partidos">
+          <Partidos/>
         </Route>
         
       </Switch>

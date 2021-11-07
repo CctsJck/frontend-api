@@ -31,6 +31,8 @@ function CargarResultadoPartido(){
             setCampeonatos(response.data);
         })
 
+        
+
     },[])
 
     useEffect (() => {

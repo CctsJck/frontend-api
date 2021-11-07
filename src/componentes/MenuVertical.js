@@ -46,7 +46,7 @@ function MenuVertical(){
                 <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/gestionarDatosClub"} class={params.opcion == 'gestionarDatosClub' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Gestionar datos del club</a>
                 <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/gestionarDatosSusJugadores"} class={params.opcion == 'gestionarDatosPersonalesRepresentante' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Gestionar datos de sus jugadores</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Definir lista jugadores de un partido</a>
-                <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Validar resultado de un partido</a>
+                <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/validarResultadoPartidos"} class={params.opcion == 'validarResultadoPartidos' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Validar resultado de un partido</a>
                 <a type="button" href="" class="list-group-item list-group-item-action">Consultar partidos</a>
                 <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consultar estadisticas de un jugador</a>
             </div> : null}
