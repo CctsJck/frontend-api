@@ -7,6 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 function ValidarResultadoPartido(){
     const [partidosValidar,setPartidosValidar] = useState([]);
     const [club,setClub] = useState({});
+    const [partidosCompleto, setPartidosCompleto] = useState([]);
+    
 
     let params = useParams();
     //Obtener los partidos que estan pendientes de validar
@@ -27,18 +29,50 @@ function ValidarResultadoPartido(){
     },[])
 
     useEffect(() => {
+        console.log(club);
         axios.get("http://localhost:8080/partidosPendientesValidar?idClub="+club.idClub)
-            .then(response => {
-                if (typeof response.data === 'string'){
-                    toast.error(response.data);
+            .then(partidoResponse => {
+                if (typeof partidoResponse.data === 'string'){
+                    toast.error(partidoResponse.data);
                 } else {
-                    setPartidosValidar(response.data);
-                    console.log(response.data);
+                    setPartidosValidar(partidoResponse.data);
+                   // console.log(partidoResponse.data);
                     
                 }
                 
             })
     },[club])
+
+    useEffect(() => {
+        partidosValidar.map(async partido => {
+            let nuevo = {
+                nombreCamp: "",
+                nombreClubLocal:"",
+                nombreClubVisitante:"",
+                partidoEntero:partido
+            }
+
+            await axios.get("http://localhost:8080/getCampeonatoById?idCampeonato="+partido.idCampeonato)
+                .then(response => {
+                    nuevo.nombreCamp = response.data.descripcion;
+                })
+
+            await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.local)
+                .then(response => {
+                    nuevo.nombreClubLocal = response.data.nombre;
+                })
+
+            await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.visitante)
+                .then(response => {
+                    nuevo.nombreClubVisitante = response.data.nombre;
+                })
+
+            setPartidosCompleto(partidosCompleto => ([...partidosCompleto,nuevo]));
+        })
+
+    },[partidosValidar])
+
+    
 
     function validarPartido(idPartido){
         axios.put("http://localhost:8080/validarPartido?idClub="+club.idClub+" &idPartido="+idPartido)
@@ -46,6 +80,8 @@ function ValidarResultadoPartido(){
                 toast.success("Partido validado con exito");
             })
     }
+
+    
 
     return(
         <>
@@ -57,36 +93,33 @@ function ValidarResultadoPartido(){
                         <table class="table ">
                             <thead>
                                 <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Fecha partido</th>
-                                <th scope="col">Campeonato</th>
-                                <th scope="col">Nro fecha</th>
-                                <th scope="col">Nro Zona</th>
-                                <th scope="col">Club Local</th>
-                                <th scope="col">Club Visitante</th>
-                                <th scope="col">Goles local</th>
-                                <th scope="col">Goles visitante</th>
-                                <th scope="col">Acciones</th>
-
-
-
+                                    <th scope="col">#</th>
+                                    <th scope="col">Fecha partido</th>
+                                    <th scope="col">Campeonato</th>
+                                    <th scope="col">Nro fecha</th>
+                                    <th scope="col">Nro Zona</th>
+                                    <th scope="col">Club Local</th>
+                                    <th scope="col">Club Visitante</th>
+                                    <th scope="col">Goles local</th>
+                                    <th scope="col">Goles visitante</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
-                            </thead>
+                            </thead> 
                             <tbody>
-                                {partidosValidar.length !== 0 ? partidosValidar.map(partido => {
+                                {partidosCompleto.length !== 0 ? partidosCompleto.map(partido => {                                    
                                     return (
-                                        <tr key={partido.idPartido}>
-                                            <th scope="row">{partido.idPartido}</th>
-                                            <td>{partido.fechaPartido.substring(0,10)}</td>
-                                            <td>{partido.idCampeonato}</td>
-                                            <td>{partido.nroFecha}</td>
-                                            <td>{partido.nroZona}</td>
-                                            <td>{partido.local}</td>
-                                            <td>{partido.visitante}</td>
-                                            <td>{partido.golesLocal}</td>
-                                            <td>{partido.golesVisitante}</td>
+                                        <tr key={partido.partidoEntero.idPartido}>
+                                            <th scope="row">{partido.partidoEntero.idPartido}</th>
+                                            <td>{partido.partidoEntero.fechaPartido.substring(0,10)}</td>
+                                            <td>{partido.nombreCamp}</td>
+                                            <td>{partido.partidoEntero.nroFecha}</td>
+                                            <td>{partido.partidoEntero.nroZona}</td>
+                                            <td>{partido.nombreClubLocal}</td>
+                                            <td>{partido.nombreClubVisitante}</td>
+                                            <td>{partido.partidoEntero.golesLocal}</td>
+                                            <td>{partido.partidoEntero.golesVisitante}</td>
                                             <td>
-                                                <button onClick={() => validarPartido(partido.idPartido)} className="btn btn-success">Validar</button>
+                                                <button onClick={() => validarPartido(partido.partidoEntero.idPartido)} className="btn btn-success">Validar</button>
                                             </td>
 
 
