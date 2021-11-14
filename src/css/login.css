@@ -84,6 +84,11 @@ body {
   min-height: 100vh;
 }
 
+.card-overflow{
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
 
 
 

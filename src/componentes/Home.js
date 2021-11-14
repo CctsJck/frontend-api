@@ -12,7 +12,7 @@ import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
 import TablaPosiciones from './TablaPosiciones';
 import GestionarPersonalesRepresentante from './representante/GestionarPersonalesRepresentante';
-import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador';
+import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador'; 
 import CargarResultadoPartido from './admin/CargarResultadoPartido';
 import GestionarDatosSusJugadores from './representante/GestionarDatosSusJugadores';
 import AdminRepresentantes from './admin/AdminRepresentantes';
@@ -36,7 +36,7 @@ function Home(){
             setJugador(response.data);
         })
       } else if(params.idRol == 1){
-        if(params.idPersona != 2000){
+        if(params.idPersona != "admin"){
           history.push("/login");
         }
       } else if (params.idRol == 2){

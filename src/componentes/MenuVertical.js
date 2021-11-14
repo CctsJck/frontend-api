@@ -28,7 +28,7 @@ function MenuVertical(){
             <hr/>
             </div>:null}
             
-            {params.idRol == 0 || params.idRol == 1 ?
+            {params.idRol == 0 ?
             <div>
                 <h2>Jugadores</h2>
 
@@ -37,7 +37,7 @@ function MenuVertical(){
                 
             </div>:null}
 
-            {params.idRol == 1 || params.idRol == 2 ? 
+            {params.idRol == 2 ? 
             <div>
                 {params.idRol == 1 ? <hr/> : null}
                 <h2>Representante</h2>

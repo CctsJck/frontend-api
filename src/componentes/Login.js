@@ -8,9 +8,13 @@ import '../css/login.css';
 
 
 function Login(){
+    const [idUsuario, setIdUsuario] = useState(-1);
     const [idJugador, setIdJugador] = useState(-1);
     const [idAdmin, setIdAdmin] = useState(-1);
     const [idRepresentante, setIdRepresentante] = useState(-1);
+    const [passwordJugador, setPasswordJugador] = useState("");
+    const [passwordRepre, setPasswordRepre] = useState("");
+    const [passwordAdmin, setPasswordAdmin] = useState("");
     let history = useHistory();
 
     
@@ -21,15 +25,30 @@ function Login(){
 
     function handleIdJugadorSubmit(e){
         e.preventDefault();
-        axios.get("http://localhost:8080/getJugadorPorId?idJugador="+idJugador)
+        axios.get("http://localhost:8080/getUsuarioByIdAndPassword?idUsuario="+idJugador+"&password="+passwordJugador)
             .then(response => {
-                history.push("/home/0/"+idJugador);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    if (response.data.rol === "jugador"){
+                        axios.get("http://localhost:8080/getJugadorByIdUsuario?idUsuario="+idJugador)
+                        .then(response2 => {
+                            if (typeof response2.data === "string"){
+                                return toast.error(response.data);
+                            } else {
+                                history.push("/home/0/"+response2.data.idJugador);
+                            }
+                        })
+                    } else {
+                        return toast.error("Usted no es un jugador");
+                    }
+                    
+
+                }
             })
-            .catch(error => {
-                document.getElementById("jugadorForm").reset();
-                return toast.error("No existe el jugador");
-            })
-        
+            
+        document.getElementById("jugadorForm").reset();
+
 
     }
 
@@ -39,11 +58,11 @@ function Login(){
 
     function handleIdAdminSubmit(e){
         e.preventDefault();
-        if (idAdmin == 2000){
-            history.push("/home/1/2000");
+        if (idAdmin == "admin" && passwordAdmin == "admin"){
+            history.push("/home/1/admin");
         } else {
             document.getElementById("adminForm").reset();
-            return toast.error("Id incorrecto");
+            return toast.error("Datos incorrectos");
         }
         
     }
@@ -54,17 +73,49 @@ function Login(){
 
     function handleIdRepresentanteSubmit(e){
         e.preventDefault();
-        axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+idRepresentante)
+
+        axios.get("http://localhost:8080/getUsuarioByIdAndPassword?idUsuario="+idRepresentante+"&password="+passwordRepre)
             .then(response => {
-                history.push("/home/2/"+idRepresentante);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    if (response.data.rol === "Repre"){
+                        axios.get("http://localhost:8080/getRepresentanteByIdUsuario?idUsuario="+idRepresentante)
+                        .then(response2 => {
+                            if (typeof response2.data === "string"){
+                                return toast.error(response.data);
+                            } else {
+                                history.push("/home/0/"+response2.data.legajo);
+                            }
+                        })
+                    } else {
+                        return toast.error("Usted no es un representante");
+                    }
+                    
+
+                }
             })
-            .catch(error => {
-                document.getElementById("representanteForm").reset();
-                return toast.error("No existe el representante");
-            })
+
+            document.getElementById("representanteForm").reset();
+
+        
         
 
     }
+
+    function handlePasswordJugadorChange(e){
+        setPasswordJugador(e.target.value);
+    }
+
+    function handlePasswordRepresentanteChange(e){
+        setPasswordRepre(e.target.value);
+    }
+
+    function handlePasswordAdminChange(e){
+        setPasswordAdmin(e.target.value);
+    }
+
+    
     
     
     return (
@@ -72,9 +123,10 @@ function Login(){
             
             <div className="container ">
                 <ToastContainer/>
+                
                 <div className="row">
                     <div className="col-md-12 col-lg-4 mt-5"> 
-                        <div class="card bg-dark text-white h-100">
+                        <div class="card card-overflow bg-dark text-white h-100">
                             <img src={require("../img/jugador.png").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
                                 <h2 class="card-title text-center ">JUGADORES</h2>
@@ -83,7 +135,14 @@ function Login(){
                                         <label for="idJugador" class="form-label">Ingrese ID</label>
                                         <input onChange={handleIdJugadorChange} type="text" class="form-control" id="idJugador" aria-describedby="idJugador" placeholder="Ejemplo: 1"/>
                                     </div>
-                                    <button type="submit" class="btn btn-success">Ingresar</button>
+                                    <div class="mb-3">
+                                        <label for="passwordJugador" class="form-label">Ingrese su contraseña</label>
+                                        <input onChange={handlePasswordJugadorChange} type="password" class="form-control" id="passwordJugador" aria-describedby="idJugador" placeholder="Ejemplo: 1234"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <button type="submit" class="btn btn-success">Ingresar</button>
+
+                                    </div>
                                 </form>
 
                             </div>
@@ -91,7 +150,7 @@ function Login(){
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-4 mt-5"> 
-                        <div class="card bg-dark text-white h-100">
+                        <div class="card card-overflow bg-dark text-white h-100">
                             <img src={require("../img/admin.jpg").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
                                 <h2 class="card-title text-center">ADMIN</h2>
@@ -100,13 +159,17 @@ function Login(){
                                         <label for="idAdmin" class="form-label">Ingrese ID</label>
                                         <input onChange={handleIdAdminChange} type="text" class="form-control" id="idAdmin" aria-describedby="idAdmin" placeholder="Ejemplo: 1"/>
                                     </div>
+                                    <div class="mb-3">
+                                        <label for="passwordAdmin" class="form-label">Ingrese su contraseña</label>
+                                        <input onChange={handlePasswordAdminChange} type="password" class="form-control" id="passwordAdmin" aria-describedby="passwordAdmin" placeholder="Ejemplo: 1"/>
+                                    </div>
                                     <button type="submit" class="btn btn-success">Ingresar</button>
                                 </form>
                             </div>
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-4 mt-5"> 
-                        <div class="card bg-dark text-white h-100">
+                        <div class="card card-overflow bg-dark text-white h-100">
                             <img src={require("../img/RepresentanteFutbol.png").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
                                 <h2 class="card-title text-center">REPRESENTANTE</h2>
@@ -114,6 +177,10 @@ function Login(){
                                     <div class="mb-3">
                                         <label for="idRepresentante" class="form-label">Ingrese ID</label>
                                         <input onChange={handleIdRepresentanteChange} type="text" class="form-control" id="IdRepresentante" aria-describedby="IdRepresentante" placeholder="Ejemplo: 1"/>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="passwordRepresentante" class="form-label">Ingrese su contraseña</label>
+                                        <input onChange={handlePasswordRepresentanteChange} type="password" class="form-control" id="passwordRepresentante" aria-describedby="passwordRepresentante" placeholder="Ejemplo: 1"/>
                                     </div>
                                     <button type="submit" class="btn btn-success">Ingresar</button>
                                 </form>
