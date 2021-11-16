@@ -80,12 +80,14 @@ function Login(){
                     return toast.error(response.data);
                 } else {
                     if (response.data.rol === "Repre"){
+                        
                         axios.get("http://localhost:8080/getRepresentanteByIdUsuario?idUsuario="+idRepresentante)
                         .then(response2 => {
                             if (typeof response2.data === "string"){
                                 return toast.error(response.data);
                             } else {
-                                history.push("/home/0/"+response2.data.legajo);
+                                console.log(response2.data);
+                                history.push("/home/2/"+response2.data.legajo);
                             }
                         })
                     } else {

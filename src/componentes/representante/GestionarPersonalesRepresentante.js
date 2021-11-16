@@ -22,8 +22,13 @@ function GestionarPersonalesRepresentante(props){
     const [documento, setDocumento] = useState("");
 
     const [representante, setRepresentante] = useState({});
+
+    const [userId,setUserId] = useState("");
+    const [userPass, setUserPass] = useState("");
+    const [userRole, setUserRole] = useState("");
     
-    
+    const [usuario, setUsuario] = useState({});
+
 
 
     useEffect(() => {
@@ -37,6 +42,16 @@ function GestionarPersonalesRepresentante(props){
             .catch(error => {
                 console.log(error);
             })
+
+            axios.get("http://localhost:8080/getUsuarioByIdRepresentante?idRepresentante="+params.idPersona)
+            .then(userResponse => {
+                if (typeof userResponse.data === "string"){
+                    return toast.error(userResponse.data);
+                } else {
+                    setUsuario(userResponse.data);
+                    
+                }
+            })
         } else {
             setIdRepre(props.id);
             axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+props.id)
@@ -47,7 +62,19 @@ function GestionarPersonalesRepresentante(props){
             .catch(error => {
                 console.log(error);
         })
+
+        axios.get("http://localhost:8080/getUsuarioByIdRepresentante?idRepresentante="+props.id)
+            .then(userResponse => {
+                if (typeof userResponse.data === "string"){
+                    return toast.error(userResponse.data);
+                } else {
+                    setUsuario(userResponse.data);
+                    
+                }
+            })
         }
+
+        
 
 
         
@@ -58,8 +85,12 @@ function GestionarPersonalesRepresentante(props){
         setNombre(representante.nombre);
         setTipoDocumento(representante.tipodocumento);
         setDocumento(representante.dni);
+        console.log(usuario);
+        setUserId(usuario.idUsuario);
+        setUserRole(usuario.rol);
+        setUserPass(usuario.password);
 
-    },[representante])
+    },[representante,usuario])
 
 
     function handleNombreChange(e){
@@ -72,6 +103,7 @@ function GestionarPersonalesRepresentante(props){
 
     function handleDocumentoChange(e){
         setDocumento(e.target.value);
+        
     }
 
 
@@ -94,12 +126,51 @@ function GestionarPersonalesRepresentante(props){
         },3000)
     }
 
+    function handleUserPassChange(e){
+        setUserPass(e.target.value);
+        
+    }
+
+    function handleUserSubmit(e){
+        e.preventDefault();
+        axios.put("http://localhost:8080/updateReprePassword?idRepre="+idRepre+"&password="+userPass)
+            .then(response => {
+                if (typeof response.data === "string" && response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Datos de la cuenta modificados con exito");
+                }
+            })
+    }
+
+    
 
 
     return (
         <div className="container">
             <ToastContainer/>
             <div className="row">
+                <h2>Gestionar datos de la cuenta</h2>
+                <form className="mt-3 mb-5" onSubmit={handleUserSubmit}>
+                    <div class="mb-3">
+                        <label for="userId" class="form-label">Id usuario</label>
+                        <input type="text" value = {userId} class="form-control" id="userId" aria-describedby="userId" disabled/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userRole" class="form-label">Rol usuario</label>
+                        <input type="text" value = {userRole} class="form-control" id="userRole" aria-describedby="userRole" disabled/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="userPass" class="form-label">Contraseña usuario</label>
+                        <input type="text" onChange={handleUserPassChange} value = {userPass} class="form-control" id="userPass" aria-describedby="userPass"/>
+                    </div>
+
+                    <button type="submit" class="btn btn-success">Actualizar</button>
+
+
+                </form>
+
+
                 <h2>Gestionar sus datos</h2>
                 <form className="mt-3" onSubmit={handleSubmit}>
                     <div class="mb-3">
