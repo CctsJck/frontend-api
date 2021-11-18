@@ -7,7 +7,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 
-function ConsultarEstadisticasJugador (){
+function ConsultarEstadisticasJugador (props){
 
     const [clubes, setClubes] = useState([]);
     const [clubSelect, setClubSelect] = useState([]);
@@ -22,61 +22,92 @@ function ConsultarEstadisticasJugador (){
 
 
     useEffect(() => {
-        axios.get("http://localhost:8080/obtenerCampeonatos")
-        .then( response => {
-            setCampeonatos(response.data);
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if(props.idJugador === undefined){
+            axios.get("http://localhost:8080/obtenerCampeonatos")
+            .then( response => {
+                setCampeonatos(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }else{
+            console.log(props.idJugador)
+            axios.get("http://localhost:8080/obtenerCampeonatosDeUnJugador?idJugador="+props.idJugador)
+            .then( response => {
+                setCampeonatos(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     },[])
 
 
 
     useEffect(() => {
-        axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatoSelect)
-        .then( response => {
-            setClubes(response.data);
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if (props.idJugador === undefined){
+            axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatoSelect)
+            .then( response => {
+                setClubes(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     },[campeonatoSelect])
 
     useEffect(() => {
-        axios.get("http://localhost:8080/getJugadoresClub?idClub="+clubSelect)
-        .then( response => {
-            setJugadores(response.data);
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if (props.idJugador === undefined){
+            axios.get("http://localhost:8080/getJugadoresClub?idClub="+clubSelect)
+            .then( response => {
+                setJugadores(response.data);
+            })
+            .catch(error => {
+            })
+        }
     },[clubSelect])
 
     useEffect(() => {
-        axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugadorSelect)
-        .then( response => {
-            setDatosJugador(response.data);
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+        if (props.idJugador === undefined){
+            axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugadorSelect)
+            .then( response => {
+                setDatosJugador(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
 
-        axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+jugadorSelect+"&idCampeonato="+campeonatoSelect)
-        .then( response => {
-            setEstadisticasJugador(response.data);
-            console.log(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+jugadorSelect+"&idCampeonato="+campeonatoSelect)
+            .then( response => {
+                setEstadisticasJugador(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
     },[jugadorSelect])
 
+    useEffect(() => {
+        if (props.idJugador !== undefined){
+            axios.get("http://localhost:8080/getJugadorPorId?idJugador="+props.idJugador)
+            .then( response => {
+                setDatosJugador(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
 
+            axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+props.idJugador+"&idCampeonato="+campeonatoSelect)
+            .then( response => {
+                setEstadisticasJugador(response.data);
+                console.log(response.data);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
+    },[campeonatoSelect])
 
 
 
@@ -86,15 +117,13 @@ function ConsultarEstadisticasJugador (){
     }
     function handleClubChange(e){
         setClubSelect(e.target.value);
-        console.log("hola")
-        console.log(clubSelect)
 
     }
 
     function handleJugadorChange(e){
         setJugadorSelect(e.target.value);
-        console.log(jugadorSelect);
     }
+    
     
 
     return(
@@ -117,7 +146,7 @@ function ConsultarEstadisticasJugador (){
                 </select>
                 </div>
 
-                <div class="mb-3">
+                {props.idJugador === undefined ? <div class="mb-3">
                     <label for="club" class="form-label">Seleccione el club del jugador</label>
                     <select class="form-select" id="clubes" onChange={handleClubChange} aria-label="clubes">
                                     <option value="-1">Seleccione un club</option>
@@ -128,20 +157,20 @@ function ConsultarEstadisticasJugador (){
                                     })
                                     }              
                 </select>
-                </div>
+                </div> : null}
 
-                <div class="mb-3">
+                {props.idJugador === undefined ? <div class="mb-3">
                     <label for="nombre" class="form-label">Seleccione el club del jugador</label>
                     <select class="form-select" id="jugadores" onChange={handleJugadorChange} aria-label="jugadores">
                                     <option value="-1">Seleccione un jugador del club</option>
                                     {jugadores.map(jugador => {
                                         return (
-                                            <option value={jugador.idJugador}>{jugador.nombre}</option>
+                                            <option value={jugador.idJugador}>{jugador.nombre} {jugador.apellido}</option>
                                         );
                                     })
                                     }              
                 </select>
-                </div>
+                </div> : null }
                 <hr class = "my 4"/>
                 { jugadorSelect != null ?
                 
@@ -158,13 +187,65 @@ function ConsultarEstadisticasJugador (){
                         </div>
                         <div class="row">
                             <div class="col-6" >
-                                <p>Fecha nacimiento {datosJugador.fechaNacimiento}</p>
+                                
+                            <p> Fecha de Nacimiento: {datosJugador.fechaNacimiento !== undefined ? datosJugador.fechaNacimiento.slice(0,10) : null}</p>
                             </div>
                             <div class="col-6">
                                 <p>Categoria {datosJugador.categoria} </p>
                             </div>
+                        
                         </div>
-                        <p></p>
+                        <hr/>
+                        <div class="row">
+                            <h4>Faltas {estadisticasJugador[4]}</h4>
+                            <div class="col-6" >
+                                <div class ="row">
+                                    <div class="col-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi text-danger bi-square-fill" viewBox="0 0 16 16">
+                                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/></svg>
+                                    </div>
+
+                                    <div class="col-11">
+                                        <p>Rojas: {estadisticasJugador[6]}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-6">
+                            <div class ="row">
+                                    <div class="col-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi text-warning bi-square-fill" viewBox="0 0 16 16">
+                                        <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/></svg>
+                                    </div>
+                                    <div class="col-11">
+                                        <p>Amarillas: {estadisticasJugador[5]}</p>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr/>
+
+                        <div class="row">
+                            <h4></h4>
+                            <div class="col-6" >
+                            <div class ="row">
+                                    <div class="col-1">
+                                    <i class="far fa-futbol"></i>
+                                    </div>
+
+                                    <div class="col-11">
+                                        <p>Goles {estadisticasJugador[3]}</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-6">
+                                <p>Partidos Jugados {estadisticasJugador[2]} </p>
+                            </div>
+                        </div>
 
 
                     </div>

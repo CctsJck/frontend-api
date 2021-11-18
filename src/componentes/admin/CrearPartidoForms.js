@@ -153,7 +153,7 @@ function handleSubmit(e){
             <div class="mb-3">
                 <p>Seleccione el Club Visitante</p> 
                 <select class="form-select" id="clubVisitante" onChange={handleClubVisitanteChange} aria-label="clubVisitante">
-                                    <option value="-1">Seleccione un Club Local</option>
+                                    <option value="-1">Seleccione un Club Visitante</option>
                                     {clubVisitante.map(clubV => {
                                         return (
                                             <option value={clubV.idClub}>{clubV.nombre}</option>

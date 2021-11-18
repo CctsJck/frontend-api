@@ -12,7 +12,7 @@ import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
 import TablaPosiciones from './TablaPosiciones';
 import GestionarPersonalesRepresentante from './representante/GestionarPersonalesRepresentante';
-import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador'; 
+import GestionarPersonalesJugador from './jugador/gestionarPersonalesJugador'; 
 import CargarResultadoPartido from './admin/CargarResultadoPartido';
 import GestionarDatosSusJugadores from './representante/GestionarDatosSusJugadores';
 import AdminRepresentantes from './admin/AdminRepresentantes';
@@ -34,6 +34,7 @@ function Home(){
         axios.get("http://localhost:8080/getJugadorPorId?idJugador="+params.idPersona)
         .then(response => {
             setJugador(response.data);
+            console.log(response.data);
         })
       } else if(params.idRol == 1){
         if(params.idPersona != "admin"){
@@ -43,6 +44,7 @@ function Home(){
         axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+params.idPersona)
         .then(response => {
             setRepresentante(response.data);
+            console.log(response.data);
         })
         
       } else {
@@ -105,6 +107,7 @@ function Home(){
                 {params.opcion == "ConsultarEstadisticasJugadores" ? <ConsultarEstadisticasJugador/> : null}
                 {params.opcion == "validarResultadoPartidos" ? <ValidarResultadoPartido/> : null}
                 {params.opcion == "listaJugadoresPartido" ? <ListaJugadoresPartido/> : null}
+                {params.opcion == "consultarMisEstadisticas" ? <ConsultarEstadisticasJugador idJugador = {jugador.idJugador}/> : null}
 
 
                 
