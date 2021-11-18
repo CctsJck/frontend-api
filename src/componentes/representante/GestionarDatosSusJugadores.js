@@ -27,6 +27,14 @@ function GestionarPersonalesJugador(){
     const [jugadorSelect, setJugadorSelect] = useState([]);
 
 
+    //Variables de Cracion de jugador
+    const [nombreCrear, setNombreCrear] = useState("");
+    const [apellidoCrear, setApellidoCrear] = useState("");
+    const [tipoDocumenentoCrear, setTipoDocumentoCrear] = useState("");
+    const [documentoCrear, setDocumentoCrear] = useState("");
+    const [fechaNacCrear, setFechaNacCrear] = useState(""); 
+
+
 
     useEffect(() => {
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
@@ -97,7 +105,27 @@ function GestionarPersonalesJugador(){
         console.log("entro a jugador change")
     }
 
+    //funciones de creacion
 
+    function handleNombreCrearChange(e){
+        setNombreCrear(e.target.value);
+    }
+
+    function handleApellidoCrearChange(e){
+        setApellidoCrear(e.target.value);
+    }
+
+    function handleTipoDocumentoCrearChange(e){
+        setTipoDocumentoCrear(e.target.value);
+    }
+
+    function handleDocumentoCrearChange(e){
+        setDocumentoCrear(e.target.value);
+    }
+
+    function handleFechaNacCrearChange(e) {
+        setFechaNacCrear(e.target.value);
+    }
 
 
 
@@ -112,13 +140,146 @@ function GestionarPersonalesJugador(){
         })
     }
 
+    function handleSubmitCrear(e){
+        e.preventDefault();
+
+        console.log("hola");
+        axios.put("http://localhost:8080/agregarJugador?tipoDocumento="+tipoDocumenentoCrear+"&documento="+documentoCrear+"&nombre="+nombreCrear+"&apellido="+apellidoCrear+"&idClub="+club.idClub+"fechaNacimiento="+fechaNacCrear)
+        .then(response => {
+            return toast.success("Jugador agregado con exito");
+        })
+        .catch(error => {
+            return toast.error("Error al agregar jugador");
+        })
+    }
+
+
+    function handleSubmitElim(e){
+        e.preventDefault();
+
+        console.log("hola");
+        axios.put("http://localhost:8080/eliminarJugador?idJugador="+jugador.idJugador)
+        .then(response => {
+            return toast.success("Jugador eliminado con exito");
+        })
+        .catch(error => {
+            return toast.error("Error al eliminar el jugador");
+        })
+    }
+
+
+
 
 
     return (
         <div className="container">
             <ToastContainer/>
             <div className="row">
+                <div class="col-8">
                 <h2>Gestionar sus datos</h2>
+                </div>
+                <div class="col-2">
+                    <a type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#agregarJugador">
+                    Agregar Jugadores
+                    </a>
+                    
+                    <div class="modal fade" id="agregarJugador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Agregar un jugador</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                <form className="mt-3" onSubmit={handleSubmitCrear}>
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Ingrese el nombre del jugador</label>
+                                        <input type="text" onChange={handleNombreCrearChange}  class="form-control" id="nombreCrear" aria-describedby="nombreCrear" placeholder="Juan Pablo"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="nombre" class="form-label">Ingrese el apellido del jugador</label>
+                                        <input type="text" onChange={handleApellidoCrearChange}  class="form-control" id="apellidoCrear" aria-describedby="apellidoCrear" placeholder="Perez"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <p>Seleccione el tipo de documento</p> 
+                                            <select class="form-select" id="tipoDocumenentoCrear" onChange={handleTipoDocumentoCrearChange} aria-label="tipoDocumenentoCrear">
+                                                            <option value="DNI">DNI</option>
+                                                            <option value="Pasaporte" >Pasaporte</option>
+                                                            <option value="Cedula de identidad">Cedula de identidad</option>
+                                                            <option value="Otro">Otro</option>
+                                            </select>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="documento" class="form-label">Ingrese su numero de Documento</label>
+                                        <input  type="text" onChange={handleDocumentoCrearChange} class="form-control" id="documentoCrear" aria-describedby="documentoCrear" placeholder="25365874"/>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="control-label" for="fechaFin">Fecha de nacimiento</label>
+                                        <DatePicker selected={fechaNacCrear} onChange={(date) => setFechaNacCrear(date)} className="form-control" id="fechaNacCrear" name="fechaNacCrear"/>
+
+                                    </div>
+
+
+                                    <button type="submit" class="btn btn-success">Agregar</button>
+                                    <button type="button" class="btn btn-secondary sm-3" data-bs-dismiss="modal">Cerrar</button>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="col-2">
+                    
+                    <a type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#eliminarJugador">
+                        Eliminar Jugadores
+                    </a>
+
+                    <div class="modal fade" id="eliminarJugador" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Eliminar Jugador</h5>
+                            </div>
+                            <div class="modal-body">
+                            <form className="mt-3" onSubmit={handleSubmitElim}>
+                                <div class="mb-3">
+                                    <p>Seleccione el jugador a modificar</p> 
+                                        <select class="form-select" id="jugador" onChange={handleJugadorChange} aria-label="campeonato">
+                                                        <option>Seleccione jugador</option>
+                                                        {jugadores.map(jugadores => {
+                                                            return (
+                                                                <option value={jugadores.idJugador}>{jugadores.nombre} {jugadores.apellido}</option>
+                                                            );
+                                                        })
+                                                        }
+                                        </select>
+                                </div>
+
+
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                            </form>
+                                
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+
+                    
+                    
+
+                </div>
+
+
                 <form className="mt-3" onSubmit={handleSubmit}>
                     <div class="mb-3">
                         <p>Seleccione el jugador a modificar</p> 
