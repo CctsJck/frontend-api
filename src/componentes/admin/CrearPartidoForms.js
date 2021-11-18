@@ -14,6 +14,7 @@ function CrearPartidoForms () {
     const[nroFecha,setNroFecha] = useState("");
     const[nroZona,setNroZona]= useState("");
     const[categoria,setCategoria]= useState("");
+    const [fase,setFase] = useState(null);
     const[clubLocal,setClubLocal]= useState([]);
     const[clubVisitante,setClubVisitante] = useState([]);
     const[fechaPartido,setFechaPartido]= useState(new Date());
@@ -31,6 +32,7 @@ function CrearPartidoForms () {
         const fetchData = async () => {
             const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
             setCampeonato(campeonatosAPI.data);
+            
             
         };
 
@@ -114,6 +116,7 @@ function handleSubmit(e){
                 <input type="text" class="form-control" onChange={handleNroFechaChange} id="nroFecha" placeholder="3" aria-describedby="nroFecha"/>
             </div>
 
+
             <div class="mb-3">
                 <label for="nroZona" class="form-label">Numero de Zona</label>
                 <input type="text" class="form-control" onChange={handleNroZonaChange} id="nroZona" placeholder="05" aria-describedby="nroZona"/>
@@ -136,6 +139,13 @@ function handleSubmit(e){
                                     }
                     </select>
             </div>
+
+            {campeonatosSelect.tipo === "Zona" ?
+                <h1>hola</h1>
+
+                :null}
+
+            
 
             <div class="mb-3">
                 <p>Seleccione el Club Local</p> 
