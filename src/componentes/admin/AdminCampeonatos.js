@@ -11,27 +11,28 @@ function AdminCampeonatos(){
     useEffect(() => {
         axios.get("http://localhost:8080/obtenerCampeonatos")
             .then(response => {
+                
                 setCampeonatos(response.data);
                 console.log(response.data);
             })
-            .catch(error => {
-                console.log(error);
-            })
+            
     },[])
 
 
     function activarCampeonato(id){
         axios.put("http://localhost:8080/activarCampeonato?idCampeonato="+id)
             .then(response => {
-                console.log("Activado");
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Campeonato activado con exito");
+                }
                 
-                return toast.success("Campeonato activado con exito");
             })
-            .catch(error => {
-                console.log("Desactivado");
 
-                return toast.error("Hubo un error al activar el campeonato");
-            })
+            setTimeout(() => {
+                window.location.reload(true);
+            },3000)
     }
 
     function desactivarCampeonato(id){

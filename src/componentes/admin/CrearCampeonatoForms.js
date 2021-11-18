@@ -13,7 +13,7 @@ function CrearCampeonatoForms(){
     const [descripcion,setDescripcion] = useState("");
     const [fechaInicio,setFechaInicio] = useState(new Date());
     const [fechaFin,setFechaFin] = useState(new Date());
-    const [tipoTorneo, setTipoTorneo] = useState("puntos");
+    const [tipoTorneo, setTipoTorneo] = useState("Puntos");
     const [categoria, setCategoria] = useState("");
     const [visible,setVisible] = useState(false);
     const notify = () => toast("Wow so easy!");
@@ -36,12 +36,18 @@ function CrearCampeonatoForms(){
 
     function handleSubmit(e){
         e.preventDefault();
-        axios.post('http://localhost:8080/crearCampeonato?descripcion='+descripcion+'&fechaInicio='+fechaInicio+'&fechaFin='+fechaFin+'&tipo='+tipoTorneo+'&categoria='+categoria).then(res => {
-            console.log(res);
-            console.log(res.data);
-        });
+        axios.post('http://localhost:8080/crearCampeonato?descripcion='+descripcion+'&fechaInicio='+fechaInicio+'&fechaFin='+fechaFin+'&tipo='+tipoTorneo+'&categoria='+categoria)
+            .then(res => {
+                if (typeof res.data === "string"){
+                    return toast.error(res.data);
+                } else {
+                    return toast.success("Campeonato creado con exito");
+                }
+            });
         document.getElementById("formulario").reset();
-        return toast.success("Campeonato creado con exito");
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
     }
 
     
@@ -72,11 +78,11 @@ function CrearCampeonatoForms(){
                 <div className="mb-3">
                     <label class="control-label" for="tipo">Tipo campeonato</label>
                     <div class="form-check">
-                        <input class="form-check-input" onChange={handleTipoTorneoChange} value="puntos" type="radio" name="tipoTorneo" id="puntos" checked={tipoTorneo === "puntos"}/>
+                        <input class="form-check-input" onChange={handleTipoTorneoChange} value="Puntos" type="radio" name="tipoTorneo" id="puntos" checked={tipoTorneo === "Puntos"}/>
                         <label class="form-check-label" for="puntos">Puntos</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" onChange={handleTipoTorneoChange} value="grupos" type="radio" name="tipoTorneo" id="grupos" checked={tipoTorneo === "grupos"}/>
+                        <input class="form-check-input" onChange={handleTipoTorneoChange} value="Zona" type="radio" name="tipoTorneo" id="grupos" checked={tipoTorneo === "Zona"}/>
                         <label class="form-check-label" for="grupos">Grupos</label>
                     </div>
                 </div>

@@ -60,6 +60,7 @@ function Partidos(){
     },[partidos])
 
     function handleCampeonatoChange(e){
+        
         setCampeonatoSelect(e.target.value);
     }
 
@@ -104,6 +105,7 @@ function Partidos(){
                                                 <th scope="row">{partido.partido.fechaPartido.substring(0,10)}</th>
                                                 <td>{partido.clubLocal.nombre}</td>
                                                 <td className="text-center">{partido.partido.golesLocal} - {partido.partido.golesVisitante}
+                                                    <br></br>
                                                     <InfoPartido idPartido={partido.partido.idPartido}/>
                                                 </td>
                                                 <td>{partido.clubVisitante.nombre}</td>
