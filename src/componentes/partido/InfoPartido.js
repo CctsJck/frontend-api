@@ -11,6 +11,7 @@ function InfoPartido(props){
 
 
     useEffect(() => {
+        console.log(props.idPartido)
         async function fetchData() {
             await axios.get("http://localhost:8080/getPartidoById?idPartido="+props.idPartido)
             .then(response => {
@@ -39,6 +40,7 @@ function InfoPartido(props){
     },[])
 
     useEffect(() => {
+        console.log("gol");
         goles.map(async gol => {
             let golDetalle = {
                 gol:gol,
@@ -53,11 +55,6 @@ function InfoPartido(props){
                 })
 
             setGolesDetalles(golesDetalles => [...golesDetalles,golDetalle]);
-
-
-
-            
-            
         })
 
         
@@ -65,38 +62,50 @@ function InfoPartido(props){
 
     useEffect(() => {
         faltas.map(async falta => {
+            console.log(falta);
             let faltaDetalle = {
                 falta:falta,
                 jugador:{}
             }
-            console.log(falta);
+            
 
             await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+falta.idJugador)
                 .then(response => {
                     faltaDetalle.jugador = response.data;
                     
+                    
                 })
-
+                console.log(faltaDetalle);
             setFaltasDetalles(faltasDetalles => [...faltasDetalles,faltaDetalle]);
-
-            
-            
         })
         
     },[faltas])
+
+    useEffect(() => {
+        console.log(faltasDetalles);
+        console.log(golesDetalles);
+    },[faltasDetalles,golesDetalles])
 
     
 
     return (
         <>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">
+           {/*} <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target={} aria-expanded="false" aria-controls="collapseExample">
+                Button with data-bs-target
+            </button>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body">
+                    {props.idPartido}
+                </div>
+    </div>*/}
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target={"#info"+props.idPartido}>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle " viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
             </svg>
             </button>
 
-            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal fade" id={"info"+props.idPartido} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
                     <div class="modal-header">
@@ -115,7 +124,7 @@ function InfoPartido(props){
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {golesDetalles.length !== 0  ?
+                                    {golesDetalles.length !== 0 && faltasDetalles.length !== 0 ?
                                         golesDetalles.map(gol => {
                                                 console.log("hola");
                                                 return(
@@ -164,7 +173,7 @@ function InfoPartido(props){
                                 <tbody>
                                     {golesDetalles.length !== 0  && faltasDetalles.length !== 0 ?
                                         faltasDetalles.map(falta => {
-                                                console.log("falta");
+                                                console.log(falta);
                                                 return(
                                                     <tr key={falta.falta.idFalta}>
                                                         {falta.jugador.club === partido.local ?
@@ -224,7 +233,7 @@ function InfoPartido(props){
                     
                     </div>
                 </div>
-            </div>
+                </div>
         </>
     )
 }

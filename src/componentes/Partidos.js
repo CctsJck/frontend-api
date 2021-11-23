@@ -21,40 +21,45 @@ function Partidos(){
     },[])
 
     useEffect(() => {
+        
         axios.get("http://localhost:8080/getPartidosTorneo?idCampeonato="+campeonatoSelect)
             .then(response => {
                 setPartidos(response.data);
+                
             })
     },[campeonatoSelect])
 
     useEffect(() => {
         partidos.map(async partido => {
-
-            let detalles = {
-                partido: partido,
-                clubLocal:{},
-                clubVisitante:{}
-            }
-
-            await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.local)
-                .then(localResponse => {
-                    if (typeof localResponse.data === "string"){
-                        return toast.error(localResponse.data);
+            if (partido.convalidaLocal && partido.convalidaVisitante){
+                let detalles = {
+                    partido: partido,
+                    clubLocal:{},
+                    clubVisitante:{}
+                }
+    
+                await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.local)
+                    .then(localResponse => {
+                        if (typeof localResponse.data === "string"){
+                            return toast.error(localResponse.data);
+                        } else {
+                            detalles.clubLocal = localResponse.data;
+                        }
+                    })
+    
+                await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.visitante)
+                .then(visResponse => {
+                    if (typeof visResponse.data === "string"){
+                        return toast.error(visResponse.data);
                     } else {
-                        detalles.clubLocal = localResponse.data;
+                        detalles.clubVisitante = visResponse.data;
                     }
                 })
+    
+                setPartidosConDetalles(partidosConDetalles => [...partidosConDetalles, detalles]);
+            }
 
-            await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.visitante)
-            .then(visResponse => {
-                if (typeof visResponse.data === "string"){
-                    return toast.error(visResponse.data);
-                } else {
-                    detalles.clubVisitante = visResponse.data;
-                }
-            })
-
-            setPartidosConDetalles([...partidosConDetalles, detalles]);
+            
         })
 
     },[partidos])

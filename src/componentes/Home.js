@@ -105,7 +105,7 @@ function Home(){
                 {params.opcion == "gestionarDatosPersonalesJugador" ? <GestionarPersonalesJugador/> : null}
                 {params.opcion == "gestionarDatosSusJugadores" ? <GestionarDatosSusJugadores/> : null}
                 {params.opcion == "ConsultarEstadisticasJugadores" ? <ConsultarEstadisticasJugador/> : null}
-                {params.opcion == "validarResultadoPartidos" ? <ValidarResultadoPartido/> : null}
+                {params.opcion == "validarResultadoPartido" ? <ValidarResultadoPartido/> : null}
                 {params.opcion == "listaJugadoresPartido" ? <ListaJugadoresPartido/> : null}
                 {params.opcion == "consultarMisEstadisticas" ? <ConsultarEstadisticasJugador idJugador = {jugador.idJugador}/> : null}
 
