@@ -5,6 +5,7 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import Select, { AriaOnFocus } from 'react-select';
 import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -14,13 +15,12 @@ function CrearPartidoForms () {
     const[nroFecha,setNroFecha] = useState("");
     const[nroZona,setNroZona]= useState("");
     const[categoria,setCategoria]= useState("");
-    const [fase,setFase] = useState(null);
+    const [fase,setFase] = useState("");
     const[clubLocal,setClubLocal]= useState([]);
     const[clubVisitante,setClubVisitante] = useState([]);
     const[fechaPartido,setFechaPartido]= useState(new Date());
-    const[campeonato,setCampeonato] = useState([]);
-
-    const [clubesAPI, setClubesAPI] = useState([]);
+    const[campeonatos,setCampeonatos] = useState([]);
+    const [campeonato, setCampeonato] = useState({});    
     const [clubesSelectLocal, setClubesLocalSelect] = useState([]);
     const [clubesSelectVisitante, setClubesVisitanteSelect] = useState([]);
 
@@ -31,8 +31,7 @@ function CrearPartidoForms () {
     useEffect(()=>{
         const fetchData = async () => {
             const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
-            setCampeonato(campeonatosAPI.data);
-            
+            setCampeonatos(campeonatosAPI.data);
             
         };
 
@@ -45,6 +44,14 @@ function CrearPartidoForms () {
             setClubLocal(response.data);
             setClubVisitante(response.data);
         });
+
+        campeonatos.forEach(camp => {
+            if (camp.idCampeonato == campeonatosSelect){
+                setCampeonato(camp);
+            }
+        });
+
+
         
     },[campeonatosSelect])
 
@@ -52,16 +59,9 @@ function CrearPartidoForms () {
 
     
 
-    function cargarCampeonatosSelect(){
-        campeonatosAPI.forEach(campeonatos => campeonatosSelect.push(
-            {value: campeonatos.idGlobalCareer, label : campeonatos.name})//cambiar los nombres de las variables
-        );
+   
 
-    }
-
-    if (campeonatosSelect.length === 0){
-        cargarCampeonatosSelect();  
-    }
+    
 
 
     function handleNroFechaChange(e){
@@ -86,20 +86,34 @@ function CrearPartidoForms () {
 
     function handleCampeonatoChange(e){      
         setCampeonatosSelect(e.target.value);
-        console.log(campeonato);
+    }
+
+    function handleFaseChange(e){
+        setFase(e.target.value);
         
     }
     
 
 function handleSubmit(e){
-    console.log(nroFecha);
     e.preventDefault();
-    axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&categoria='+categoria+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect).then(res => {
-        console.log(res);
-        console.log(res.data);
-    });
+    console.log(nroFecha);
+    console.log(nroZona);
+    console.log(categoria);
+    console.log(clubesSelectLocal);
+    console.log(clubesSelectVisitante);
+    console.log(fechaPartido);
+    console.log(campeonatosSelect);
+    console.log(fase);
+    axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&categoria='+categoria+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect+'&fase='+fase)
+        .then(res => {
+            if (typeof res.data === 'string'){
+                return toast.error(res.data);
+            } else {
+                return toast.success("Partido creado con exito");
+
+            }
+        });
     document.getElementById("formulario").reset();
-    return toast.success("Partido creado con exito");
     }
 
    
@@ -131,19 +145,25 @@ function handleSubmit(e){
                 <p>Seleccione el campeonato</p> 
                     <select class="form-select" id="campeonato" onChange={handleCampeonatoChange} aria-label="campeonato">
                                     <option>Seleccione un campeonato</option>
-                                    {campeonato.map(campeonatos => {
-                                        return (
-                                            <option value={campeonatos.idCampeonato}>{campeonatos.descripcion}</option>
-                                        );
+                                    {campeonatos.map(camp => {
+                                        if (camp.tipo === "Zona"){
+                                            return (
+                                                <option value={camp.idCampeonato}>{camp.descripcion}</option>
+                                            );
+                                        }
+                                        
                                     })
                                     }
                     </select>
             </div>
 
-            {campeonatosSelect.tipo === "Zona" ?
-                <h1>hola</h1>
+            {campeonato.tipo === "Zona" ?
+                <div class="mb-3">
+                    <label for="fase" class="form-label">Fase</label>
+                    <input type="text" class="form-control" onChange={handleFaseChange} id="fase" placeholder="Semifinal" aria-describedby="fase"/>
+                </div>
 
-                :null}
+            :null}
 
             
 

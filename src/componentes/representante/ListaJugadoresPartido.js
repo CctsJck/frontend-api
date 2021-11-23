@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useParams } from 'react-router';
 
 function ListaJugadoresPartido(){
     const [campeonato, setCampeonato] = useState('-1');
@@ -12,9 +13,12 @@ function ListaJugadoresPartido(){
     const[partidos,setPartidos] = useState([]);
     const [partidoConEquipos,setPartidosConEquipos] = useState([]);
     const [jugadores,setJugadores] = useState([]);
+    const [miembros, setMiembros] = useState([]);
 
     const [jugadoresDisponibles, setJugadoresDisponibles] = useState([]);
     const [jugadorDisponible, setJugadorDisponible] = useState("-1");
+
+    let params = useParams();
 
 
 
@@ -22,6 +26,9 @@ function ListaJugadoresPartido(){
         const fetchData = async () => {
             const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
             setCampeonatos(campeonatosAPI.data);
+
+            const clubAPI = await axios('http://localhost:8080/getClubPorIdRepresentante?idRepresentante='+params.idPersona);
+            setClub(clubAPI.data);
         };
         fetchData();
     },[])
@@ -57,38 +64,40 @@ function ListaJugadoresPartido(){
 
     useEffect(() => {
         axios.get("http://localhost:8080/obtenerJugadoresPartido?idPartido="+partido)
-            .then(response => {
-                response.data.map(miembro => {
-                    axios.get("http://localhost:8080/getJugadorPorId?idJugador="+miembro.idJugador)
-                    .then(response => {
-                        if (response.data.idClub == club){
-                            setJugadores(jugadores => ([...jugadores, response.data]));
-                        }
-                    })
-                })
-                
+            .then(res => {
+                setMiembros(res.data);
             })
-
-        axios.get("http://localhost:8080/getJugadoresDisponiblesPartido?idPartido="+partido+"&idClub="+club)
+        axios.get("http://localhost:8080/getJugadoresDisponiblesPartido?idPartido="+partido+"&idClub="+club.idClub)
             .then(response => {
                 setJugadoresDisponibles(response.data);
             })
     },[partido,club])
+
+    useEffect(() => {
+        if (miembros && miembros.map) {
+            miembros.map(miembro => {
+                axios.get("http://localhost:8080/getJugadorPorId?idJugador="+miembro.idJugador)
+                .then(response2 => {
+                    if (response2.data.idClub == club.idClub){
+                        setJugadores(jugadores => ([...jugadores, response2.data]));
+                    }
+                })
+            })
+        }
+    },[miembros])
 
     
     
 
     function handleCampChange(e){
         setCampeonato(e.target.value);
-        const clubesAPI = axios.get('http://localhost:8080//obtenerClubesCampeonato?idCampeonato='+e.target.value)
+        const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
                                 setClubes(response.data);
         });
     }
 
-    function handleClubChange(e){
-        setClub(e.target.value);
-    }
+    
 
     function handlePartidoChange(e){
         setPartido(e.target.value);
@@ -101,7 +110,7 @@ function ListaJugadoresPartido(){
     function handleJugadorSubmit(e){
         e.preventDefault();
         if (jugadorDisponible != -1){
-            axios.post("http://localhost:8080/agregarJugadorPartido?idPartido="+partido+"&idJugador="+jugadorDisponible+"&idClub="+club)
+            axios.post("http://localhost:8080/agregarJugadorPartido?idPartido="+partido+"&idJugador="+jugadorDisponible+"&idClub="+club.idClub)
                 .then(response => {
                     toast.success("Jugador agregado con exito");
                 })
@@ -118,7 +127,7 @@ function ListaJugadoresPartido(){
             <div className="container">
                 <ToastContainer/>
                 <div className="row">
-                    <h2 className="text-center">Lista jugadores partido</h2>
+                    <h2 className="text-center">Lista jugadores partido de {club.nombre}</h2>
                     
                     <form>
                         <div class="col-sm-4 mb-3 mt-4">
@@ -133,18 +142,7 @@ function ListaJugadoresPartido(){
                                     }
                                 </select>
                         </div>
-                        <div class="col-sm-4 mb-3">
-                            <label for="camp-label" class="form-label">Seleccione el club</label>
-                                <select class="form-select" onChange={handleClubChange} aria-label="campeonatos">
-                                    <option value="-1">Seleccione un club</option>
-                                    {clubes.map(club => {
-                                        return (
-                                            <option value={club.idClub}>{club.nombre}</option>
-                                        );
-                                    })
-                                    }
-                                </select>
-                        </div>
+                        
                         <div class="col-sm-4 mb-3">
                             <label for="camp-label" class="form-label">Seleccione el partido</label>
                             <select class="form-select" id="partidos" onChange={handlePartidoChange} aria-label= "partidos" >
