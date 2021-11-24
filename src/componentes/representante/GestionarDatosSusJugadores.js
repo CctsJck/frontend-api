@@ -30,7 +30,7 @@ function GestionarPersonalesJugador(){
     //Variables de Cracion de jugador
     const [nombreCrear, setNombreCrear] = useState("");
     const [apellidoCrear, setApellidoCrear] = useState("");
-    const [tipoDocumenentoCrear, setTipoDocumentoCrear] = useState("");
+    const [tipoDocumenentoCrear, setTipoDocumentoCrear] = useState("DNI");
     const [documentoCrear, setDocumentoCrear] = useState("");
     const [fechaNacCrear, setFechaNacCrear] = useState(""); 
 
@@ -40,7 +40,7 @@ function GestionarPersonalesJugador(){
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
         .then( response => {
             setClub(response.data);
-            console.log(response.data);
+            
         })
         .catch(error => {
             console.log(error);
@@ -51,6 +51,7 @@ function GestionarPersonalesJugador(){
         const jugadores = axios.get('http://localhost:8080/getJugadoresClub?idClub='+club.idClub)
         .then(response => {
             setJugadores(response.data);
+            
         });
         
     },[club])
@@ -60,7 +61,7 @@ function GestionarPersonalesJugador(){
         axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugadorSelect)
         .then( response => {
             setJugador(response.data);
-            console.log(response.data);
+            
         })
         .catch(error => {
             console.log(error);
@@ -76,9 +77,7 @@ function GestionarPersonalesJugador(){
         setApellido(jugador.apellido)
         setTipoDocumento(jugador.tipoDocumento);
         setDocumento(jugador.numeroDocumento);
-        console.log("entro a useeffect de jugador")
-        console.log(jugador.apellido)
-
+        
     },[jugador])
 
 
@@ -102,7 +101,7 @@ function GestionarPersonalesJugador(){
 
     function handleJugadorChange(e){
         setJugadorSelect(e.target.value);
-        console.log("entro a jugador change")
+        
     }
 
     //funciones de creacion
@@ -116,6 +115,7 @@ function GestionarPersonalesJugador(){
     }
 
     function handleTipoDocumentoCrearChange(e){
+        
         setTipoDocumentoCrear(e.target.value);
     }
 
@@ -131,6 +131,7 @@ function GestionarPersonalesJugador(){
 
     function handleSubmit(e){
         e.preventDefault();
+        
         axios.put("http://localhost:8080/modificarJugador?idJugador="+jugador.idJugador+"&tipoDocumento="+tipoDocumento+"&numeroDocumento="+documento+"&nombre="+nombre+"&apellido="+apellido+"&idClub="+club.idClub+"&fechaNac="+fechaNac)
         .then(response => {
             return toast.success("Datos del jugador modificados con exito");
@@ -143,28 +144,36 @@ function GestionarPersonalesJugador(){
     function handleSubmitCrear(e){
         e.preventDefault();
 
-        console.log("hola");
-        axios.put("http://localhost:8080/agregarJugador?tipoDocumento="+tipoDocumenentoCrear+"&documento="+documentoCrear+"&nombre="+nombreCrear+"&apellido="+apellidoCrear+"&idClub="+club.idClub+"fechaNacimiento="+fechaNacCrear)
+        
+        axios.post("http://localhost:8080/agregarJugador?tipoDocumento="+tipoDocumenentoCrear+"&documento="+documentoCrear+"&nombre="+nombreCrear+"&apellido="+apellidoCrear+"&idClub="+club.idClub+"&fichaje="+new Date()+"&fechaNacimiento="+fechaNacCrear)
         .then(response => {
-            return toast.success("Jugador agregado con exito");
+            if(typeof response.data === 'string'){
+                return toast.error(response.data);
+            }else{
+                return toast.success("Jugador agregado con exito");
+            }
         })
-        .catch(error => {
-            return toast.error("Error al agregar jugador");
-        })
+        
     }
 
 
     function handleSubmitElim(e){
         e.preventDefault();
 
-        console.log("hola");
-        axios.put("http://localhost:8080/eliminarJugador?idJugador="+jugador.idJugador)
+       
+        
+        axios.delete("http://localhost:8080/eliminarJugador?idJugador="+jugador.idJugador)
         .then(response => {
             return toast.success("Jugador eliminado con exito");
         })
         .catch(error => {
             return toast.error("Error al eliminar el jugador");
         })
+
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
+
     }
 
 
@@ -253,9 +262,12 @@ function GestionarPersonalesJugador(){
                                         <select class="form-select" id="jugador" onChange={handleJugadorChange} aria-label="campeonato">
                                                         <option>Seleccione jugador</option>
                                                         {jugadores.map(jugadores => {
-                                                            return (
-                                                                <option value={jugadores.idJugador}>{jugadores.nombre} {jugadores.apellido}</option>
-                                                            );
+                                                            
+                                                            if (jugadores.eliminado === "noEliminado"){
+                                                                return (
+                                                                    <option value={jugadores.idJugador}>{jugadores.nombre} {jugadores.apellido}</option>
+                                                                );
+                                                            }
                                                         })
                                                         }
                                         </select>
@@ -265,10 +277,6 @@ function GestionarPersonalesJugador(){
                             <button type="submit" class="btn btn-danger">Eliminar</button>
                             </form>
                                 
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
                             </div>
                             </div>
                         </div>
