@@ -87,11 +87,6 @@ function CargarResultadoPartido(){
         
     },[listaJugadoresPartido])
 
-    useEffect(() => {
-        console.log(jugadores);
-    },[jugadores])
-    
-
     
     function  handleCampChange(e){
         setCampeonato(e.target.value);
@@ -101,18 +96,14 @@ function CargarResultadoPartido(){
 
     function handlePartidoChange(e){
         setPartido(e.target.value);
-        console.log(e.target.value);
     }
 
     function handleJugadorChange(e){
         setJugador(e.target.value);
-        console.log(e.target.value);
     }
 
     function handleMinutoChange(e){
         setMinuto(e.target.value);
-        console.log(e.target.value);
-
     }
 
     function handleSucesoChange(e){
@@ -130,7 +121,6 @@ function CargarResultadoPartido(){
 
     function handleSubmit(e){
         e.preventDefault();
-        console.log(e.target.value);
         if (tipoSuceso === "falta"){
             axios.post("http://localhost:8080/agregarFaltaJugador?idJugador="+jugador+"&idPartido="+partido+"&idCampeonato="+campeonato+"&minuto="+minuto+"&tipo="+tipoFalta)
             .then(response => {
