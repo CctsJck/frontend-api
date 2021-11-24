@@ -11,7 +11,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function CrearPartidoForms () {
 
-    
     const[nroFecha,setNroFecha] = useState("");
     const[nroZona,setNroZona]= useState("");
     const[categoria,setCategoria]= useState("");
@@ -23,18 +22,14 @@ function CrearPartidoForms () {
     const [campeonato, setCampeonato] = useState({});    
     const [clubesSelectLocal, setClubesLocalSelect] = useState([]);
     const [clubesSelectVisitante, setClubesVisitanteSelect] = useState([]);
-
     const [campeonatosAPI, setCampeonatosAPI]= useState([]);
     const [campeonatosSelect, setCampeonatosSelect] = useState([]);
     
-
     useEffect(()=>{
         const fetchData = async () => {
             const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
             setCampeonatos(campeonatosAPI.data);
-            
         };
-
         fetchData();
     },[])
 
@@ -50,19 +45,7 @@ function CrearPartidoForms () {
                 setCampeonato(camp);
             }
         });
-
-
-        
     },[campeonatosSelect])
-
-
-
-    
-
-   
-
-    
-
 
     function handleNroFechaChange(e){
         setNroFecha(e.target.value);
@@ -94,117 +77,86 @@ function CrearPartidoForms () {
     }
     
 
-function handleSubmit(e){
-    e.preventDefault();
-    console.log(nroFecha);
-    console.log(nroZona);
-    console.log(categoria);
-    console.log(clubesSelectLocal);
-    console.log(clubesSelectVisitante);
-    console.log(fechaPartido);
-    console.log(campeonatosSelect);
-    console.log(fase);
-    axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&categoria='+categoria+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect+'&fase='+fase)
-        .then(res => {
-            if (typeof res.data === 'string'){
-                return toast.error(res.data);
-            } else {
-                return toast.success("Partido creado con exito");
-
-            }
-        });
-    document.getElementById("formulario").reset();
+    function handleSubmit(e){
+        e.preventDefault();
+        axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&categoria='+categoria+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect+'&fase='+fase)
+            .then(res => {
+                if (typeof res.data === 'string'){
+                    return toast.error(res.data);
+                } else {
+                    return toast.success("Partido creado con exito");
+                }
+            });
+        document.getElementById("formulario").reset();
     }
-
-   
-    /* HTML */
 
     return(
         <div>
-        <h2 className="text-center mt-3">Crear Partido</h2>
-        <div className="container">
-            <ToastContainer/>
-            <form onSubmit={handleSubmit} id="formulario" autoComplete="off">
-            <div class="mb-3">
-                <label for="nroFecha" class="form-label">Numero de Fecha</label>
-                <input type="text" class="form-control" onChange={handleNroFechaChange} id="nroFecha" placeholder="3" aria-describedby="nroFecha"/>
+            <h2 className="text-center mt-3">Crear Partido</h2>
+            <div className="container">
+                <ToastContainer/>
+                <form onSubmit={handleSubmit} id="formulario" autoComplete="off">
+                    <div class="mb-3">
+                        <label for="nroFecha" class="form-label">Numero de Fecha</label>
+                        <input type="text" class="form-control" onChange={handleNroFechaChange} id="nroFecha" placeholder="3" aria-describedby="nroFecha"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nroZona" class="form-label">Numero de Zona</label>
+                        <input type="text" class="form-control" onChange={handleNroZonaChange} id="nroZona" placeholder="05" aria-describedby="nroZona"/>
+                    </div>
+                    <div class="mb-3">
+                        <label for="categoria" class="form-label">Categoria</label>
+                        <input type="text" class="form-control" onChange={handleCategoriaChange} id="categoria" placeholder="2002" aria-describedby="categoria"/>
+                    </div>
+                    <div class="mb-3">
+                        <p>Seleccione el campeonato</p> 
+                        <select class="form-select" id="campeonato" onChange={handleCampeonatoChange} aria-label="campeonato">
+                            <option>Seleccione un campeonato</option>
+                            {campeonatos.map(camp => {
+                                if (camp.tipo === "Zona"){
+                                    return (
+                                        <option value={camp.idCampeonato}>{camp.descripcion}</option>
+                                    );
+                                }
+                            })}
+                        </select>
+                    </div>
+                    {campeonato.tipo === "Zona" ?
+                        <div class="mb-3">
+                            <label for="fase" class="form-label">Fase</label>
+                            <input type="text" class="form-control" onChange={handleFaseChange} id="fase" placeholder="Semifinal" aria-describedby="fase"/>
+                        </div>
+                    :null}
+                    <div class="mb-3">
+                        <p>Seleccione el Club Local</p> 
+                        <select class="form-select" id="clubLocal" onChange={handleClubLocalChange} aria-label="clubLocal">
+                            <option value="-1">Seleccione un Club Local</option>
+                            {clubLocal.map(clubL => {
+                                return (
+                                    <option value={clubL.idClub}>{clubL.nombre}</option>
+                                );
+                            })}              
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <p>Seleccione el Club Visitante</p> 
+                        <select class="form-select" id="clubVisitante" onChange={handleClubVisitanteChange} aria-label="clubVisitante">
+                            <option value="-1">Seleccione un Club Visitante</option>
+                            {clubVisitante.map(clubV => {
+                                return (
+                                    <option value={clubV.idClub}>{clubV.nombre}</option>
+                                );
+                            })}              
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="control-label" for="fechaPartido">Fecha Inicio</label>
+                        <DatePicker selected={fechaPartido} onChange={(date) => setFechaPartido(date)} className="form-control" id="fechaPartido" name="fechaPartido"/>
+                    </div>
+                    <button type="submit" class="btn btn-success">Crear</button>
+                </form>
             </div>
-
-
-            <div class="mb-3">
-                <label for="nroZona" class="form-label">Numero de Zona</label>
-                <input type="text" class="form-control" onChange={handleNroZonaChange} id="nroZona" placeholder="05" aria-describedby="nroZona"/>
-            </div>
-
-            <div class="mb-3">
-                <label for="categoria" class="form-label">Categoria</label>
-                <input type="text" class="form-control" onChange={handleCategoriaChange} id="categoria" placeholder="2002" aria-describedby="categoria"/>
-            </div>
-
-            <div class="mb-3">
-                <p>Seleccione el campeonato</p> 
-                    <select class="form-select" id="campeonato" onChange={handleCampeonatoChange} aria-label="campeonato">
-                                    <option>Seleccione un campeonato</option>
-                                    {campeonatos.map(camp => {
-                                        if (camp.tipo === "Zona"){
-                                            return (
-                                                <option value={camp.idCampeonato}>{camp.descripcion}</option>
-                                            );
-                                        }
-                                        
-                                    })
-                                    }
-                    </select>
-            </div>
-
-            {campeonato.tipo === "Zona" ?
-                <div class="mb-3">
-                    <label for="fase" class="form-label">Fase</label>
-                    <input type="text" class="form-control" onChange={handleFaseChange} id="fase" placeholder="Semifinal" aria-describedby="fase"/>
-                </div>
-
-            :null}
-
-            
-
-            <div class="mb-3">
-                <p>Seleccione el Club Local</p> 
-                <select class="form-select" id="clubLocal" onChange={handleClubLocalChange} aria-label="clubLocal">
-                                    <option value="-1">Seleccione un Club Local</option>
-                                    {clubLocal.map(clubL => {
-                                        return (
-                                            <option value={clubL.idClub}>{clubL.nombre}</option>
-                                        );
-                                    })
-                                    }              
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <p>Seleccione el Club Visitante</p> 
-                <select class="form-select" id="clubVisitante" onChange={handleClubVisitanteChange} aria-label="clubVisitante">
-                                    <option value="-1">Seleccione un Club Visitante</option>
-                                    {clubVisitante.map(clubV => {
-                                        return (
-                                            <option value={clubV.idClub}>{clubV.nombre}</option>
-                                        );
-                                    })
-                                    }              
-                </select>
-            </div>
-
-            <div class="mb-3">
-                <label class="control-label" for="fechaPartido">Fecha Inicio</label>
-                <DatePicker selected={fechaPartido} onChange={(date) => setFechaPartido(date)} className="form-control" id="fechaPartido" name="fechaPartido"/>
-            </div>
-
-            <button type="submit" class="btn btn-success">Crear</button>
-            </form>
-
         </div>
-        
-    </div>
-        
     );
 }
 

@@ -17,8 +17,6 @@ function Login(){
     const [passwordAdmin, setPasswordAdmin] = useState("");
     let history = useHistory();
 
-    
-
     function handleIdJugadorChange(e){
         setIdJugador(e.target.value);
     }
@@ -32,24 +30,19 @@ function Login(){
                 } else {
                     if (response.data.rol === "jugador"){
                         axios.get("http://localhost:8080/getJugadorByIdUsuario?idUsuario="+idJugador)
-                        .then(response2 => {
-                            if (typeof response2.data === "string"){
-                                return toast.error(response.data);
-                            } else {
-                                history.push("/home/0/"+response2.data.idJugador);
-                            }
-                        })
+                            .then(response2 => {
+                                if (typeof response2.data === "string"){
+                                    return toast.error(response.data);
+                                } else {
+                                    history.push("/home/0/"+response2.data.idJugador);
+                                }
+                            })
                     } else {
                         return toast.error("Usted no es un jugador");
                     }
-                    
-
                 }
             })
-            
         document.getElementById("jugadorForm").reset();
-
-
     }
 
     function handleIdAdminChange(e){
@@ -73,36 +66,27 @@ function Login(){
 
     function handleIdRepresentanteSubmit(e){
         e.preventDefault();
-
         axios.get("http://localhost:8080/getUsuarioByIdAndPassword?idUsuario="+idRepresentante+"&password="+passwordRepre)
             .then(response => {
                 if (typeof response.data === "string"){
                     return toast.error(response.data);
                 } else {
                     if (response.data.rol === "Repre"){
-                        
                         axios.get("http://localhost:8080/getRepresentanteByIdUsuario?idUsuario="+idRepresentante)
-                        .then(response2 => {
-                            if (typeof response2.data === "string"){
-                                return toast.error(response.data);
-                            } else {
-                                console.log(response2.data);
-                                history.push("/home/2/"+response2.data.legajo);
-                            }
-                        })
+                            .then(response2 => {
+                                if (typeof response2.data === "string"){
+                                    return toast.error(response.data);
+                                } else {
+                                    console.log(response2.data);
+                                    history.push("/home/2/"+response2.data.legajo);
+                                }
+                            })
                     } else {
                         return toast.error("Usted no es un representante");
                     }
-                    
-
                 }
             })
-
             document.getElementById("representanteForm").reset();
-
-        
-        
-
     }
 
     function handlePasswordJugadorChange(e){
@@ -117,15 +101,10 @@ function Login(){
         setPasswordAdmin(e.target.value);
     }
 
-    
-    
-    
     return (
         <div className="fondo">
-            
             <div className="container ">
                 <ToastContainer/>
-                
                 <div className="row">
                     <div className="col-md-12 col-lg-4 mt-5"> 
                         <div class="card card-overflow bg-dark text-white h-100">
@@ -146,9 +125,7 @@ function Login(){
 
                                     </div>
                                 </form>
-
                             </div>
-
                         </div>
                     </div>
                     <div className="col-md-12 col-lg-4 mt-5"> 
@@ -190,12 +167,8 @@ function Login(){
                         </div>
                     </div>
                 </div>
-                
-            
             </div>
-            
         </div>
-        
     );
 }
 

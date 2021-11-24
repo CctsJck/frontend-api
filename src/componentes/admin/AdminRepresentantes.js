@@ -13,21 +13,15 @@ import {Button, Modal} from 'react-bootstrap';
 function AdminRepresentantes(){
     const [representantes, setRepresentantes] = useState([]);
     const [representantesConClub, setRepresentanteConClub] = useState([]);
-
     const [showEditRepresentanteModal, setEditRepresentanteModal] = useState(false);
-
     const handleClose = () => setEditRepresentanteModal(false);
     const handleShow = () => setEditRepresentanteModal(true);
-
     const [idRepre, setIdRepre] = useState(-1);
     
-    
-
     useEffect(() => {
         axios.get("http://localhost:8080/obtenerRepresentantes")
             .then(response => {
                 setRepresentantes(response.data);
-                console.log(response.data);
             })
             .catch(error => {
                 console.log(error);
@@ -48,11 +42,6 @@ function AdminRepresentantes(){
         })
     },[representantes])
 
-    useEffect(() => {
-        console.log(representantesConClub);
-    },[representantesConClub])
-
-    
 
     function modalModificarRepresentante(idRepresentante){
        handleShow();
@@ -75,7 +64,7 @@ function AdminRepresentantes(){
             </Modal.Body>
             
           </Modal>
-            )
+        )
     }
 
     function eliminarRepresentante(idRepresentante){
@@ -97,9 +86,7 @@ function AdminRepresentantes(){
 
     return (
         <>
-        
             <div className="container">
-            
                 {renderEditarRepresentanteModal()}
                 <ToastContainer/>
                 <div className="row table-responsive">
@@ -118,65 +105,46 @@ function AdminRepresentantes(){
                                 <div class="modal-body">
                                     <CrearRepresentante/>
                                 </div>
-                                
                             </div>
                         </div>
                     </div>
-
-                    
-
-                   
-
-                   
-
                     <table class="table mt-5">
                         <thead>
                             <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Tipo Documento</th>
-                            <th scope="col">DNI</th>
-                            <th scope="col">Club</th>
-                            <th scope="col">Estado</th>
-                            <th scope="col">Acciones</th>
-
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Tipo Documento</th>
+                                <th scope="col">DNI</th>
+                                <th scope="col">Club</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
                             {representantesConClub != [] ? representantesConClub.map(representante => {
-                                
                                 return(
                                     <>
-                                    <tr key={representante.representante.legajo}>
-                                        <td>{representante.representante.legajo}</td>
-                                        <td >{representante.representante.nombre}</td>
-                                        <td >{representante.representante.tipodocumento}</td>
-                                        <td >{representante.representante.dni}</td>
-                                        <td >{representante.club.nombre}</td>
-                                        <td >{representante.representante.eliminado === "noEliminado" ? <span className="badge bg-success">Activo</span> : <span className="badge bg-danger">Inactivo</span>}</td>
-
-
-                                        <td>
-                                            <div class="btn-group" role="group" aria-label="Basic example">
-                                                <button type="button" class="btn btn-warning" onClick={() => modalModificarRepresentante(representante.representante.legajo)}>Modificar</button>
-                                                <button type="button" class="btn btn-danger" onClick={() => eliminarRepresentante(representante.representante.legajo)}>Eliminar</button>
-                                            </div>
-                                        </td>
-
-                                    </tr>
-                                    
-                                    
+                                        <tr key={representante.representante.legajo}>
+                                            <td>{representante.representante.legajo}</td>
+                                            <td >{representante.representante.nombre}</td>
+                                            <td >{representante.representante.tipodocumento}</td>
+                                            <td >{representante.representante.dni}</td>
+                                            <td >{representante.club.nombre}</td>
+                                            <td >{representante.representante.eliminado === "noEliminado" ? <span className="badge bg-success">Activo</span> : <span className="badge bg-danger">Inactivo</span>}</td>
+                                            <td>
+                                                <div class="btn-group" role="group" aria-label="Basic example">
+                                                    <button type="button" class="btn btn-warning" onClick={() => modalModificarRepresentante(representante.representante.legajo)}>Modificar</button>
+                                                    <button type="button" class="btn btn-danger" onClick={() => eliminarRepresentante(representante.representante.legajo)}>Eliminar</button>
+                                                </div>
+                                            </td>
+                                        </tr>
                                     </>)
                             })
-                        
                             : null}
-                            
                         </tbody>
                     </table>
-
                 </div>
-
-        </div>
+            </div>
         </>
     )
 }

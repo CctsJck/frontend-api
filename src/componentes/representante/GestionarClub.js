@@ -15,7 +15,6 @@ function GestionarClub(){
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
         .then( response => {
             setClub(response.data);
-            console.log(response.data);
         })
         .catch(error => {
             console.log(error);
@@ -26,8 +25,6 @@ function GestionarClub(){
         setNombreClub(club.nombre);
         setDomicilioClub(club.direccion);
     },[club])
-
-
 
     function handleNombreChange(e){
         setNombreClub(e.target.value);
@@ -40,15 +37,13 @@ function GestionarClub(){
     function handleSubmit(e){
         e.preventDefault();
         axios.put("http://localhost:8080/modificarClub?idClub="+club.idClub+"&nombre="+nombreClub+"&direccion="+domicilioClub)
-        .then(response => {
-            return toast.success("Club modificado con exito");
-        })
-        .catch(error => {
-            return toast.error("Error al modificar el club");
-        })
+            .then(response => {
+                return toast.success("Club modificado con exito");
+            })
+            .catch(error => {
+                return toast.error("Error al modificar el club");
+            })
     }
-
-
 
     return (
         <div className="container">
@@ -67,7 +62,6 @@ function GestionarClub(){
                     <button type="submit" class="btn btn-success">Actualizar</button>
                 </form>
             </div>
-
         </div>
     )
 }

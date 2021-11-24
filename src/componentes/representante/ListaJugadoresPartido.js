@@ -14,13 +14,9 @@ function ListaJugadoresPartido(){
     const [partidoConEquipos,setPartidosConEquipos] = useState([]);
     const [jugadores,setJugadores] = useState([]);
     const [miembros, setMiembros] = useState([]);
-
     const [jugadoresDisponibles, setJugadoresDisponibles] = useState([]);
     const [jugadorDisponible, setJugadorDisponible] = useState("-1");
-
     let params = useParams();
-
-
 
     useEffect(()=>{
         const fetchData = async () => {
@@ -36,29 +32,24 @@ function ListaJugadoresPartido(){
     useEffect (() => {
         axios.get('http://localhost:8080/getPartidosByCampeonato?idCampeonato='+campeonato)
         .then(response => {
-            //Obtengo los partidos de un campeonato :D
             setPartidos(response.data);
-            
         })
     },[campeonato])
 
     useEffect(() => { 
         partidos.map( async part => {
-            //AXIOS HTTP GET ANIDADOS
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
-            .then(localResponse => {
-                axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
-                    .then(visitanteResponse => {
-                        let nuevo = {
-                            partido : part,
-                            clubL: localResponse.data,
-                            clubV:visitanteResponse.data
-                        }
-                        setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
-                    })
-            })
-            
-            
+                .then(localResponse => {
+                    axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
+                        .then(visitanteResponse => {
+                            let nuevo = {
+                                partido : part,
+                                clubL: localResponse.data,
+                                clubV:visitanteResponse.data
+                            }
+                            setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
+                        })
+                })
         })
     },[partidos])
 
@@ -77,11 +68,11 @@ function ListaJugadoresPartido(){
         if (miembros && miembros.map) {
             miembros.map(miembro => {
                 axios.get("http://localhost:8080/getJugadorPorId?idJugador="+miembro.idJugador)
-                .then(response2 => {
-                    if (response2.data.idClub == club.idClub){
-                        setJugadores(jugadores => ([...jugadores, response2.data]));
-                    }
-                })
+                    .then(response2 => {
+                        if (response2.data.idClub == club.idClub){
+                            setJugadores(jugadores => ([...jugadores, response2.data]));
+                        }
+                    })
             })
         }
     },[miembros])
@@ -94,10 +85,8 @@ function ListaJugadoresPartido(){
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
                                 setClubes(response.data);
-        });
+                            });
     }
-
-    
 
     function handlePartidoChange(e){
         setPartido(e.target.value);
@@ -121,39 +110,33 @@ function ListaJugadoresPartido(){
         }
     }
 
-
     return (
         <>
             <div className="container">
                 <ToastContainer/>
                 <div className="row">
                     <h2 className="text-center">Lista jugadores partido de {club.nombre}</h2>
-                    
                     <form>
                         <div class="col-sm-4 mb-3 mt-4">
                             <label for="camp-label" class="form-label">Seleccione el campeonato</label>
-                                <select class="form-select" id="campeonatos" onChange={handleCampChange} aria-label="campeonatos">
-                                    <option value="-1">Seleccione un campeonato</option>
-                                    {campeonatos.map(campeonato => {
-                                        return (
-                                            <option value={campeonato.idCampeonato}>{campeonato.descripcion}</option>
-                                        );
-                                    })
-                                    }
-                                </select>
+                            <select class="form-select" id="campeonatos" onChange={handleCampChange} aria-label="campeonatos">
+                                <option value="-1">Seleccione un campeonato</option>
+                                {campeonatos.map(campeonato => {
+                                    return (
+                                        <option value={campeonato.idCampeonato}>{campeonato.descripcion}</option>
+                                    );
+                                })}
+                            </select>
                         </div>
-                        
                         <div class="col-sm-4 mb-3">
                             <label for="camp-label" class="form-label">Seleccione el partido</label>
                             <select class="form-select" id="partidos" onChange={handlePartidoChange} aria-label= "partidos" >
-                            <option value="-1">Seleccione el partido</option>
-                                {partidoConEquipos.map(part => {
-                                    
-                                    return(
-                                        <option value={part.partido.idPartido}>{part.clubL.nombre} VS {part.clubV.nombre}</option>
-                                    )
-                                }
-                                )}
+                                <option value="-1">Seleccione el partido</option>
+                                    {partidoConEquipos.map(part => { 
+                                        return(
+                                            <option value={part.partido.idPartido}>{part.clubL.nombre} VS {part.clubV.nombre}</option>
+                                        )
+                                    })}
                             </select>
                         </div>
                     </form>
@@ -165,46 +148,41 @@ function ListaJugadoresPartido(){
                         <div class="modal fade" id="agregarJugadorPartido" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Agregar Jugador Partido</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form onSubmit={handleJugadorSubmit}>
-                                        <div class="col-6 mb-3">
-                                            <label for="camp-label" class="form-label">Seleccione el jugador</label>
-                                            <select class="form-select" id="jugadores" onChange={handleJugadorChange} aria-label= "partidos" >
-                                                <option value="-1">Seleccione el jugador</option>
-                                                {jugadoresDisponibles.length !== 0 ? jugadoresDisponibles.map(jugador => {
-                                                    return(
-                                                        <option value={jugador.idJugador}>{jugador.nombre} {jugador.apellido}</option>
-                                                    )
-                                                }
-                                                ) : null}
-                                            </select>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-success">Agregar</button>
-                                        </div>
-                                    </form>
-                                    
-                                </div>
-                                
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Agregar Jugador Partido</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form onSubmit={handleJugadorSubmit}>
+                                            <div class="col-6 mb-3">
+                                                <label for="camp-label" class="form-label">Seleccione el jugador</label>
+                                                <select class="form-select" id="jugadores" onChange={handleJugadorChange} aria-label= "partidos" >
+                                                    <option value="-1">Seleccione el jugador</option>
+                                                    {jugadoresDisponibles.length !== 0 ? jugadoresDisponibles.map(jugador => {
+                                                        return(
+                                                            <option value={jugador.idJugador}>{jugador.nombre} {jugador.apellido}</option>
+                                                        )
+                                                    }) : null}
+                                                </select>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-success">Agregar</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                         <table class="table">
                             <thead>
                                 <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Nombre </th>
-                                <th scope="col">Apellido</th>
-                                <th scope="col">Fecha nac</th>
-                                <th scope="col">Categoria</th>
-                                <th scope="col">Acciones</th>
-
-
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nombre </th>
+                                    <th scope="col">Apellido</th>
+                                    <th scope="col">Fecha nac</th>
+                                    <th scope="col">Categoria</th>
+                                    <th scope="col">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -217,19 +195,12 @@ function ListaJugadoresPartido(){
                                             <td>{jugador.fechaNacimiento.substring(0,10)}</td>
                                             <td>{jugador.categoria}</td>
                                             <td><button class="btn btn-danger" disabled>Eliminar</button></td>
-
                                         </tr>
-                                    )
-                                    
-                                }) : null}
-                                
-                                
+                                    )}) : null}
                             </tbody>
                         </table>
                     </div>
-                    
                 </div>
-
             </div>
         </>
     )

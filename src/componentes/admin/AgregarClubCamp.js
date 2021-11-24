@@ -10,26 +10,20 @@ function AgregarClubCamp(){
     const [campeonatos, setCampeonatos] = useState([]);
     const [clubes,setClubes] = useState([]);
 
-
     useEffect(()=>{
         const fetchData = async () => {
             const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
             setCampeonatos(campeonatosAPI.data);
-            console.log(campeonatosAPI.data)
         };
         fetchData();
     },[])
     
-
     function handleCampChange(e){
         setCampeonato(e.target.value);
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesDisponiblesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
                                 setClubes(response.data);
         });
-        
-
-
     }
 
     function handleClubChange(e){
@@ -59,40 +53,34 @@ function AgregarClubCamp(){
                     <form onSubmit={handleSubmit}>
                         <div class="mb-3">
                             <label for="camp-label" class="form-label">Seleccione el campeonato</label>
-                                <select class="form-select" id="campeonatos" onChange={handleCampChange} aria-label="campeonatos">
-                                    <option value="-1">Seleccione un campeonato</option>
-                                    {campeonatos.map(campeonato => {
+                            <select class="form-select" id="campeonatos" onChange={handleCampChange} aria-label="campeonatos">
+                                <option value="-1">Seleccione un campeonato</option>
+                                {campeonatos.map(campeonato => {
                                         return (
                                             <option value={campeonato.idCampeonato}>{campeonato.descripcion}</option>
                                         );
                                     })
-                                    }
-                                </select>
+                                }
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="camp-label" class="form-label">Seleccione el club</label>
-                                <select class="form-select" onChange={handleClubChange} aria-label="campeonatos">
-                                    <option value="-1">Seleccione un club</option>
-                                    {clubes.map(club => {
-                                        return (
-                                            <option value={club.idClub}>{club.nombre}</option>
-                                        );
-                                    })
-                                    }
-                                    
-                                </select>
+                            <select class="form-select" onChange={handleClubChange} aria-label="campeonatos">
+                                <option value="-1">Seleccione un club</option>
+                                {clubes.map(club => {
+                                    return (
+                                        <option value={club.idClub}>{club.nombre}</option>
+                                    );
+                                })
+                                }
+                            </select>
                         </div>
                         <div className="mb-2">
                             <button type="submit" className="btn btn-success">Agregar</button>
                         </div>
                     </form>
-
-                
-
+                </div>
             </div>
-             
-
-        </div>
         </div>
     )
 }

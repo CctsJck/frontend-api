@@ -11,25 +11,18 @@ function TablaPosiciones(){
     const [tablasConEquipos,setTablasConEquipos] = useState([]);
     var promesas = [];
 
-
-
-
     useEffect(() => {
-        /*axios.get("http://localhost:8080/getJugadoresClub?idClub=1")
-        .then(response => {console.log(response.data)})
-        .catch(error => console.log(error));*/
-
         axios.get("http://localhost:8080/obtenerCampeonatos")
-        .then( response => {
-            setCampeonatos(response.data);
-        })
+            .then( response => {
+                setCampeonatos(response.data);
+            })
     },[])
 
     useEffect(() => {
         axios.get("http://localhost:8080/obtenerTablaCampeonato?idCampeonato="+campeonatoSelect)
-        .then(response => {
-            setTablasEquipos(response.data);
-        })
+            .then(response => {
+                setTablasEquipos(response.data);
+            })
 
         campeonatos.map(camp => {
             if (camp.idCampeonato == campeonatoSelect){
@@ -39,48 +32,26 @@ function TablaPosiciones(){
     },[campeonatoSelect])
 
     useEffect(() => {
-
-        
         tablasEquipos.map( async tabla => {
             promesas.push(axios.get("http://localhost:8080/getClubPorId?idClub="+tabla.idClub)
-            .then(response =>{
-                let nuevo = {
-                    tablasEquipo: tabla,
-                    club : response.data
-                }
+                .then(response =>{
+                    let nuevo = {
+                        tablasEquipo: tabla,
+                        club : response.data
+                    }
 
-                setTablasConEquipos(tablasConEquipos => [...tablasConEquipos, nuevo]);
+                    setTablasConEquipos(tablasConEquipos => [...tablasConEquipos, nuevo]);
 
-            }));
+                }));
             
         })  
-
-        
-        
-
-        
     },[tablasEquipos])
-
-    useEffect(() => {
-        console.log(tablasConEquipos);
-    },[tablasConEquipos])
-
-    
-
-    
 
     function handleCampeonatoChange(e){
         setCampeonatoSelect(e.target.value);
         setTablasConEquipos([]);
     }
 
-
-    function tableBody(){
-        
-    }
-
-
-    //console.log(tablasConEquipos);
     return (
         <div>
             <div className="col-12">
@@ -99,7 +70,6 @@ function TablaPosiciones(){
                                         <option  value={campeonato.idCampeonato}>{campeonato.descripcion}</option>
                                     )
                                 })}
-                            
                             </select>
                         </div>
                     </div>
@@ -136,25 +106,14 @@ function TablaPosiciones(){
                                         <td>{tabla.tablasEquipo.diferenciaGoles}</td>
                                         <td>{tabla.tablasEquipo.puntos}</td>
                                         <td>{tabla.tablasEquipo.promedio}</td>
-
-
-
                                     </tr>
-                                    
                                 )
                             }) : null}
                         </tbody>
-                        
-                        </table>
-
-
-
+                    </table>
                 </div>
-
             </div>
         </div>
-        
-
     )
 
 }

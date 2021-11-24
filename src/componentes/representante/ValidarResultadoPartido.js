@@ -9,37 +9,28 @@ function ValidarResultadoPartido(){
     const [partidosValidar,setPartidosValidar] = useState([]);
     const [club,setClub] = useState({});
     const [partidosCompleto, setPartidosCompleto] = useState([]);
-    
-
     let params = useParams();
-    //Obtener cuantos goles hizo el equipo y quienes los hicieron
-    //Obtener las faltas que hizo el equipo y quienes las hicieron
 
     useEffect(() => {
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
-        .then( response => {
-            if (typeof response.data === 'string'){
-                toast.error(response.data);
-            } else {
-                setClub(response.data);                
-            }
-            
-        })
+            .then( response => {
+                if (typeof response.data === 'string'){
+                    toast.error(response.data);
+                } else {
+                    setClub(response.data);                
+                }
+            })
         
     },[])
 
     useEffect(() => {
-        
         axios.get("http://localhost:8080/partidosPendientesValidar?idClub="+club.idClub)
             .then(partidoResponse => {
                 if (typeof partidoResponse.data === 'string'){
                     toast.error(partidoResponse.data);
                 } else {
                     setPartidosValidar(partidoResponse.data);
-                    console.log(partidoResponse.data);
-                    
                 }
-                
             })
     },[club])
 
@@ -77,11 +68,17 @@ function ValidarResultadoPartido(){
     function validarPartido(idPartido){
         axios.put("http://localhost:8080/validarPartido?idClub="+club.idClub+" &idPartido="+idPartido)
             .then(response => {
-                toast.success("Partido validado con exito");
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    toast.success("Partido validado con exito");
+                }
             })
+        
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
     }
-
-    
 
     return(
         <>
@@ -132,7 +129,6 @@ function ValidarResultadoPartido(){
                                                             </div>
                                                         </div>
                                                     </div>
-
                                                 </th>
                                                 <td>{partido.partidoEntero.fechaPartido.substring(0,10)}</td>
                                                 <td>{partido.nombreCamp}</td>
@@ -145,9 +141,6 @@ function ValidarResultadoPartido(){
                                                 <td>
                                                     <button onClick={() => validarPartido(partido.partidoEntero.idPartido)} className="btn btn-success">Validar</button>
                                                 </td>
-    
-    
-    
                                             </tr>
                                         )
                                     } else if (club.idClub == partido.partidoEntero.visitante && partido.partidoEntero.convalidaVisitante == false) {
@@ -164,14 +157,13 @@ function ValidarResultadoPartido(){
                                                     <div class="modal fade" id={"partido"+partido.partidoEntero.idPartido} tabindex="-1" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title">Detalles partido</h5>
-                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <InfoPartido idPartido={partido.partidoEntero.idPartido}/>
-                                                            </div>
-                                                            
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title">Detalles partido</h5>
+                                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <InfoPartido idPartido={partido.partidoEntero.idPartido}/>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -187,23 +179,14 @@ function ValidarResultadoPartido(){
                                                 <td>
                                                     <button onClick={() => validarPartido(partido.partidoEntero.idPartido)} className="btn btn-success">Validar</button>
                                                 </td>
-    
-    
-    
                                             </tr>
                                         )
-                                    }                                
-                                    
-                                }) : null}
-                                
+                                    }}) : null}
                             </tbody>
                         </table>
                     </div>
-                    
                 </div>
-
             </div>
-
         </>
     )
     

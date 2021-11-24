@@ -12,7 +12,7 @@ import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
 import TablaPosiciones from './TablaPosiciones';
 import GestionarPersonalesRepresentante from './representante/GestionarPersonalesRepresentante';
-import GestionarPersonalesJugador from './jugador/gestionarPersonalesJugador'; 
+import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador'; 
 import CargarResultadoPartido from './admin/CargarResultadoPartido';
 import GestionarDatosSusJugadores from './representante/GestionarDatosSusJugadores';
 import AdminRepresentantes from './admin/AdminRepresentantes';
@@ -32,10 +32,9 @@ function Home(){
     useEffect(() => {
       if (params.idRol == 0){
         axios.get("http://localhost:8080/getJugadorPorId?idJugador="+params.idPersona)
-        .then(response => {
-            setJugador(response.data);
-            console.log(response.data);
-        })
+          .then(response => {
+              setJugador(response.data);
+          })
       } else if(params.idRol == 1){
         if(params.idPersona != "admin"){
           history.push("/login");
@@ -44,9 +43,7 @@ function Home(){
         axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+params.idPersona)
         .then(response => {
             setRepresentante(response.data);
-            console.log(response.data);
         })
-        
       } else {
         history.push("/login");
       }
@@ -64,32 +61,27 @@ function Home(){
             </div>
             <div className="col-9 mt-5">
               <div className="row mt-5 shadow-lg p-3 mb-5 bg-body rounded">
-              
                 {params.opcion == undefined && params.idRol == 0 ? 
                   <div>
                     <h2 className="text-center mb-3">Bienvenido {jugador.nombre} {jugador.apellido}!</h2>
                     <div className="d-flex justify-content-center">
                       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Football_iu_1996.jpg/1200px-Football_iu_1996.jpg" className="img-thumbnail "/>
-
                     </div>
                   </div>
-                  : null}
+                : null}
                 {params.opcion == undefined && params.idRol == 1 ? 
                   <div>
                     <h2 className="text-center mb-3">Bienvenido Administrador!</h2>
                     <div className="d-flex justify-content-center">
                       <img src="https://www.unir.net/wp-content/uploads/2021/06/beautiful-male-computer-engineer-and-scientists-create-neural-network-picture-id1182697690.jpg" className="img-thumbnail "/>
-
                     </div>
                   </div>
                 : null}
                 {params.opcion == undefined && params.idRol == 2 ? 
-                
                   <div>
                     <h2 className="text-center mb-3">Bienvenido {representante.nombre} {representante.apellido}!</h2>
                     <div className="d-flex justify-content-center">
                       <img src="https://img.freepik.com/foto-gratis/concepto-hombres-negocios-apreton-manos_53876-31214.jpg?size=626&ext=jpg" className="img-thumbnail "/>
-
                     </div>
                   </div> 
                 : null}
@@ -109,13 +101,8 @@ function Home(){
                 {params.opcion == "listaJugadoresPartido" ? <ListaJugadoresPartido/> : null}
                 {params.opcion == "consultarMisEstadisticas" ? <ConsultarEstadisticasJugador idJugador = {jugador.idJugador}/> : null}
 
-
-                
-
-
               </div>
             </div>
-          
           </div>
         </div>
       </div>
