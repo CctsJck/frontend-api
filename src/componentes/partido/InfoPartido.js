@@ -9,6 +9,8 @@ function InfoPartido(props){
     const [partidoDetalles, setPartidoDetalles] = useState([]);
     const [golesDetalles, setGolesDetalles] = useState([]);
     const [faltasDetalles, setFaltasDetalles] = useState([]);
+    const [miembros, setMiembros] = useState([]);
+    const [miembrosDetalle, setMiembrosDetalles] = useState([]);
 
     useEffect(() => {
         async function fetchData() {
@@ -39,6 +41,17 @@ function InfoPartido(props){
                         setFaltas(response.data);
                     }
                 })
+
+            await axios.get("http://localhost:8080/getIngresosEgresosPartido?idPartido="+props.idPartido)
+                .then(response => {
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setMiembros(response.data);
+                    }
+                })
+
+
         }
 
         fetchData();
@@ -84,6 +97,29 @@ function InfoPartido(props){
                 })
         })
     },[faltas])
+
+    useEffect(() => {
+        miembros.map(async miembro => {
+            let miembroDetalle = {
+                miembro:miembro,
+                jugador:{}
+            }
+            
+            await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+miembro.idJugador)
+                .then(response => {
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        miembroDetalle.jugador = response.data;
+                        setMiembrosDetalles(miembrosDetalles => [...miembrosDetalles,miembroDetalle]);
+                    }
+                })
+        })
+    },[miembros])
+
+    useEffect(() => {
+        console.log(miembrosDetalle);
+    },[miembrosDetalle])
  
     return (
         <>
@@ -179,6 +215,21 @@ function InfoPartido(props){
                             : null}
                         </tbody>
                     </table>
+                    <div>
+                        <h2>Ingresos y egresos</h2> 
+                    </div>
+                    {miembrosDetalle.length !== 0 ?
+                        miembrosDetalle.map(miembroEsp => {
+                            return (
+                                <>
+                                    <p>Jugador: {miembroEsp.jugador.nombre} {miembroEsp.jugador.apellido}  {miembroEsp.miembro.ingreso != null ? <> - Ingreso Minuto {miembroEsp.miembro.ingreso}</>:null}  {miembroEsp.miembro.egreso != null ? <>- Egreso Minuto {miembroEsp.miembro.egreso}</>:null}</p>
+                                </>
+                            )
+                        
+                        }) 
+                        
+                        
+                    : null}
                 </div>
             </div>    
         </>
