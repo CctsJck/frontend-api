@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios, { Axios } from 'axios';
+import { toast } from 'react-toastify';
 
 function InfoPartido(props){
     const [partido,setPartido] = useState([]);
@@ -13,20 +14,31 @@ function InfoPartido(props){
         async function fetchData() {
             await axios.get("http://localhost:8080/getPartidoById?idPartido="+props.idPartido)
             .then(response => {
-                setPartido(response.data); 
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setPartido(response.data); 
+                }
 
             })
 
             await axios.get("http://localhost:8080/getGolesPartido?idPartido="+props.idPartido)
                 .then(response => {
-                    setGoles(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setGoles(response.data);
+                    }
                 })
 
             await axios.get("http://localhost:8080/getFaltasPartido?idPartido="+props.idPartido)
-            .then(response => {
-                setFaltas(response.data);
-
-            })
+                .then(response => {
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setFaltas(response.data);
+                    }
+                })
         }
 
         fetchData();
@@ -41,10 +53,16 @@ function InfoPartido(props){
             
             await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+gol.idJugador)
                 .then(response => {
-                    golDetalle.jugador = response.data;
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        golDetalle.jugador = response.data;
+                        setGolesDetalles(golesDetalles => [...golesDetalles,golDetalle]);
+                    }
+                    
                 })
 
-            setGolesDetalles(golesDetalles => [...golesDetalles,golDetalle]);
+            
         })
     },[goles])
 
@@ -57,11 +75,13 @@ function InfoPartido(props){
             
             await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+falta.idJugador)
                 .then(response => {
-                    faltaDetalle.jugador = response.data;
-                    
-                    
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        faltaDetalle.jugador = response.data;
+                        setFaltasDetalles(faltasDetalles => [...faltasDetalles,faltaDetalle]);
+                    }
                 })
-            setFaltasDetalles(faltasDetalles => [...faltasDetalles,faltaDetalle]);
         })
     },[faltas])
  

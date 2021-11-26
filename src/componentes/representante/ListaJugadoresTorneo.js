@@ -17,7 +17,11 @@ function ListaJugadoresTorneo(){
     useEffect(() => {
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
             .then(res => {
-                setClub(res.data);
+                if (typeof res.data === "string"){
+                    return toast.error(res.data);
+                } else {
+                    setClub(res.data);
+                }
             })
     },[])
 
@@ -25,7 +29,11 @@ function ListaJugadoresTorneo(){
         if (club !== {}){
             axios.get("http://localhost:8080/getCampeonatosByIdClub?idClub="+club.idClub)
             .then(res => {
-                setCampeonatos(res.data);
+                if (typeof res.data === "string"){
+                    return toast.error(res.data);
+                } else {
+                    setCampeonatos(res.data);
+                }
             })
         }
         
@@ -46,16 +54,18 @@ function ListaJugadoresTorneo(){
         jugadores.map(async jugador => {
             await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugador.idJugador)
                 .then(res => {
-                    let detalle = {
-                        jugadorTorneo: jugador,
-                        jugadorDetalle:res.data
+                    if (typeof res.data === "string"){
+                        return toast.error(res.data);
+                    } else {
+                        let detalle = {
+                            jugadorTorneo: jugador,
+                            jugadorDetalle:res.data
+                        }
+                        setJugadoresDetalles(jugadoresDetalles => [...jugadoresDetalles,detalle]);
                     }
-                    setJugadoresDetalles(jugadoresDetalles => [...jugadoresDetalles,detalle]);
                 })
         })
     },[jugadores])
-
-
 
 
     function handleCampChange(e){

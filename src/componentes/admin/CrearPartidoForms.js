@@ -36,8 +36,13 @@ function CrearPartidoForms () {
     useEffect(()=>{
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatosSelect)
         .then(response => {
-            setClubLocal(response.data);
-            setClubVisitante(response.data);
+            if (typeof response.data === "string"){
+                return toast.error(response.data);
+            } else {
+                setClubLocal(response.data); 
+                setClubVisitante(response.data);
+            }
+            
         });
 
         campeonatos.forEach(camp => {
@@ -81,7 +86,7 @@ function CrearPartidoForms () {
         e.preventDefault();
         axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&categoria='+categoria+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect+'&fase='+fase)
             .then(res => {
-                if (typeof res.data === 'string'){
+                if (res.data !== ""){
                     return toast.error(res.data);
                 } else {
                     return toast.success("Partido creado con exito");

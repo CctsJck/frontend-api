@@ -36,7 +36,11 @@ function CrearCampeonatoForms(){
         e.preventDefault();
         axios.post('http://localhost:8080/crearCampeonato?descripcion='+descripcion+'&fechaInicio='+fechaInicio+'&fechaFin='+fechaFin+'&tipo='+tipoTorneo+'&categoria='+categoria)
             .then(res => {
-                return toast.success("Campeonato creado con exito");
+                if (res.data !== ""){
+                    return toast.error(res.data);
+                } else {
+                    return toast.success("Campeonato creado con exito");
+                }
             });
             
         document.getElementById("formulario").reset();

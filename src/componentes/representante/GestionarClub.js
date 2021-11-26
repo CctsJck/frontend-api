@@ -13,12 +13,13 @@ function GestionarClub(){
 
     useEffect(() => {
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
-        .then( response => {
-            setClub(response.data);
-        })
-        .catch(error => {
-            console.log(error);
-        })
+            .then( response => {
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setClub(response.data);
+                }
+            })
     },[])
 
     useEffect(() => {
@@ -38,11 +39,13 @@ function GestionarClub(){
         e.preventDefault();
         axios.put("http://localhost:8080/modificarClub?idClub="+club.idClub+"&nombre="+nombreClub+"&direccion="+domicilioClub)
             .then(response => {
-                return toast.success("Club modificado con exito");
+                if (response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Club modificado con exito");
+                }
             })
-            .catch(error => {
-                return toast.error("Error al modificar el club");
-            })
+            
     }
 
     return (

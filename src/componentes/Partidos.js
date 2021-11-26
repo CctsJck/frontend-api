@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import axios from 'axios';
 import MenuBar from './MenuBar';
-import { toast } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import InfoPartido from './partido/InfoPartido';
 
 
@@ -22,7 +23,6 @@ function Partidos(){
         axios.get("http://localhost:8080/getPartidosTorneo?idCampeonato="+campeonatoSelect)
             .then(response => {
                 setPartidos(response.data);
-                
             })
     },[campeonatoSelect])
 
@@ -68,6 +68,7 @@ function Partidos(){
                 <MenuBar/>
             </div>
             <div className="container mt-4">
+                <ToastContainer/>
                 <div className="row shadow-lg p-3 mb-5 bg-body rounded">
                     <h2 className="text-center">Partidos</h2>
                     <div className="col-4 mt-3">

@@ -22,12 +22,13 @@ function GestionarPersonalesRepresentante(props){
             setIdRepre(params.idPersona);
             axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+params.idPersona)
                 .then( response => {
-                    setRepresentante(response.data);
-                    console.log(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setRepresentante(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
             axios.get("http://localhost:8080/getUsuarioByIdRepresentante?idRepresentante="+params.idPersona)
                 .then(userResponse => {
                     if (typeof userResponse.data === "string"){
@@ -40,12 +41,13 @@ function GestionarPersonalesRepresentante(props){
             setIdRepre(props.id);
             axios.get("http://localhost:8080/getRepresentantePorId?idRepresentante="+props.id)
                 .then( response => {
-                    setRepresentante(response.data);
-                    console.log(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setRepresentante(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
 
             axios.get("http://localhost:8080/getUsuarioByIdRepresentante?idRepresentante="+props.id)
                 .then(userResponse => {
@@ -53,7 +55,6 @@ function GestionarPersonalesRepresentante(props){
                         return toast.error(userResponse.data);
                     } else {
                         setUsuario(userResponse.data);
-                        
                     }
                 })
         }
@@ -85,10 +86,11 @@ function GestionarPersonalesRepresentante(props){
         e.preventDefault();
         axios.put("http://localhost:8080/modificarRepresentante?idRepresentante="+idRepre+"&nombre="+nombre+"&DNI="+documento+"&tipoDocumento="+tipodocumento+"&idClub="+representante.idClub)
             .then(response => {
-                return toast.success("Representante modificado con exito");
-            })
-            .catch(error => {
-                return toast.error("Error al modificar los datos del representante");
+                if (response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Representante modificado con exito");
+                }
             })
         setTimeout(() => {
             window.location.reload(true);
@@ -103,7 +105,7 @@ function GestionarPersonalesRepresentante(props){
         e.preventDefault();
         axios.put("http://localhost:8080/updateReprePassword?idRepre="+idRepre+"&password="+userPass)
             .then(response => {
-                if (typeof response.data === "string" && response.data !== ""){
+                if (response.data !== ""){
                     return toast.error(response.data);
                 } else {
                     return toast.success("Datos de la cuenta modificados con exito");

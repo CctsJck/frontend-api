@@ -30,11 +30,13 @@ function ConsultarEstadisticasJugador (props){
         }else{
             axios.get("http://localhost:8080/obtenerCampeonatosDeUnJugador?idJugador="+props.idJugador)
                 .then( response => {
-                    setCampeonatos(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setCampeonatos(response.data); 
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
         }
     },[])
 
@@ -42,11 +44,13 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador === undefined){
             axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatoSelect)
                 .then( response => {
-                    setClubes(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setClubes(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
         }
     },[campeonatoSelect])
 
@@ -54,10 +58,11 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador === undefined){
             axios.get("http://localhost:8080/getJugadoresClub?idClub="+clubSelect)
                 .then( response => {
-                    setJugadores(response.data);
-                })
-                .catch(error => {
-                    console.log(error);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setJugadores(response.data);
+                    }
                 })
         }
     },[clubSelect])
@@ -66,20 +71,23 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador === undefined){
             axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugadorSelect)
                 .then( response => {
-                    setDatosJugador(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setDatosJugador(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
 
             axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+jugadorSelect+"&idCampeonato="+campeonatoSelect)
                 .then( response => {
-                    setEstadisticasJugador(response.data);
-                    console.log(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setEstadisticasJugador(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
         }
     },[jugadorSelect])
 
@@ -87,20 +95,23 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador !== undefined){
             axios.get("http://localhost:8080/getJugadorPorId?idJugador="+props.idJugador)
                 .then( response => {
-                    setDatosJugador(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setDatosJugador(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
 
             axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+props.idJugador+"&idCampeonato="+campeonatoSelect)
                 .then( response => {
-                    setEstadisticasJugador(response.data);
-                    console.log(response.data);
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        setEstadisticasJugador(response.data);
+                    }
                 })
-                .catch(error => {
-                    console.log(error);
-                })
+                
         }
     },[campeonatoSelect])
 

@@ -20,6 +20,8 @@ import ConsultarEstadisticasJugador from './admin/ConsultarEstadisticasJugador';
 import ValidarResultadoPartido from './representante/ValidarResultadoPartido';
 import ListaJugadoresPartido from './representante/ListaJugadoresPartido';
 import ListaJugadoresTorneo from './representante/ListaJugadoresTorneo';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 

@@ -25,31 +25,47 @@ function ListaJugadoresPartido(){
             setCampeonatos(campeonatosAPI.data);
 
             const clubAPI = await axios('http://localhost:8080/getClubPorIdRepresentante?idRepresentante='+params.idPersona);
-            setClub(clubAPI.data);
+            if (typeof clubAPI.data === "string"){
+                return toast.error(clubAPI.data);
+            } else {
+                setClub(clubAPI.data);
+            }
         };
         fetchData();
     },[])
 
     useEffect (() => {
         axios.get('http://localhost:8080/getPartidosByCampeonato?idCampeonato='+campeonato)
-        .then(response => {
-            setPartidos(response.data);
-        })
+            .then(response => {
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setPartidos(response.data);
+                }
+            })
     },[campeonato])
 
     useEffect(() => { 
         partidos.map( async part => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
                 .then(localResponse => {
-                    axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
-                        .then(visitanteResponse => {
-                            let nuevo = {
-                                partido : part,
-                                clubL: localResponse.data,
-                                clubV:visitanteResponse.data
-                            }
-                            setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
-                        })
+                    if (typeof localResponse === "string"){
+                        return toast.error(localResponse.data);
+                    } else {
+                        axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
+                            .then(visitanteResponse => {
+                                if (typeof visitanteResponse.data === "string"){
+                                    return toast.error(visitanteResponse.data);
+                                } else {
+                                    let nuevo = {
+                                        partido : part,
+                                        clubL: localResponse.data,
+                                        clubV:visitanteResponse.data
+                                    }
+                                    setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
+                                }
+                            })
+                    }
                 })
         })
     },[partidos])
@@ -57,11 +73,19 @@ function ListaJugadoresPartido(){
     useEffect(() => {
         axios.get("http://localhost:8080/obtenerJugadoresPartido?idPartido="+partido)
             .then(res => {
-                setMiembros(res.data);
+                if (typeof res.data === "string"){
+                    return toast.error(res.data);
+                } else {
+                    setMiembros(res.data);
+                }
             })
         axios.get("http://localhost:8080/getJugadoresHabilitadosClub?idCampeonato="+campeonato+"&idClub="+club.idClub)
             .then(response => {
-                setJugadoresDisponibles(response.data);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setJugadoresDisponibles(response.data);
+                }
             })
     },[partido,club])
 
@@ -70,8 +94,12 @@ function ListaJugadoresPartido(){
             miembros.map(miembro => {
                 axios.get("http://localhost:8080/getJugadorPorId?idJugador="+miembro.idJugador)
                     .then(response2 => {
-                        if (response2.data.idClub == club.idClub){
-                            setJugadores(jugadores => ([...jugadores, response2.data]));
+                        if (typeof response2.data === "string"){
+                            return toast.error(response2.data);
+                        } else {
+                            if (response2.data.idClub == club.idClub){
+                                setJugadores(jugadores => ([...jugadores, response2.data]));
+                            }
                         }
                     })
             })
@@ -82,11 +110,15 @@ function ListaJugadoresPartido(){
         jugadoresDisponibles.map(async jugador => {
             await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugador.idJugador)
                     .then(res => {
-                        let nuevo = {
-                            jugadorTorneo: jugador,
-                            jugador:res.data
+                        if (typeof res.data === "string"){
+                            return toast.error(res.data);
+                        } else {
+                            let nuevo = {
+                                jugadorTorneo: jugador,
+                                jugador:res.data
+                            }
+                            setJugadoresDetalles(jugadoresDetalles => ([...jugadoresDetalles, nuevo]));
                         }
-                        setJugadoresDetalles(jugadoresDetalles => ([...jugadoresDetalles, nuevo]));
                     })
         })
 
@@ -100,7 +132,11 @@ function ListaJugadoresPartido(){
         setCampeonato(e.target.value);
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
-                                setClubes(response.data);
+                                if (typeof response.data === "string"){
+                                    return toast.error(response.data);
+                                } else {
+                                    setClubes(response.data);
+                                }
                             });
     }
 

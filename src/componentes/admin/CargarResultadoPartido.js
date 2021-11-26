@@ -32,7 +32,11 @@ function CargarResultadoPartido(){
     useEffect (() => {
         axios.get('http://localhost:8080/getPartidosByCampeonato?idCampeonato='+campeonato)
         .then(response => {
-            setPartidos(response.data);
+            if (typeof response.data === "string"){
+                return toast.error(response.data);
+            } else {
+                setPartidos(response.data);
+            }
         })
     },[campeonato])
 
@@ -40,15 +44,24 @@ function CargarResultadoPartido(){
         partidos.map( async part => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
             .then(localResponse => {
-                axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
-                    .then(visitanteResponse => {
-                        let nuevo = {
-                            partido : part,
-                            clubL: localResponse.data,
-                            clubV:visitanteResponse.data
-                        }
-                        setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
-                    })
+                if (typeof localResponse === "string"){
+                    return toast.error(localResponse.data);
+                } else {
+                    axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
+                        .then(visitanteResponse => {
+                            if (typeof visitanteResponse.data === "string"){
+                                return toast.error(visitanteResponse.data);
+                            } else {
+                                let nuevo = {
+                                    partido : part,
+                                    clubL: localResponse.data,
+                                    clubV:visitanteResponse.data
+                                }
+                                setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
+                            }
+                        })
+                }
+                
             })
         })
     },[partidos])
@@ -57,7 +70,11 @@ function CargarResultadoPartido(){
         partidos.map( par => {
             axios.get("http://localhost:8080/obtenerJugadoresPartido?idPartido="+par.idPartido)
             .then(response => {
-                setlistaJugadoresPartido(response.data);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setlistaJugadoresPartido(response.data);
+                }
             })
         })
     },[partido])
@@ -66,7 +83,11 @@ function CargarResultadoPartido(){
         listaJugadoresPartido.map(jug => {
             axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jug.idJugador)
             .then(response => {
-                setJugadores(jugadores => ([...jugadores,response.data]));
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setJugadores(jugadores => ([...jugadores,response.data]));
+                }
             })
         })
     },[listaJugadoresPartido])
@@ -108,12 +129,20 @@ function CargarResultadoPartido(){
         if (tipoSuceso === "falta"){
             axios.post("http://localhost:8080/agregarFaltaJugador?idJugador="+jugador+"&idPartido="+partido+"&idCampeonato="+campeonato+"&minuto="+minuto+"&tipo="+tipoFalta)
             .then(response => {
-                return toast.success("Falta agregado con exito");
+                if (response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Falta agregado con exito");
+                }
             })
         } else {
             axios.post("http://localhost:8080/agregarGolJugador?idJugador="+jugador+"&idPartido="+partido+"&minuto="+minuto+"&tipo="+tipoGol)
             .then(response => {
-                return toast.success("Gol agregado con exito");
+                if (response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Gol agregado con exito");
+                }
             })
 
         }

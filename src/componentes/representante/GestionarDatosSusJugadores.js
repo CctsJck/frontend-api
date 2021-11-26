@@ -31,28 +31,34 @@ function GestionarPersonalesJugador(){
     useEffect(() => {
         axios.get("http://localhost:8080/getClubPorIdRepresentante?idRepresentante="+params.idPersona)
             .then( response => {
-                setClub(response.data);
-            })
-            .catch(error => {
-                console.log(error);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setClub(response.data);
+                }
             })
     },[])
 
     useEffect(()=>{
         const jugadores = axios.get('http://localhost:8080/getJugadoresClub?idClub='+club.idClub)
             .then(response => {
-                setJugadores(response.data);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setJugadores(response.data);
+                }
             });
     },[club])
 
     useEffect(() => {
         axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugadorSelect)
             .then( response => {
-                setJugador(response.data);
+                if (typeof response.data === "string"){
+                    return toast.error(response.data);
+                } else {
+                    setJugador(response.data);
+                }
                 
-            })
-            .catch(error => {
-                console.log(error);
             })
     },[jugadorSelect])
 
@@ -110,10 +116,11 @@ function GestionarPersonalesJugador(){
         e.preventDefault();
         axios.put("http://localhost:8080/modificarJugador?idJugador="+jugador.idJugador+"&tipoDocumento="+tipoDocumento+"&numeroDocumento="+documento+"&nombre="+nombre+"&apellido="+apellido+"&idClub="+club.idClub+"&fechaNac="+fechaNac)
             .then(response => {
-                return toast.success("Datos del jugador modificados con exito");
-            })
-            .catch(error => {
-                return toast.error("Error al modificar los datos del jugadores");
+                if (response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Datos del jugador modificados con exito");
+                }
             })
     }
 
@@ -121,7 +128,7 @@ function GestionarPersonalesJugador(){
         e.preventDefault();
         axios.post("http://localhost:8080/agregarJugador?tipoDocumento="+tipoDocumenentoCrear+"&documento="+documentoCrear+"&nombre="+nombreCrear+"&apellido="+apellidoCrear+"&idClub="+club.idClub+"&fichaje="+new Date()+"&fechaNacimiento="+fechaNacCrear)
             .then(response => {
-                if(typeof response.data === 'string'){
+                if(response.data !== ""){
                     return toast.error(response.data);
                 }else{
                     return toast.success("Jugador agregado con exito");
@@ -134,10 +141,11 @@ function GestionarPersonalesJugador(){
         e.preventDefault();
         axios.delete("http://localhost:8080/eliminarJugador?idJugador="+jugador.idJugador)
             .then(response => {
-                return toast.success("Jugador eliminado con exito");
-            })
-            .catch(error => {
-                return toast.error("Error al eliminar el jugador");
+                if(response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Jugador eliminado con exito");
+                }
             })
 
         setTimeout(() => {

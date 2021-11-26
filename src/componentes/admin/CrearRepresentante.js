@@ -38,11 +38,13 @@ function CrearRepresentante(){
         e.preventDefault();
         axios.post("http://localhost:8080/crearRepresentante?tipoDocumento="+tipodocumento+"&DNI="+documento+"&nombre="+nombre+"&idClub="+club)
             .then(response =>{
-                return toast.success("Representante creado con exito");
+                if (response.data !== ""){
+                    return toast.error(response.data);
+                } else {
+                    return toast.success("Representante creado con exito");
+                }
             })
-            .catch(error => {
-                return toast.error("Hubo un error al crear el representante");
-            })
+            
         
         setTimeout(() => {
             window.location.reload(true);

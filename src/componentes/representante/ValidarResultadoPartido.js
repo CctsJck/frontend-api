@@ -45,17 +45,29 @@ function ValidarResultadoPartido(){
 
             await axios.get("http://localhost:8080/getCampeonatoById?idCampeonato="+partido.idCampeonato)
                 .then(response => {
-                    nuevo.nombreCamp = response.data.descripcion;
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        nuevo.nombreCamp = response.data.descripcion;
+                    }
                 })
 
             await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.local)
                 .then(response => {
-                    nuevo.nombreClubLocal = response.data.nombre;
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        nuevo.nombreClubLocal = response.data.nombre;
+                    }
                 })
 
             await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.visitante)
                 .then(response => {
-                    nuevo.nombreClubVisitante = response.data.nombre;
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        nuevo.nombreClubVisitante = response.data.nombre;
+                    }
                 })
 
             setPartidosCompleto(partidosCompleto => ([...partidosCompleto,nuevo]));
@@ -68,7 +80,7 @@ function ValidarResultadoPartido(){
     function validarPartido(idPartido){
         axios.put("http://localhost:8080/validarPartido?idClub="+club.idClub+" &idPartido="+idPartido)
             .then(response => {
-                if (typeof response.data === "string"){
+                if (response.data !== ""){
                     return toast.error(response.data);
                 } else {
                     toast.success("Partido validado con exito");

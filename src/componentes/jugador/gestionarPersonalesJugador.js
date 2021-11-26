@@ -75,12 +75,16 @@ function GestionarPersonalesJugador(){
         e.preventDefault();
         axios.put("http://localhost:8080/modificarJugador?idJugador="+params.idPersona+"&tipoDocumento="+tipoDocumento+"&numeroDocumento="+documento+"&nombre="+nombre+"&apellido="+apellido+"&idClub="+jugador.idClub+"&fechaNac="+fechaNac)
             .then(response => {
-                if (typeof response.data === "string"){
+                if (response.data !== ""){
                     return toast.error(response.data);
                 } else {
                     return toast.success("Datos del jugador modificados con exito");
                 }
             })
+        
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
     }
 
     function handleUserPassChange(e){
@@ -91,12 +95,16 @@ function GestionarPersonalesJugador(){
         e.preventDefault();
         axios.put("http://localhost:8080/updateJugadorPassword?idJugador="+params.idPersona+"&password="+userPass)
             .then(response => {
-                if (typeof response.data === "string" && response.data !== ""){
+                if (response.data !== ""){
                     return toast.error(response.data);
                 } else {
                     return toast.success("Datos de la cuenta modificados con exito");
                 }
             })
+        
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
     }
 
 

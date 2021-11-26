@@ -10,7 +10,11 @@ function AgregarJugadorTorneo(props){
     useEffect(() => {
         axios.get("http://localhost:8080/getJugadoresDisponiblesTorneo?idClub="+props.idClub+"&idCampeonato="+props.idCampeonato)
             .then(res => {
-                setJugadores(res.data);
+                if (typeof res.data === "string"){
+                    return toast.error(res.data);
+                } else {
+                    setJugadores(res.data);
+                }
             })
     },[props])
 
@@ -22,7 +26,6 @@ function AgregarJugadorTorneo(props){
         e.preventDefault();
         axios.post("http://localhost:8080/agregarJugadorTorneo?idJugador="+jugador+"&idCampeonato="+props.idCampeonato)
             .then(res => {
-
                 if (res.data !== ""){
                     return toast.error(res.data);
                 } else {
