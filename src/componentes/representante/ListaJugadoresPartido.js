@@ -96,6 +96,7 @@ function ListaJugadoresPartido(){
     
 
     function handleCampChange(e){
+        setJugadores([]);
         setCampeonato(e.target.value);
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
@@ -104,6 +105,7 @@ function ListaJugadoresPartido(){
     }
 
     function handlePartidoChange(e){
+        setJugadores([]);
         setPartido(e.target.value);
     }
 
