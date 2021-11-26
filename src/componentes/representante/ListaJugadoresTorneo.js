@@ -32,7 +32,7 @@ function ListaJugadoresTorneo(){
     },[club])
 
     useEffect(() => {
-        axios.get("http://localhost:8080/getJugadoresHabilitados?idCampeonato="+idCampeonato)
+        axios.get("http://localhost:8080/getJugadoresHabilitadosClub?idCampeonato="+idCampeonato+"&idClub="+club.idClub)
             .then(res => {
                 if (typeof res.data === "string"){
                     return toast.error(res.data);

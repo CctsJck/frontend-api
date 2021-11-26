@@ -16,6 +16,7 @@ function ListaJugadoresPartido(){
     const [miembros, setMiembros] = useState([]);
     const [jugadoresDisponibles, setJugadoresDisponibles] = useState([]);
     const [jugadorDisponible, setJugadorDisponible] = useState("-1");
+    const [jugadoresDetalles,setJugadoresDetalles] = useState([]);
     let params = useParams();
 
     useEffect(()=>{
@@ -58,7 +59,7 @@ function ListaJugadoresPartido(){
             .then(res => {
                 setMiembros(res.data);
             })
-        axios.get("http://localhost:8080/getJugadoresDisponiblesPartido?idPartido="+partido+"&idClub="+club.idClub)
+        axios.get("http://localhost:8080/getJugadoresHabilitadosClub?idCampeonato="+campeonato+"&idClub="+club.idClub)
             .then(response => {
                 setJugadoresDisponibles(response.data);
             })
@@ -76,6 +77,20 @@ function ListaJugadoresPartido(){
             })
         }
     },[miembros])
+
+    useEffect(() => {
+        jugadoresDisponibles.map(async jugador => {
+            await axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugador.idJugador)
+                    .then(res => {
+                        let nuevo = {
+                            jugadorTorneo: jugador,
+                            jugador:res.data
+                        }
+                        setJugadoresDetalles(jugadoresDetalles => ([...jugadoresDetalles, nuevo]));
+                    })
+        })
+
+    },[jugadoresDisponibles])
 
     
     
@@ -101,7 +116,11 @@ function ListaJugadoresPartido(){
         if (jugadorDisponible != -1){
             axios.post("http://localhost:8080/agregarJugadorPartido?idPartido="+partido+"&idJugador="+jugadorDisponible+"&idClub="+club.idClub)
                 .then(response => {
-                    toast.success("Jugador agregado con exito");
+                    if (response.data !== ""){
+                        return toast.error(response.data)
+                    } else {
+                        return toast.success("Jugador agregado con exito");
+                    }
                 })
 
             setTimeout(() => {
@@ -158,9 +177,9 @@ function ListaJugadoresPartido(){
                                                 <label for="camp-label" class="form-label">Seleccione el jugador</label>
                                                 <select class="form-select" id="jugadores" onChange={handleJugadorChange} aria-label= "partidos" >
                                                     <option value="-1">Seleccione el jugador</option>
-                                                    {jugadoresDisponibles.length !== 0 ? jugadoresDisponibles.map(jugador => {
+                                                    {jugadoresDetalles.length !== 0 ? jugadoresDetalles.map(jugador => {
                                                         return(
-                                                            <option value={jugador.idJugador}>{jugador.nombre} {jugador.apellido}</option>
+                                                            <option value={jugador.jugador.idJugador}>{jugador.jugador.nombre} {jugador.jugador.apellido}</option>
                                                         )
                                                     }) : null}
                                                 </select>
