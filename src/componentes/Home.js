@@ -19,6 +19,7 @@ import AdminRepresentantes from './admin/AdminRepresentantes';
 import ConsultarEstadisticasJugador from './admin/ConsultarEstadisticasJugador';
 import ValidarResultadoPartido from './representante/ValidarResultadoPartido';
 import ListaJugadoresPartido from './representante/ListaJugadoresPartido';
+import ListaJugadoresTorneo from './representante/ListaJugadoresTorneo';
 
 
 
@@ -100,6 +101,7 @@ function Home(){
                 {params.opcion == "validarResultadoPartido" ? <ValidarResultadoPartido/> : null}
                 {params.opcion == "listaJugadoresPartido" ? <ListaJugadoresPartido/> : null}
                 {params.opcion == "consultarMisEstadisticas" ? <ConsultarEstadisticasJugador idJugador = {jugador.idJugador}/> : null}
+                {params.opcion == "listaJugadoresTorneo" ? <ListaJugadoresTorneo/> : null}
 
               </div>
             </div>

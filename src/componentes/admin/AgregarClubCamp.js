@@ -36,7 +36,6 @@ function AgregarClubCamp(){
         axios.post('http://localhost:8080/agregarClubCampeonato?idClub='+club+'&idCampeonato='+campeonato)
             .then(response => {
                 return toast.success("Club agregado al campeonato");
-
             })
 
         setTimeout(() => {

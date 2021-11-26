@@ -32,12 +32,17 @@ function AdminRepresentantes(){
         representantes.map(representante => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+representante.idClub)
                 .then(response => {
-                    let nuevo = {
-                        representante: representante,
-                        club: response.data
+                    if (typeof response.data === "string"){
+                        return toast.error(response.data);
+                    } else {
+                        let nuevo = {
+                            representante: representante,
+                            club: response.data
+                        }
+    
+                        setRepresentanteConClub(representantesConClub => ([...representantesConClub,nuevo]));
                     }
-
-                    setRepresentanteConClub(representantesConClub => ([...representantesConClub,nuevo]));
+                    
                 })
         })
     },[representantes])
@@ -71,11 +76,13 @@ function AdminRepresentantes(){
         if (window.confirm("¿Seguro desea eliminar al representante?")){
             axios.put("http://localhost:8080/eliminarRepresentante?idRepresentante="+idRepresentante)
                 .then(response => {
-                    return toast.success("Representante eliminado con exito");
+                    if (response.data !== ""){
+                        return toast.error(response.data);
+                    } else {
+                        return toast.success("Representante eliminado con exito");
+                    }
                 })
-                .catch(error => {
-                    return toast.error(error);
-                })
+                
         }
         setTimeout(() => {
             window.location.reload(true);

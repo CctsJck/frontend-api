@@ -18,7 +18,7 @@ function AdminCampeonatos(){
     function activarCampeonato(id){
         axios.put("http://localhost:8080/activarCampeonato?idCampeonato="+id)
             .then(response => {
-                if (typeof response.data === "string"){
+                if (response.data !== ""){
                     return toast.error(response.data);
                 } else {
                     return toast.success("Campeonato activado con exito");
