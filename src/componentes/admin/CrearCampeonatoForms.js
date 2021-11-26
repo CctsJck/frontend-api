@@ -44,9 +44,9 @@ function CrearCampeonatoForms(){
             });
             
         document.getElementById("formulario").reset();
-        setTimeout(() => {
-            window.location.reload(true);
-        },3000)
+         setTimeout(() => {
+             window.location.reload(true);
+         },3000)
     }
 
     return(

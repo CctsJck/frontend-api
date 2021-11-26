@@ -134,6 +134,10 @@ function GestionarPersonalesJugador(){
                     return toast.success("Jugador agregado con exito");
                 }
             })
+
+            setTimeout(() => {
+                window.location.reload(true);
+            },3000)
     }
 
 

@@ -12,7 +12,7 @@ import AdminCampeonatos from './admin/AdminCampeonatos';
 import GestionarClub from './representante/GestionarClub';
 import TablaPosiciones from './TablaPosiciones';
 import GestionarPersonalesRepresentante from './representante/GestionarPersonalesRepresentante';
-import GestionarPersonalesJugador from './jugador/GestionarPersonalesJugador'; 
+import GestionarPersonalesJugador from './jugador/gestionarPersonalesJugador'; 
 import CargarResultadoPartido from './admin/CargarResultadoPartido';
 import GestionarDatosSusJugadores from './representante/GestionarDatosSusJugadores';
 import AdminRepresentantes from './admin/AdminRepresentantes';

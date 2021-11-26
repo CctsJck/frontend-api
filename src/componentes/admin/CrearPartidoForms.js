@@ -84,7 +84,8 @@ function CrearPartidoForms () {
 
     function handleSubmit(e){
         e.preventDefault();
-        axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&categoria='+categoria+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect+'&fase='+fase)
+        console.log(campeonato);
+        axios.post('http://localhost:8080/crearPartido?nroFecha='+nroFecha+'&nroZona='+nroZona+'&clubLocal='+clubesSelectLocal+'&clubVisitante='+clubesSelectVisitante+'&fechaPartido='+fechaPartido+'&idCampeonato='+campeonatosSelect+'&fase='+fase)
             .then(res => {
                 if (res.data !== ""){
                     return toast.error(res.data);
@@ -110,10 +111,6 @@ function CrearPartidoForms () {
                         <input type="text" class="form-control" onChange={handleNroZonaChange} id="nroZona" placeholder="05" aria-describedby="nroZona"/>
                     </div>
                     <div class="mb-3">
-                        <label for="categoria" class="form-label">Categoria</label>
-                        <input type="text" class="form-control" onChange={handleCategoriaChange} id="categoria" placeholder="2002" aria-describedby="categoria"/>
-                    </div>
-                    <div class="mb-3">
                         <p>Seleccione el campeonato</p> 
                         <select class="form-select" id="campeonato" onChange={handleCampeonatoChange} aria-label="campeonato">
                             <option>Seleccione un campeonato</option>
@@ -126,12 +123,10 @@ function CrearPartidoForms () {
                             })}
                         </select>
                     </div>
-                    {campeonato.tipo === "Zona" ?
                         <div class="mb-3">
                             <label for="fase" class="form-label">Fase</label>
                             <input type="text" class="form-control" onChange={handleFaseChange} id="fase" placeholder="Semifinal" aria-describedby="fase"/>
                         </div>
-                    :null}
                     <div class="mb-3">
                         <p>Seleccione el Club Local</p> 
                         <select class="form-select" id="clubLocal" onChange={handleClubLocalChange} aria-label="clubLocal">
@@ -155,7 +150,7 @@ function CrearPartidoForms () {
                         </select>
                     </div>
                     <div class="mb-3">
-                        <label class="control-label" for="fechaPartido">Fecha Inicio</label>
+                        <label class="control-label" for="fechaPartido">Fecha del Partido</label>
                         <DatePicker selected={fechaPartido} onChange={(date) => setFechaPartido(date)} className="form-control" id="fechaPartido" name="fechaPartido"/>
                     </div>
                     <button type="submit" class="btn btn-success">Crear</button>
