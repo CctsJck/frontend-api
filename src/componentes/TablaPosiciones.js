@@ -1,14 +1,18 @@
 import axios from 'axios';
 import React, {useEffect, useState} from 'react';
+import { toast } from 'react-toastify';
 import MenuBar from './MenuBar';
 
 function TablaPosiciones(){
 
     const [campeonatos, setCampeonatos] = useState([]);
     const [campeonatoSelect, setCampeonatoSelect] = useState({});
+    const [campeonato, setCampeonato] = useState({});
     const [tablasEquipos,setTablasEquipos] = useState([]);
     const [nombreCamp,setNombreCamp] = useState("");
     const [tablasConEquipos,setTablasConEquipos] = useState([]);
+    const [fases,setFases] = useState([]);
+    const [faseSelect, setFaseSelect] = useState([]);
     var promesas = [];
 
     useEffect(() => {
@@ -24,11 +28,20 @@ function TablaPosiciones(){
                 setTablasEquipos(response.data);
             })
 
-        campeonatos.map(camp => {
-            if (camp.idCampeonato == campeonatoSelect){
-                setNombreCamp(camp.descripcion);
-            }
-        })
+        axios.get("http://localhost:8080/getCampeonatoById?idCampeonato="+campeonatoSelect)
+            .then(res =>{
+                if (typeof res.data === "string"){
+                    return toast.error(res.data);
+                } else {
+                    setCampeonato(res.data);
+                    console.log(res.data);
+                }
+            })
+
+        axios.get("http://localhost:8080/getFasesByIdCampeonato?idCampeonato="+campeonatoSelect)
+            .then(res =>{
+                setFases(res.data);
+            })
     },[campeonatoSelect])
 
     useEffect(() => {
@@ -52,6 +65,10 @@ function TablaPosiciones(){
         setTablasConEquipos([]);
     }
 
+    function handleFaseChange(e){
+        setFaseSelect(e.target.value);
+    }
+
     return (
         <div>
             <div className="col-12">
@@ -73,8 +90,23 @@ function TablaPosiciones(){
                             </select>
                         </div>
                     </div>
+                    {campeonato.tipo === "Zona" ? 
+                        <div className="col-4 mt-3">
+                            <p>Seleccione la fase</p>
+                            <div className="mb-3">
+                                <select class="form-select" onChange={handleFaseChange} aria-label="campeonatos">
+                                    <option value="-1">Seleccione un campeonato</option>
+                                    {fases.map(fase => {
+                                        return (
+                                            <option value={fase}>{fase}</option>
+                                        )
+                                    })}
+                                </select>
+                            </div>
+                        </div>
+                    : null}
                     <hr/>
-                    {nombreCamp != "" ? <h2 className="mt-2">Tabla de {nombreCamp}</h2> : null}
+                    {campeonato !== {} ? <h2 className="mt-2">Tabla de {campeonato.descripcion}</h2> : null}
                     <table class="table mt-2">
                         <thead>
                             <tr>

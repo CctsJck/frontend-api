@@ -135,7 +135,7 @@ function CargarResultadoPartido(){
                     return toast.success("Falta agregado con exito");
                 }
             })
-        } else {
+        } else if (tipoSuceso === "gol"){
             axios.post("http://localhost:8080/agregarGolJugador?idJugador="+jugador+"&idPartido="+partido+"&minuto="+minuto+"&tipo="+tipoGol)
             .then(response => {
                 if (response.data !== ""){
@@ -145,6 +145,25 @@ function CargarResultadoPartido(){
                 }
             })
 
+        } else if (tipoSuceso === "ingreso"){
+            axios.put("http://localhost:8080/ingresaJugadorPartido?idPartido="+partido+"&idJugador="+jugador+"&ingreso="+minuto)
+                .then(res => {
+                    if (res.data !== ""){
+                        return toast.error(res.data);
+                    } else {
+                        return toast.success("Ingreso agregado con exito");
+                    }
+                })
+
+        } else if (tipoSuceso === "egreso"){
+            axios.put("http://localhost:8080/egresaJugadorPartido?idPartido="+partido+"&idJugador="+jugador+"&ingreso="+minuto)
+                .then(res => {
+                    if (res.data !== ""){
+                        return toast.error(res.data);
+                    } else {
+                        return toast.success("Egreso agregado con exito");
+                    }
+                })
         }
 
         setTimeout(() => {
@@ -193,6 +212,14 @@ function CargarResultadoPartido(){
                         <input class="form-check-input" type="radio" name="agregarGol" value="gol" onChange={handleSucesoChange} id="agregarGol" checked={tipoSuceso === "gol"}/>
                         <label class="form-check-label" for="agregarGol">Agregar gol</label>
                     </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="ingreso" value="ingreso" onChange={handleSucesoChange} id="ingreso" checked={tipoSuceso === "ingreso"}/>
+                        <label class="form-check-label" for="ingreso">Ingreso jugador</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="egreso" value="egreso" onChange={handleSucesoChange} id="egreso" checked={tipoSuceso === "egreso"}/>
+                        <label class="form-check-label" for="egreso">Egreso jugador</label>
+                    </div>
                     <div class="mb-3">
                         <label for="nombreJugador" class="form-label">Nombre del Jugador</label>
                         <select class="form-select" id="jugadores" onChange={handleJugadorChange}aria-label= "partidos" >
@@ -216,7 +243,7 @@ function CargarResultadoPartido(){
                             <option value="a favor">A favor</option>
                             <option value="en contra">En contra</option>
                         </select>
-                    </div> : 
+                    </div> :[tipoSuceso === "falta" ?   
                     <div class="mb-3">
                         <label for="tipo" class="form-label">Tipo de falta</label>
                         <select class="form-select" onChange={handleTipoFaltaChange} aria-label= "tipoFalta" >
@@ -224,7 +251,7 @@ function CargarResultadoPartido(){
                             <option value="amarilla">Amarilla</option>
                             <option value="roja">Roja</option>
                         </select>
-                    </div>}
+                    </div> : null]}
                     <div className="mb-5">
                         <button type="submit" className="btn btn-success">Agregar</button>
                     </div>
