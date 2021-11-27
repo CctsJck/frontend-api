@@ -12,7 +12,7 @@ function CargarResultadoPartido(){
     const[campeonatos,setCampeonatos] = useState([]);
     const[campeonato,setCampeonato] = useState('-1');
     const[jugador,setJugador] = useState('-1');
-    const[listaJugadoresPartido,setlistaJugadoresPartido] = useState([]);
+    const [listaJugadoresPartido,setListaJugadoresPartido] = useState([]);
     const [partidoConEquipos,setPartidosConEquipos] = useState([]);
     const [partidoConJugadores,setPartidoConJugadores] = useState([]);
     const [jugadores, setJugadores] = useState([]);
@@ -67,30 +67,16 @@ function CargarResultadoPartido(){
     },[partidos])
 
     useEffect(() => {
-        partidos.map( par => {
-            axios.get("http://localhost:8080/obtenerJugadoresPartido?idPartido="+par.idPartido)
+        //partidos.map( async par => {
+        axios.get("http://localhost:8080/getJugadoresPartido?idPartido="+partido)
             .then(response => {
-                if (typeof response.data === "string"){
-                    return toast.error(response.data);
-                } else {
-                    setlistaJugadoresPartido(response.data);
-                }
-            })
+                setListaJugadoresPartido(response.data);
         })
+        //})
+        
     },[partido])
 
-    useEffect(() => {
-        listaJugadoresPartido.map(jug => {
-            axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jug.idJugador)
-            .then(response => {
-                if (typeof response.data === "string"){
-                    return toast.error(response.data);
-                } else {
-                    setJugadores(jugadores => ([...jugadores,response.data]));
-                }
-            })
-        })
-    },[listaJugadoresPartido])
+    
 
     
     function handleCampChange(e){
@@ -100,6 +86,8 @@ function CargarResultadoPartido(){
 
 
     function handlePartidoChange(e){
+        //setListaJugadoresPartido([]);
+       setJugadores([]);
         setPartido(e.target.value);
     }
 
@@ -224,7 +212,7 @@ function CargarResultadoPartido(){
                         <label for="nombreJugador" class="form-label">Nombre del Jugador</label>
                         <select class="form-select" id="jugadores" onChange={handleJugadorChange}aria-label= "partidos" >
                             <option value="-1">Jugadores</option>
-                            {jugadores.map(jug => {
+                            {listaJugadoresPartido.map(jug => {
                                 return(
                                     <option value={jug.idJugador}> {jug.nombre} {jug.apellido}</option>
                                 )}

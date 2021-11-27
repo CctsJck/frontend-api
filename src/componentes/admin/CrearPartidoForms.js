@@ -26,11 +26,13 @@ function CrearPartidoForms () {
     const [campeonatosSelect, setCampeonatosSelect] = useState([]);
     
     useEffect(()=>{
-        const fetchData = async () => {
-            const campeonatosAPI = await axios('http://localhost:8080/obtenerCampeonatos');
-            setCampeonatos(campeonatosAPI.data);
-        };
-        fetchData();
+        
+        axios.get('http://localhost:8080/obtenerCampeonatos')
+            .then(res => {
+                setCampeonatos(res.data);
+            })
+        
+        
     },[])
 
     useEffect(()=>{
@@ -114,13 +116,13 @@ function CrearPartidoForms () {
                         <p>Seleccione el campeonato</p> 
                         <select class="form-select" id="campeonato" onChange={handleCampeonatoChange} aria-label="campeonato">
                             <option>Seleccione un campeonato</option>
-                            {campeonatos.map(camp => {
+                            {campeonatos.length !== 0 ? campeonatos.map(camp => {
                                 if (camp.tipo === "Zona"){
                                     return (
                                         <option value={camp.idCampeonato}>{camp.descripcion}</option>
                                     );
                                 }
-                            })}
+                            }) : null}
                         </select>
                     </div>
                         <div class="mb-3">
