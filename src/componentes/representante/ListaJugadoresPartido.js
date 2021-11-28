@@ -25,11 +25,8 @@ function ListaJugadoresPartido(){
             setCampeonatos(campeonatosAPI.data);
 
             const clubAPI = await axios('http://localhost:8080/getClubPorIdRepresentante?idRepresentante='+params.idPersona);
-            if (typeof clubAPI.data === "string"){
-                return toast.error(clubAPI.data);
-            } else {
-                setClub(clubAPI.data);
-            }
+            setClub(clubAPI.data);
+            
         };
         fetchData();
     },[])
@@ -39,11 +36,8 @@ function ListaJugadoresPartido(){
         setPartidosConEquipos([]);
         axios.get('http://localhost:8080/getPartidosByCampeonato?idCampeonato='+campeonato)
             .then(response => {
-                if (typeof response.data === "string"){
-                    return toast.error(response.data);
-                } else {
-                    setPartidos(response.data);
-                }
+                setPartidos(response.data);
+                
             })
     },[campeonato])
 
