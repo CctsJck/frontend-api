@@ -12,7 +12,7 @@ function TablaPosiciones(){
     const [tablasEquipos,setTablasEquipos] = useState([]);
     const [nombreCamp,setNombreCamp] = useState("");
     const [tablasConEquipos,setTablasConEquipos] = useState([]);
-    const [tablaGrupos,setTablaGrupos] = useState([[]]);
+    const [tablaGrupos,setTablaGrupos] = useState([]);
    // const [fases,setFases] = useState([]);
    // const [faseSelect, setFaseSelect] = useState([]);
     var promesas = [];
@@ -44,6 +44,8 @@ function TablaPosiciones(){
             axios.get("http://localhost:8080/obtenerTablaCampeonato?idCampeonato="+campeonatoSelect)
             .then(response => {
                 setTablasEquipos(response.data);
+
+                
             })
         } else {
             axios.get("http://localhost:8080/getTablasGruposCamp?idCampeonato="+campeonatoSelect)
@@ -149,37 +151,45 @@ function TablaPosiciones(){
                            
                             
                             
-                            [tablaGrupos !== [[]] ? 
-                                tablaGrupos.map(tablaZona => {
-                                    //let tabla = tablaGrupos[0];
-                                    //console.log(tabla);
-                                    /*tablaZona.map((tabla,index) => {
-                                        let verde;
-                                        if (index === 0){
-                                            verde = "bg-success"
-                                        } else {
-                                            verde = "";
-                                        }
+                            [tablaGrupos.length !== 0 ? 
+                                tablaGrupos.map((tablaZona,index1) => {
+                                    
+                                    return (
                                         
+                                        tablaZona.map((tabla,index) => {
                                             
-                                        return (
-                                            <tr className={verde} key={index}>
-                                                <th>{index+1}</th>
-                                                <td>{tabla.idClub}</td>
-                                                <td>{tabla.cantidadJugados}</td>
-                                                <td>{tabla.cantidadganados}</td>
-                                                <td>{tabla.cantidadempatados}</td>
-                                                <td>{tabla.cantidadperdidos}</td>
-                                                <td>{tabla.golesFavor}</td>
-                                                <td>{tabla.golesContra}</td>
-                                                <td>{tabla.diferenciaGoles}</td>
-                                                <td>{tabla.puntos}</td>
-                                                <td>{tabla.promedio}</td>
-                                            </tr>
-                                        )    
+                                            let verde;
+                                            if (index === 0){
+                                                verde = "bg-success"
+                                            } else {
+                                                verde = "";
+                                            }
                                             
-                                          
-                                    })*/
+                                                
+                                            return (
+                                                <>
+                                                    {index === 0 ? <h2 className="mt-4">Zona {index1+1}</h2> : null}
+                                                    <tr className={verde} key={index}>
+                                                        <th>{index+1}</th>
+                                                        <td>{tabla.idClub}</td>
+                                                        <td>{tabla.cantidadJugados}</td>
+                                                        <td>{tabla.cantidadganados}</td>
+                                                        <td>{tabla.cantidadempatados}</td>
+                                                        <td>{tabla.cantidadperdidos}</td>
+                                                        <td>{tabla.golesFavor}</td>
+                                                        <td>{tabla.golesContra}</td>
+                                                        <td>{tabla.diferenciaGoles}</td>
+                                                        <td>{tabla.puntos}</td>
+                                                        <td>{tabla.promedio}</td>
+                                                    </tr>
+                                                </>
+                                            )    
+                                                
+                                              
+                                        })
+                                    )
+                                   // console.log(tablaZona);
+                                    
                                 })
                         
                             : null]
