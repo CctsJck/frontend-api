@@ -32,16 +32,13 @@ function AdminRepresentantes(){
         representantes.map(representante => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+representante.idClub)
                 .then(response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        let nuevo = {
-                            representante: representante,
-                            club: response.data
-                        }
-    
-                        setRepresentanteConClub(representantesConClub => ([...representantesConClub,nuevo]));
+                    let nuevo = {
+                        representante: representante,
+                        club: response.data
                     }
+
+                    setRepresentanteConClub(representantesConClub => ([...representantesConClub,nuevo]));
+                    
                     
                 })
         })

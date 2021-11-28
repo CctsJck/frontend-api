@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, {useEffect, useState} from 'react';
 import { toast } from 'react-toastify';
 import MenuBar from './MenuBar';
+import TablaGrupos from './TablaGrupos';
 
 function TablaPosiciones(){
 
@@ -11,8 +12,9 @@ function TablaPosiciones(){
     const [tablasEquipos,setTablasEquipos] = useState([]);
     const [nombreCamp,setNombreCamp] = useState("");
     const [tablasConEquipos,setTablasConEquipos] = useState([]);
-    const [fases,setFases] = useState([]);
-    const [faseSelect, setFaseSelect] = useState([]);
+    const [tablaGrupos,setTablaGrupos] = useState([[]]);
+   // const [fases,setFases] = useState([]);
+   // const [faseSelect, setFaseSelect] = useState([]);
     var promesas = [];
 
     useEffect(() => {
@@ -23,26 +25,34 @@ function TablaPosiciones(){
     },[])
 
     useEffect(() => {
-        axios.get("http://localhost:8080/obtenerTablaCampeonato?idCampeonato="+campeonatoSelect)
-            .then(response => {
-                setTablasEquipos(response.data);
-            })
+        
 
         axios.get("http://localhost:8080/getCampeonatoById?idCampeonato="+campeonatoSelect)
             .then(res =>{
-                if (typeof res.data === "string"){
-                    return toast.error(res.data);
-                } else {
-                    setCampeonato(res.data);
-                    console.log(res.data);
-                }
+                setCampeonato(res.data);
+
             })
 
-        axios.get("http://localhost:8080/getFasesByIdCampeonato?idCampeonato="+campeonatoSelect)
+        /*axios.get("http://localhost:8080/getFasesByIdCampeonato?idCampeonato="+campeonatoSelect)
             .then(res =>{
                 setFases(res.data);
-            })
+            })*/
     },[campeonatoSelect])
+
+    useEffect(() => {
+        if (campeonato.tipo === "Puntos"){
+            axios.get("http://localhost:8080/obtenerTablaCampeonato?idCampeonato="+campeonatoSelect)
+            .then(response => {
+                setTablasEquipos(response.data);
+            })
+        } else {
+            axios.get("http://localhost:8080/getTablasGruposCamp?idCampeonato="+campeonatoSelect)
+                .then(res => {
+                    setTablaGrupos(res.data);
+                })
+        }
+
+    },[campeonato])
 
     useEffect(() => {
         tablasEquipos.map( async tabla => {
@@ -65,9 +75,9 @@ function TablaPosiciones(){
         setTablasConEquipos([]);
     }
 
-    function handleFaseChange(e){
+    /*function handleFaseChange(e){
         setFaseSelect(e.target.value);
-    }
+    }*/
 
     return (
         <div>
@@ -90,22 +100,9 @@ function TablaPosiciones(){
                             </select>
                         </div>
                     </div>
-                    {campeonato.tipo === "Zona" ? 
-                        <div className="col-4 mt-3">
-                            <p>Seleccione la fase</p>
-                            <div className="mb-3">
-                                <select class="form-select" onChange={handleFaseChange} aria-label="campeonatos">
-                                    <option value="-1">Seleccione un campeonato</option>
-                                    {fases.map(fase => {
-                                        return (
-                                            <option value={fase}>{fase}</option>
-                                        )
-                                    })}
-                                </select>
-                            </div>
-                        </div>
-                    : null}
                     <hr/>
+                    {campeonatoSelect != {} ? <TablaGrupos idCampeonato={campeonatoSelect}/> : null}
+                    
                     {campeonato !== {} ? <h2 className="mt-2">Tabla de {campeonato.descripcion}</h2> : null}
                     <table class="table mt-2">
                         <thead>
@@ -124,9 +121,15 @@ function TablaPosiciones(){
                             </tr>
                         </thead>
                         <tbody>
-                            {tablasConEquipos != [] ? tablasConEquipos.map((tabla,index) => {
+                            {campeonato.tipo === "Puntos" ? [tablasConEquipos != [] ? tablasConEquipos.map((tabla,index) => {
+                                let verde;
+                                if (index === 0){
+                                    verde = "bg-success"
+                                } else {
+                                    verde = "";
+                                }
                                 return (
-                                    <tr key={tabla.tablasEquipo.idTabla}>
+                                    <tr className={verde} key={tabla.tablasEquipo.idTabla}>
                                         <th>{index+1}</th>
                                         <td>{tabla.club.nombre}</td>
                                         <td>{tabla.tablasEquipo.cantidadJugados}</td>
@@ -139,8 +142,49 @@ function TablaPosiciones(){
                                         <td>{tabla.tablasEquipo.puntos}</td>
                                         <td>{tabla.tablasEquipo.promedio}</td>
                                     </tr>
+                                    
+
                                 )
-                            }) : null}
+                            }) : null] : 
+                           
+                            
+                            
+                            [tablaGrupos !== [[]] ? 
+                                tablaGrupos.map(tablaZona => {
+                                    //let tabla = tablaGrupos[0];
+                                    //console.log(tabla);
+                                    /*tablaZona.map((tabla,index) => {
+                                        let verde;
+                                        if (index === 0){
+                                            verde = "bg-success"
+                                        } else {
+                                            verde = "";
+                                        }
+                                        
+                                            
+                                        return (
+                                            <tr className={verde} key={index}>
+                                                <th>{index+1}</th>
+                                                <td>{tabla.idClub}</td>
+                                                <td>{tabla.cantidadJugados}</td>
+                                                <td>{tabla.cantidadganados}</td>
+                                                <td>{tabla.cantidadempatados}</td>
+                                                <td>{tabla.cantidadperdidos}</td>
+                                                <td>{tabla.golesFavor}</td>
+                                                <td>{tabla.golesContra}</td>
+                                                <td>{tabla.diferenciaGoles}</td>
+                                                <td>{tabla.puntos}</td>
+                                                <td>{tabla.promedio}</td>
+                                            </tr>
+                                        )    
+                                            
+                                          
+                                    })*/
+                                })
+                        
+                            : null]
+                            
+                            }
                         </tbody>
                     </table>
                 </div>

@@ -31,36 +31,27 @@ function CargarResultadoPartido(){
 
     useEffect (() => {
         axios.get('http://localhost:8080/getPartidosByCampeonato?idCampeonato='+campeonato)
-        .then(response => {
-            if (typeof response.data === "string"){
-                return toast.error(response.data);
-            } else {
+            .then(response => {
                 setPartidos(response.data);
-            }
-        })
+                
+            })
     },[campeonato])
 
     useEffect(() => { 
         partidos.map( async part => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
             .then(localResponse => {
-                if (typeof localResponse === "string"){
-                    return toast.error(localResponse.data);
-                } else {
-                    axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
-                        .then(visitanteResponse => {
-                            if (typeof visitanteResponse.data === "string"){
-                                return toast.error(visitanteResponse.data);
-                            } else {
-                                let nuevo = {
-                                    partido : part,
-                                    clubL: localResponse.data,
-                                    clubV:visitanteResponse.data
-                                }
-                                setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
-                            }
-                        })
-                }
+                axios.get("http://localhost:8080/getClubPorId?idClub="+part.visitante)
+                    .then(visitanteResponse => {
+                        let nuevo = {
+                            partido : part,
+                            clubL: localResponse.data,
+                            clubV:visitanteResponse.data
+                        }
+                        setPartidosConEquipos(partidoConEquipos => ([...partidoConEquipos,nuevo]));
+                        
+                    })
+                
                 
             })
         })
@@ -185,8 +176,9 @@ function CargarResultadoPartido(){
                         <select class="form-select" id="partidos" onChange={handlePartidoChange}aria-label= "partidos" >
                             <option value="-1">Seleccione el partido</option>
                             {partidoConEquipos.map(part => {
+                                console.log(part);
                                 return(
-                                    <option value={part.partido.idPartido}>{part.clubL.nombre} VS {part.clubV.nombre}</option>
+                                    <option value={part.partido.idPartido}>{part.clubL.nombre} VS {part.clubV.nombre} - Fase {part.partido.fase}</option>
                                 )
                             }
                             )}

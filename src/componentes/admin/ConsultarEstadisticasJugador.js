@@ -30,11 +30,8 @@ function ConsultarEstadisticasJugador (props){
         }else{
             axios.get("http://localhost:8080/obtenerCampeonatosDeUnJugador?idJugador="+props.idJugador)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setCampeonatos(response.data); 
-                    }
+                    setCampeonatos(response.data); 
+                    
                 })
                 
         }
@@ -44,11 +41,7 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador === undefined){
             axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatoSelect)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setClubes(response.data);
-                    }
+                    setClubes(response.data);
                 })
                 
         }
@@ -58,11 +51,8 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador === undefined){
             axios.get("http://localhost:8080/getJugadoresClub?idClub="+clubSelect)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setJugadores(response.data);
-                    }
+                    setJugadores(response.data);
+                    
                 })
         }
     },[clubSelect])
@@ -71,21 +61,15 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador === undefined){
             axios.get("http://localhost:8080/getJugadorPorId?idJugador="+jugadorSelect)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setDatosJugador(response.data);
-                    }
+                    setDatosJugador(response.data);
+                    
                 })
                 
 
             axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+jugadorSelect+"&idCampeonato="+campeonatoSelect)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setEstadisticasJugador(response.data);
-                    }
+                    setEstadisticasJugador(response.data);
+                    
                 })
                 
         }
@@ -95,21 +79,15 @@ function ConsultarEstadisticasJugador (props){
         if (props.idJugador !== undefined){
             axios.get("http://localhost:8080/getJugadorPorId?idJugador="+props.idJugador)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setDatosJugador(response.data);
-                    }
+                    setDatosJugador(response.data);
+                    
                 })
                 
 
             axios.get("http://localhost:8080/getEstadisticaJugadorCampeonato?idJugador="+props.idJugador+"&idCampeonato="+campeonatoSelect)
                 .then( response => {
-                    if (typeof response.data === "string"){
-                        return toast.error(response.data);
-                    } else {
-                        setEstadisticasJugador(response.data);
-                    }
+                    setEstadisticasJugador(response.data);
+                    
                 })
                 
         }

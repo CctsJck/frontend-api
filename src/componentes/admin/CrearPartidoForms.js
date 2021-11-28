@@ -37,15 +37,12 @@ function CrearPartidoForms () {
 
     useEffect(()=>{
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+campeonatosSelect)
-        .then(response => {
-            if (typeof response.data === "string"){
-                return toast.error(response.data);
-            } else {
+            .then(response => {
                 setClubLocal(response.data); 
                 setClubVisitante(response.data);
-            }
-            
-        });
+                
+                
+            });
 
         campeonatos.forEach(camp => {
             if (camp.idCampeonato == campeonatosSelect){
