@@ -42,11 +42,7 @@ function ListaJugadoresPartido(){
     },[campeonato])
 
     useEffect(() => { 
-        setJugadorDisponible("-1"); 
-        setJugadoresDetalles([]);
-        setJugadoresDisponibles([]);
-        setJugadores([]);
-        setMiembros([]);
+        
         partidos.map( async part => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
                 .then(localResponse => {
@@ -70,7 +66,7 @@ function ListaJugadoresPartido(){
                 setMiembros(res.data);
                 
             })
-        axios.get("http://localhost:8080/getJugadoresHabilitadosClub?idCampeonato="+campeonato+"&idClub="+club.idClub)
+        axios.get("http://localhost:8080/getJugadorAgregarAPartido?idCampeonato="+campeonato+"&idPartido="+partido+"&idClub="+club.idClub)
             .then(response => {
                 setJugadoresDisponibles(response.data); 
                 
@@ -110,7 +106,11 @@ function ListaJugadoresPartido(){
     
 
     function handleCampChange(e){
+        setJugadorDisponible("-1"); 
+        setJugadoresDetalles([]);
+        setJugadoresDisponibles([]);
         setJugadores([]);
+        setMiembros([]);
         setCampeonato(e.target.value);
         const clubesAPI = axios.get('http://localhost:8080/obtenerClubesCampeonato?idCampeonato='+e.target.value)
                             .then(response => {
@@ -120,12 +120,32 @@ function ListaJugadoresPartido(){
     }
 
     function handlePartidoChange(e){
+        setJugadorDisponible("-1"); 
+        setJugadoresDetalles([]);
+        setJugadoresDisponibles([]);
         setJugadores([]);
+        setMiembros([]);
         setPartido(e.target.value);
     }
 
     function handleJugadorChange(e){
         setJugadorDisponible(e.target.value);
+    }
+
+    function handleEliminar(idJugador){
+
+        axios.delete("http://localhost:8080/eliminarMiembro?idPartido="+partido+"&idJugador="+idJugador)
+            .then(response =>{
+                if(response.data !== ""){
+                    return toast.error(response.data)
+                }else{
+                    return toast.success("Jugador eliminado con exito");
+                }
+            })
+
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
     }
 
     function handleJugadorSubmit(e){
@@ -230,7 +250,7 @@ function ListaJugadoresPartido(){
                                             <td>{jugador.apellido}</td>
                                             <td>{jugador.fechaNacimiento.substring(0,10)}</td>
                                             <td>{jugador.categoria}</td>
-                                            <td><button class="btn btn-danger" disabled>Eliminar</button></td>
+                                            <td><button class="btn btn-danger" onClick={() => handleEliminar(jugador.idJugador)} >Eliminar</button></td>
                                         </tr>
                                     )}) : null}
                             </tbody>
