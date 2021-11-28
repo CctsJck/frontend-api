@@ -45,6 +45,10 @@ function GestionarClub(){
                     return toast.success("Club modificado con exito");
                 }
             })
+
+        setTimeout(() => {
+            window.location.reload(true);
+        },3000)
             
     }
 

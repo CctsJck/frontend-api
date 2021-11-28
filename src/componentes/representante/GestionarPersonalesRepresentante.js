@@ -111,6 +111,10 @@ function GestionarPersonalesRepresentante(props){
                     return toast.success("Datos de la cuenta modificados con exito");
                 }
             })
+
+            setTimeout(() => {
+                window.location.reload(true);
+            },3000)
     }
 
     return (

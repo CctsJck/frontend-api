@@ -8,7 +8,7 @@ function AgregarJugadorTorneo(props){
     const [jugador,setJugador] = useState(-1);
 
     useEffect(() => {
-        axios.get("http://localhost:8080/getJugadoresDisponiblesTorneo?idClub="+props.idClub+"&idCampeonato="+props.idCampeonato)
+        axios.get("http://localhost:8080/getJugadoresAgregarATorneo?idCampeonato="+props.idCampeonato+"&idClub="+props.idClub)
             .then(res => {
                 if (typeof res.data === "string"){
                     return toast.error(res.data);

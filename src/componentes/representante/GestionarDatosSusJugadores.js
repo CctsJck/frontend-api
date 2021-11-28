@@ -16,7 +16,7 @@ function GestionarPersonalesJugador(){
     const [tipoDocumento, setTipoDocumento] = useState("");
     const [documento, setDocumento] = useState("");
     const [club, setClub]=useState({});
-    const [fechaNac, setFechaNac] = useState(new Date());
+    const [fechaNac, setFechaNac] = useState();
     const [jugador, setJugador] = useState({});
     const [jugadoresAPI, setjugadoresAPI] = useState([]);
     const [jugadores,setJugadores] = useState([]);
@@ -45,6 +45,7 @@ function GestionarPersonalesJugador(){
                 if (typeof response.data === "string"){
                     return toast.error(response.data);
                 } else {
+                    console.log(response.data);
                     setJugadores(response.data);
                 }
             });
@@ -56,6 +57,7 @@ function GestionarPersonalesJugador(){
                 if (typeof response.data === "string"){
                     return toast.error(response.data);
                 } else {
+                    console.log(response.data);
                     setJugador(response.data);
                 }
                 
@@ -67,6 +69,14 @@ function GestionarPersonalesJugador(){
         setApellido(jugador.apellido)
         setTipoDocumento(jugador.tipoDocumento);
         setDocumento(jugador.numeroDocumento);
+         var fecha = jugador.fechaNacimiento;
+        fecha = Date.parse(fecha);
+        var fechaBuena = new Date(fecha)
+        console.log(fecha);
+        console.log(fechaBuena);
+        //setFechaNac(fechaBuena);
+        //setFechaNac(new Date(jugador.fechaNacimiento));
+
     },[jugador])
 
     function handleNombreChange(e){
@@ -122,6 +132,10 @@ function GestionarPersonalesJugador(){
                     return toast.success("Datos del jugador modificados con exito");
                 }
             })
+
+            setTimeout(() => {
+                window.location.reload(true);
+            },3000)
     }
 
     function handleSubmitCrear(e){
@@ -135,9 +149,9 @@ function GestionarPersonalesJugador(){
                 }
             })
 
-            setTimeout(() => {
-                window.location.reload(true);
-            },3000)
+             setTimeout(() => {
+                 window.location.reload(true);
+             },3000)
     }
 
 
@@ -244,10 +258,12 @@ function GestionarPersonalesJugador(){
                         <select class="form-select" id="jugador" onChange={handleJugadorChange} aria-label="campeonato">
                             <option>Seleccione jugador</option>
                             {jugadores.map(jugadores => {
-                                return (
-                                    <option value={jugadores.idJugador}>{jugadores.nombre} {jugadores.apellido}</option>
-                                );
-                            })}
+                                if (jugadores.eliminado === "noEliminado"){
+                                    return (
+                                        <option value={jugadores.idJugador}>{jugadores.nombre} {jugadores.apellido}</option>
+                                    );
+                                }})
+                            }
                         </select>
                     </div>
                     <div class="mb-3">
@@ -259,7 +275,7 @@ function GestionarPersonalesJugador(){
                         <input type="text" onChange={handleApellidoChange} value = {apellido}  class="form-control" id="apellido" aria-describedby="apellido" placeholder="Perez"/>
                     </div>
                     <div class="mb-3">
-                        <label class="control-label" for="fechaPartido">Fecha Inicio</label>
+                        <label class="control-label" for="fechaPartido">Fecha de Nacimiento</label>
                         <DatePicker selected={fechaNac} onChange={(date) => setFechaNac(date)} className="form-control" id="fechaNac" name="fechaNac"/>
                     </div>
                     <div class="mb-3">

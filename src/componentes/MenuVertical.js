@@ -42,8 +42,6 @@ function MenuVertical(){
                     <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/listaJugadoresPartido"} class={params.opcion == 'listaJugadoresPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Definir lista jugadores de un partido</a>
                     <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/validarResultadoPartido"} class={params.opcion == 'validarResultadoPartido' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Validar resultado de un partido</a>
                     <a type="button" href={"/home/"+params.idRol+"/"+params.idPersona+"/listaJugadoresTorneo"} class={params.opcion == 'listaJugadoresTorneo' ? 'list-group-item list-group-item-action active' : 'list-group-item list-group-item-action'} aria-current="true">Definir lista jugadores de un torneo</a>
-                    <a type="button" href="" class="list-group-item list-group-item-action">Consultar partidos</a>
-                    <a type="button" href="" class="list-group-item list-group-item-action" aria-current="true">Consultar estadisticas de un jugador</a>
                 </div> 
             : null}
         </div>

@@ -35,6 +35,8 @@ function ListaJugadoresPartido(){
     },[])
 
     useEffect (() => {
+        setPartidos([]);
+        setPartidosConEquipos([]);
         axios.get('http://localhost:8080/getPartidosByCampeonato?idCampeonato='+campeonato)
             .then(response => {
                 if (typeof response.data === "string"){
@@ -46,6 +48,11 @@ function ListaJugadoresPartido(){
     },[campeonato])
 
     useEffect(() => { 
+        setJugadorDisponible("-1"); 
+        setJugadoresDetalles([]);
+        setJugadoresDisponibles([]);
+        setJugadores([]);
+        setMiembros([]);
         partidos.map( async part => {
             axios.get("http://localhost:8080/getClubPorId?idClub="+part.local)
                 .then(localResponse => {

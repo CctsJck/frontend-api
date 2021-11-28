@@ -163,4 +163,4 @@ function GestionarPersonalesJugador(){
     )
 }
 
-export default GestionarPersonalesJugador;
+export default GestionarPersonalesJugador; 

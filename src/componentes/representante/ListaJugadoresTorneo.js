@@ -69,6 +69,8 @@ function ListaJugadoresTorneo(){
 
 
     function handleCampChange(e){
+        setJugadores([]);
+        setJugadoresDetalles([]);
         setIdCampeonato(e.target.value);
     }
 
