@@ -105,12 +105,12 @@ function Login(){
         <div className="fondo">
             <div className="container ">
                 <ToastContainer/>
-                <div className="row">
-                    <div className="col-md-12 col-lg-4 mt-5"> 
+                <div className="row d-flex justify-content-center">
+                    <div className=" col-md-6 mt-5"> 
                         <div class="card card-overflow bg-dark text-white h-100">
                             <img src={require("../img/jugador.png").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
-                                <h2 class="card-title text-center ">JUGADORES</h2>
+                                <h2 class="card-title my-4  text-center ">JUGADORES</h2>
                                 <form onSubmit={handleIdJugadorSubmit} id="jugadorForm" className="container">
                                     <div class="mb-3">
                                         <label for="idJugador" class="form-label">Ingrese ID</label>
@@ -128,11 +128,13 @@ function Login(){
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-12 col-lg-4 mt-5"> 
+                </div>
+                <div className="row d-flex justify-content-center">
+                    <div className="  col-md-6 mt-5"> 
                         <div class="card card-overflow bg-dark text-white h-100">
-                            <img src={require("../img/admin.jpg").default} class="card-img-top" alt="..."/>
+                            <img src="https://static3.depositphotos.com/1002941/152/i/600/depositphotos_1525872-stock-photo-businessman-the-signing-contract.jpg" class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
-                                <h2 class="card-title text-center">ADMIN</h2>
+                                <h2 class="card-title my-5 text-center">ADMIN</h2>
                                 <form onSubmit={handleIdAdminSubmit} id="adminForm" className="container">
                                     <div class="mb-3">
                                         <label for="idAdmin" class="form-label">Ingrese ID</label>
@@ -147,11 +149,13 @@ function Login(){
                             </div>
                         </div>
                     </div>
-                    <div className="col-md-12 col-lg-4 mt-5"> 
+                </div>
+                <div className="row d-flex justify-content-center">
+                    <div className=" col-md-6 mt-5"> 
                         <div class="card card-overflow bg-dark text-white h-100">
                             <img src={require("../img/RepresentanteFutbol.png").default} class="card-img-top" alt="..."/>
                             <div class="card-img-overlay vision">
-                                <h2 class="card-title text-center">REPRESENTANTE</h2>
+                                <h2 class="card-title my-5 text-center">REPRESENTANTE</h2>
                                 <form onSubmit={handleIdRepresentanteSubmit} id="representanteForm" className="container">
                                     <div class="mb-3">
                                         <label for="idRepresentante" class="form-label">Ingrese ID</label>
@@ -167,6 +171,7 @@ function Login(){
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     );

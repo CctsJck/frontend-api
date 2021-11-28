@@ -82,6 +82,7 @@ function ListaJugadoresPartido(){
                             setJugadores(jugadores => ([...jugadores, response2.data]));
                         }
                         
+                        
                     })
             })
         }
@@ -243,6 +244,7 @@ function ListaJugadoresPartido(){
                             </thead>
                             <tbody>
                                 {jugadores.length !== 0 ? jugadores.map(jugador => {
+                                    console.log(jugador)
                                     return (
                                         <tr key={jugador.idJugador}>
                                             <th scope="row">{jugador.idJugador}</th>
