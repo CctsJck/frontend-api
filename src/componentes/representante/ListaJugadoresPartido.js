@@ -78,7 +78,7 @@ function ListaJugadoresPartido(){
             })
         axios.get("http://localhost:8080/getJugadoresHabilitadosClub?idCampeonato="+campeonato+"&idClub="+club.idClub)
             .then(response => {
-                setJugadoresDisponibles(response.data);
+                setJugadoresDisponibles(response.data); 
                 
             })
     },[partido,club])
