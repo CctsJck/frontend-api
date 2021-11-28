@@ -35,7 +35,7 @@ function AdminCampeonatos(){
             <ToastContainer/>
             <div className="row table-responsive">
                 <h2 className="text-center">Campeonatos</h2>
-                <table class="table mt-5">
+                <table class="table  mt-5">
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
