@@ -146,11 +146,11 @@ function InfoPartido(props){
                                                     </svg>
                                                     {gol.jugador.nombre} {gol.jugador.apellido}
                                                 </td>
-                                                <td></td>
+                                                <td>-</td>
                                             </>                                                    
                                         : 
                                             <>
-                                                <td></td>
+                                                <td>-</td>
                                                 <td>
                                                     {gol.gol.minuto}´
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dribbble me-1 text-success" viewBox="0 0 16 16">
@@ -178,6 +178,7 @@ function InfoPartido(props){
                                 return(
                                     <tr key={falta.falta.idFalta}>
                                         {falta.jugador.club === partido.local ?
+                                        
                                             <>
                                                 <td>
                                                     {falta.falta.minuto}´
@@ -191,11 +192,11 @@ function InfoPartido(props){
                                                     }
                                                     <span className="ms-2">{falta.jugador.nombre} {falta.jugador.apellido}</span>
                                                 </td>
-                                                <td></td>
+                                                <td>-</td>
                                             </>                                                    
                                         : 
                                             <>
-                                                <td></td>
+                                                <td>-</td>
                                                 <td>
                                                     {falta.falta.minuto}´
                                                     {falta.falta.tipo === "roja" ? 

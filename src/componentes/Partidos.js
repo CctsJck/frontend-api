@@ -37,20 +37,14 @@ function Partidos(){
     
                 await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.local)
                     .then(localResponse => {
-                        if (typeof localResponse.data === "string"){
-                            return toast.error(localResponse.data);
-                        } else {
-                            detalles.clubLocal = localResponse.data;
-                        }
+                        detalles.clubLocal = localResponse.data;
+                        
                     })
     
                 await axios.get("http://localhost:8080/getClubPorId?idClub="+partido.visitante)
                 .then(visResponse => {
-                    if (typeof visResponse.data === "string"){
-                        return toast.error(visResponse.data);
-                    } else {
-                        detalles.clubVisitante = visResponse.data;
-                    }
+                    detalles.clubVisitante = visResponse.data;
+                    
                 })
     
                 setPartidosConDetalles(partidosConDetalles => [...partidosConDetalles, detalles]);
