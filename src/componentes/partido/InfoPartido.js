@@ -117,9 +117,8 @@ function InfoPartido(props){
         })
     },[miembros])
 
-    useEffect(() => {
-        console.log(miembrosDetalle);
-    },[miembrosDetalle])
+
+    
  
     return (
         <>
@@ -135,9 +134,12 @@ function InfoPartido(props){
                         </thead>
                         <tbody>
                             {golesDetalles.length !== 0 ? golesDetalles.map(gol => {
+
+                                
+
                                 return(
                                     <tr key={gol.gol.idGol}>
-                                        {gol.jugador.club === partido.local ?
+                                        {gol.jugador.idClub === partido.local ?
                                             <>
                                                 <td>
                                                     {gol.gol.minuto}´
@@ -146,11 +148,11 @@ function InfoPartido(props){
                                                     </svg>
                                                     {gol.jugador.nombre} {gol.jugador.apellido}
                                                 </td>
-                                                <td>-</td>
+                                                <td></td>
                                             </>                                                    
                                         : 
                                             <>
-                                                <td>-</td>
+                                                <td></td>
                                                 <td>
                                                     {gol.gol.minuto}´
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-dribbble me-1 text-success" viewBox="0 0 16 16">
@@ -177,8 +179,7 @@ function InfoPartido(props){
                             {faltasDetalles.length !== 0 ?faltasDetalles.map(falta => {
                                 return(
                                     <tr key={falta.falta.idFalta}>
-                                        {falta.jugador.club === partido.local ?
-                                        
+                                        {falta.jugador.idClub === partido.local ?
                                             <>
                                                 <td>
                                                     {falta.falta.minuto}´
@@ -192,11 +193,11 @@ function InfoPartido(props){
                                                     }
                                                     <span className="ms-2">{falta.jugador.nombre} {falta.jugador.apellido}</span>
                                                 </td>
-                                                <td>-</td>
+                                                <td></td>
                                             </>                                                    
                                         : 
                                             <>
-                                                <td>-</td>
+                                                <td></td>
                                                 <td>
                                                     {falta.falta.minuto}´
                                                     {falta.falta.tipo === "roja" ? 
